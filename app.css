@@ -1,0 +1,65 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3rem;
+    height: 100vh;
+}
+
+#theater-boards {
+    display: flex;
+    justify-content: space-between;
+}
+
+#player-one, #player-two {
+    display: flex;
+    justify-content: center;
+}
+
+.air {
+    background-color: #6E665B;
+}
+
+.land {
+    background-color: #648139;
+}
+
+.sea {
+    background-color: #3D778E;
+}
+
+.theater-board {
+    --width: 20vw;
+    --card-factor: 0.7;
+    width: var(--width);
+    height: calc(var(--width) * var(--card-factor));
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    color: #EFEFEF;
+    user-select: none;
+}
+
+.card {
+    --width: 10vw;
+    --card-factor: 1.4;
+    width: var(--width);
+    height: calc(var(--width) * var(--card-factor));
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    color: #EFEFEF;
+    user-select: none;
+}
+
+.name {
+    font-family: sans-serif;
+}
+
+.tactical-ability, .description {
+    font-family: sans-serif;
+}
