@@ -2,12 +2,13 @@ export default class Battle {
     constructor(playerOne, playerTwo, theaterBoards, cards, ui) {
         this.theaters = this.#shuffleCards(theaterBoards);
         console.log(`${playerOne.name} has shuffled and dealt the theater boards.`);
-        this.#displayTheaterBoards(ui, this.theaters);
+        this.#displayTheaterBoards(this.theaters, ui);
 
         this.cards = this.#shuffleCards(cards);
         this.#dealCards(this.cards, playerOne, playerTwo);
         this.dealtCards = playerOne.hand.concat(playerTwo.hand);
-        this.#displayCards(ui, this.dealtCards);
+        this.#displayCards(this.dealtCards, ui);
+        this.#addEventListener(this.dealtCards);
         console.log(`${playerOne.name} has shuffled and dealt the cards.`);
     }
 
@@ -38,7 +39,7 @@ export default class Battle {
 
     }
 
-    #displayTheaterBoards(ui, theaters) {
+    #displayTheaterBoards(theaters, ui) {
         const theaterBoardsEl = document.querySelector("#theater-boards");
 
         theaters.forEach(theater => {
@@ -68,9 +69,9 @@ export default class Battle {
         });
     }
 
-    #displayCards(ui, cards) {
-        const playerOne = document.querySelector("#player-one");
-        const playerTwo = document.querySelector("#player-two");
+    #displayCards(cards, ui) {
+        const playerOneEl = document.querySelector("#player-one");
+        const playerTwoEl = document.querySelector("#player-two");
 
         cards.forEach((card, i) => {
             const cardEl = ui.createElement("div");
@@ -80,9 +81,6 @@ export default class Battle {
 
             cardEl.setAttribute("id", card.id);
             cardEl.classList.add("card");
-            cardEl.addEventListener("click", e => {
-                // prompt("Deploy, improvise, or withdraw?");
-            });
 
             strengthEl.innerHTML = card.strength;
             strengthEl.classList.add("strength");
@@ -108,10 +106,29 @@ export default class Battle {
             cardEl.append(strengthEl, tacticalAbilityEl, descriptionEl);
             
             if(i % 2 !== 0) {
-                ui.displayElement(cardEl, playerOne);
+                ui.displayElement(cardEl, playerOneEl);
             } else {
-                ui.displayElement(cardEl, playerTwo);
+                ui.displayElement(cardEl, playerTwoEl);
             }
+        });
+    }
+
+    #addEventListener() {
+        const dealtCardsEl = document.querySelectorAll(".card");
+
+        dealtCardsEl.forEach(dealtCardEl => {
+            dealtCardEl.addEventListener("click", e => {
+                const action = prompt("Deploy, improvise, or withdraw?");
+    
+                switch(action) {
+                    case "Deploy":
+                        playerOne.deploy();
+                    case "Improvise":
+                        playerOne.improvise(e.target, theaters[0]);
+                    case "Withdraw":
+                        playerOne.withdraw();
+                }
+            });
         });
     }
 }
