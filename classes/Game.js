@@ -36,10 +36,11 @@ export default class Game {
         ];
 
         const ui = new UI();
+        const battle = new Battle(playerOne, playerTwo, theaterBoards, cards, ui);
 
         console.log(`${playerOne.name} (Player ${playerOne.id}) joined the game.`);
         console.log(`${playerTwo.name} (Player ${playerTwo.id}) joined the game.`);
 
-        this.battles.push(new Battle(playerOne, playerTwo, theaterBoards, cards, ui));
+        this.battles.push(battle);
     }
 }
