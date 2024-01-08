@@ -1,46 +1,61 @@
+import Player from "./Player.js";
 import Theater from "./Theater.js";
 import Card from "./Card.js";
 import Battle from "./Battle.js";
-import UI from "./UI.js";
 
 export default class Game {
-    constructor(playerOne, playerTwo) {
-        this.playerOne = playerOne;
-        this.playerTwo = playerTwo;
+    static id = 1;
+    static theaters = ["Air", "Land", "Sea"];
+    static cards = [
+        {"theater": "Air", "strength": 1, "tacticalAbility": "Support", "type": "Ongoing", "description": "You gain +3 strength in each adjacent theater."},
+        {"theater": "Air", "strength": 2, "tacticalAbility": "Air Drop", "type": "Instant", "description": "The next time you play a card, you may play it to a non-matching theater."},
+        {"theater": "Air", "strength": 3, "tacticalAbility": "Maneuver", "type": "Instant", "description": "Flip an uncovered card in an adjacent theater."},
+        {"theater": "Air", "strength": 4, "tacticalAbility": "Aerodrome", "type": "Ongoing", "description": "You may play cards of strength 3 or less to non-matching theaters."},
+        {"theater": "Air", "strength": 5, "tacticalAbility": "Containment", "type": "Ongoing", "description": "If any player plays a facedown card, destroy that card."},
+        {"theater": "Air", "strength": 6, "tacticalAbility": "Heavy Bombers", "type": "", "description": ""},
+        {"theater": "Land", "strength": 1, "tacticalAbility": "Reinforce", "type": "Instant", "description": "Draw 1 card and play it facedown to an adjacent theater."},
+        {"theater": "Land", "strength": 2, "tacticalAbility": "Ambush", "type": "Instant", "description": "Flip any uncovered card."},
+        {"theater": "Land", "strength": 3, "tacticalAbility": "Maneuver", "type": "Instant", "description": "Flip and uncovered card in an adjacent theater."},
+        {"theater": "Land", "strength": 4, "tacticalAbility": "Cover Fire", "type": "Ongoing", "description": "All cards covered by this card are now strength 4."},
+        {"theater": "Land", "strength": 5, "tacticalAbility": "Disrupt", "type": "Instant", "description": "Starting with you, both players choose and flip 1 of their uncovered cards."},
+        {"theater": "Land", "strength": 6, "tacticalAbility": "Heavy Tanks", "type": "", "description": ""},
+        {"theater": "Sea", "strength": 1, "tacticalAbility": "Transport", "type": "Instant", "description": "You may move 1 of your cards to a different theater."},
+        {"theater": "Sea", "strength": 2, "tacticalAbility": "Escalation", "type": "Ongoing", "description": "All of your facedown cards are now strength 4."},
+        {"theater": "Sea", "strength": 3, "tacticalAbility": "Maneuver", "type": "Instant", "description": "Flip an uncovered card in an adjacent theater."},
+        {"theater": "Sea", "strength": 4, "tacticalAbility": "Redeploy", "type": "Instant", "description": "You may return 1 of your facedown cards to your hand. If you do, play a card."},
+        {"theater": "Sea", "strength": 5, "tacticalAbility": "Blockade", "type": "Ongoing", "description": "If any player plays a card to an adjacent theater occupied by at least 3 other cards, destroy that card."},
+        {"theater": "Sea", "strength": 6, "tacticalAbility": "Super Battleship", "type": "", "description": ""}
+];
+
+    constructor() {
+        this.id = Game.id++;
+        this.players = [];
+        this.theaters = [];
+        this.cards = [];
         this.battles = [];
 
-        const theaterBoards = [
-            new Theater("Air"),
-            new Theater("Land"),
-            new Theater("Sea")
-        ];
-        const cards = [
-            new Card("Air", 1, "Support", "Ongoing", "You gain +3 strength in each adjacent theater."),
-            new Card("Air", 2, "Air Drop", "Instant", "The next time you play a card, you may play it to a non-matching theater."),
-            new Card("Air", 3, "Maneuver", "Instant", "Flip an uncovered card in an adjacent theater."),
-            new Card("Air", 4, "Aerodrome", "Ongoing", "You may play cards of strength 3 or less to non-matching theaters."),
-            new Card("Air", 5, "Containment", "Ongoing", "If any player plays a facedown card, destroy that card."),
-            new Card("Air", 6, "Heavy Bombers", "", ""),
-            new Card("Land", 1, "Reinforce", "Instant", "Draw 1 card and play it facedown to an adjacent theater."),
-            new Card("Land", 2, "Ambush", "Instant", "Flip any uncovered card."),
-            new Card("Land", 3, "Maneuver", "Instant", "Flip and uncovered card in an adjacent theater."),
-            new Card("Land", 4, "Cover Fire", "Ongoing", "All cards covered by this card are now strength 4."),
-            new Card("Land", 5, "Disrupt", "Instant", "Starting with you, both players choose and flip 1 of their uncovered cards."),
-            new Card("Land", 6, "Heavy Tanks", "", ""),
-            new Card("Sea", 1, "Transport", "Instant", "You may move 1 of your cards to a different theater."),
-            new Card("Sea", 2, "Escalation", "Ongoing", "All of your facedown cards are now strength 4."),
-            new Card("Sea", 3, "Maneuver", "Instant", "Flip an uncovered card in an adjacent theater."),
-            new Card("Sea", 4, "Redeploy", "Instant", "You may return 1 of your facedown cards to your hand. If you do, play a card."),
-            new Card("Sea", 5, "Blockade", "Ongoing", "If any player plays a card to an adjacent theater occupied by at least 3 other cards, destroy that card."),
-            new Card("Sea", 6, "Super Battleship", "", "")
-        ];
+        this.#initializeGame(Game.theaters, Game.cards);
+    }
 
-        const ui = new UI();
-        const battle = new Battle(playerOne, playerTwo, theaterBoards, cards, ui);
+    #initializeGame(theaters, cards) {
+        this.#createTheaters(theaters);
+        this.#createCards(cards);
+    }
 
-        console.log(`${playerOne.name} (Player ${playerOne.id}) joined the game.`);
-        console.log(`${playerTwo.name} (Player ${playerTwo.id}) joined the game.`);
+    #createTheaters(theaters) {
+        theaters.forEach(theater => this.theaters.push(new Theater(theater)));
+    }
 
-        this.battles.push(battle);
+    #createCards(cards) {
+        cards.forEach(card => this.cards.push(new Card(card)));
+    }
+    
+    createPlayer(name) {
+        this.players.push(new Player(name));
+        console.log(`${name} has joined the game.`);
+    }
+
+    createBattle() {
+        this.battles.push(new Battle(this.theaters, this.cards, this.players));
     }
 }
