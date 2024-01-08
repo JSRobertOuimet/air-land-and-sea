@@ -1,13 +1,13 @@
 export default class Card {
     static id = 1;
 
-    constructor(theater, strength, tacticalAbility, type, description) {
+    constructor(card) {
         this.id = Card.id++;
-        this.theater = theater;
-        this.strength = strength;
-        this.tacticalAbility = tacticalAbility;
-        this.type = type;
-        this.description = description;
+        this.theater = card.theater;
+        this.strength = card.strength;
+        this.tacticalAbility = card.tacticalAbility;
+        this.type = card.type;
+        this.description = card.description;
         this.facedown = false;
         this.covered = false;
     }
