@@ -8,7 +8,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 3rem;
+    padding: 1rem 3rem;
     height: 100vh;
 }
 
@@ -19,7 +19,17 @@
 
 #player-one, #player-two {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hand {
+    display: flex;
+    flex-direction: row;
+}
+
+#player-one .hand {
+    margin-top: 1rem;
 }
 
 .air {
@@ -35,7 +45,7 @@
 }
 
 .theater-board {
-    --width: 20vw;
+    --width: 16vw;
     --card-factor: 0.7;
     width: var(--width);
     height: calc(var(--width) * var(--card-factor));
@@ -46,7 +56,7 @@
 }
 
 .card {
-    --width: 10vw;
+    --width: 8vw;
     --card-factor: 1.4;
     width: var(--width);
     height: calc(var(--width) * var(--card-factor));

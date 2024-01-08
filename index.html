@@ -8,9 +8,18 @@
 </head>
 <body>
     <div class="wrapper">
-        <div id="player-two"></div>
+        <div id="player-two">
+            <div class="hand"></div>
+        </div>
         <div id="theater-boards"></div>
-        <div id="player-one"></div>
+        <div id="player-one">
+            <div id="action-bar">
+                <button id="deploy" disabled="true">Deploy</button>
+                <button id="improvise" disabled="true">Improvise</button>
+                <button id="withdraw">Withdraw</button>
+            </div>
+            <div class="hand"></div>
+        </div>
     </div>
     <script src="app.js" type="module"></script>
 </body>
