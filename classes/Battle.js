@@ -1,15 +1,28 @@
-export default class Battle {
-    constructor(playerOne, playerTwo, theaterBoards, cards, ui) {
-        this.theaters = this.#shuffleCards(theaterBoards);
-        console.log(`${playerOne.name} has shuffled and dealt the theater boards.`);
-        this.#displayTheaterBoards(this.theaters, ui);
+import Player from "./Player.js";
+import UI from "./UI.js";
 
-        this.cards = this.#shuffleCards(cards);
-        this.#dealCards(this.cards, playerOne, playerTwo);
-        this.dealtCards = playerOne.hand.concat(playerTwo.hand);
+export default class Battle {
+    static id = 1;
+
+    constructor(theaters, cards, players) {
+        this.id = Battle.id++;
+        this.theaters = theaters;
+        this.cards = cards;
+        this.players = players;
+        this.dealtCards = [];
+        this.activePlayer = this.players[0];
+        
+        const ui = new UI();
+        
+        this.#shuffleCards(this.theaters);
+        
+        this.#shuffleCards(this.cards);
+        this.#dealCards(this.players, this.cards);
+
+        this.#displayTheaters(this.theaters, ui);
         this.#displayCards(this.dealtCards, ui);
-        this.#addEventListener(this.dealtCards);
-        console.log(`${playerOne.name} has shuffled and dealt the cards.`);
+
+        this.#addEventListeners();
     }
 
     #shuffleCards(cards) {
@@ -25,24 +38,26 @@ export default class Battle {
         return cards;
     }
 
-    #dealCards(cards, playerOne, playerTwo) {
+    #dealCards(players, shuffledCards) {
         for(let i = 0; i < 12; i++) {
             if(i % 2 !== 0) {
-                playerOne.hand.push(cards[i]);
+                players[0].hand.push(shuffledCards[i]);
+                this.dealtCards.push(shuffledCards[i]);
             } else {
-                playerTwo.hand.push(cards[i]);
+                players[1].hand.push(shuffledCards[i]);
+                this.dealtCards.push(shuffledCards[i]);
             }
         }
     }
 
-    rotateCards(cards) {
+    rotateCards(shuffledTheaters) {
 
     }
 
-    #displayTheaterBoards(theaters, ui) {
+    #displayTheaters(shuffledTheaters, ui) {
         const theaterBoardsEl = document.querySelector("#theater-boards");
 
-        theaters.forEach(theater => {
+        shuffledTheaters.forEach(theater => {
             const theaterEl = ui.createElement("div");
             const nameEl = ui.createElement("div");
 
@@ -69,11 +84,11 @@ export default class Battle {
         });
     }
 
-    #displayCards(cards, ui) {
-        const playerOneEl = document.querySelector("#player-one");
-        const playerTwoEl = document.querySelector("#player-two");
+    #displayCards(dealtCards, ui) {
+        const playerOneHandEl = document.querySelector("#player-one .hand");
+        const playerTwoHandEl = document.querySelector("#player-two .hand");
 
-        cards.forEach((card, i) => {
+        dealtCards.forEach((card, i) => {
             const cardEl = ui.createElement("div");
             const strengthEl = ui.createElement("div");
             const tacticalAbilityEl = ui.createElement("div");
@@ -88,8 +103,8 @@ export default class Battle {
             tacticalAbilityEl.classList.add("tactical-ability");
             tacticalAbilityEl.innerHTML = card.tacticalAbility;
             
-            descriptionEl.innerHTML = card.description;
-            descriptionEl.classList.add("description");
+            // descriptionEl.innerHTML = card.description;
+            // descriptionEl.classList.add("description");
 
             switch(card.theater) {
                 case "Air":
@@ -106,29 +121,28 @@ export default class Battle {
             cardEl.append(strengthEl, tacticalAbilityEl, descriptionEl);
             
             if(i % 2 !== 0) {
-                ui.displayElement(cardEl, playerOneEl);
+                ui.displayElement(cardEl, playerOneHandEl);
             } else {
-                ui.displayElement(cardEl, playerTwoEl);
+                ui.displayElement(cardEl, playerTwoHandEl);
             }
         });
     }
-
-    #addEventListener() {
+    
+    #addEventListeners() {
         const dealtCardsEl = document.querySelectorAll(".card");
+        const deployButtonEl = document.querySelector("#deploy");
+        const improviseButtonEl = document.querySelector("#improvise");
+        const withdrawButtonEl = document.querySelector("#withdraw");
 
         dealtCardsEl.forEach(dealtCardEl => {
             dealtCardEl.addEventListener("click", e => {
-                const action = prompt("Deploy, improvise, or withdraw?");
-    
-                switch(action) {
-                    case "Deploy":
-                        playerOne.deploy();
-                    case "Improvise":
-                        playerOne.improvise(e.target, theaters[0]);
-                    case "Withdraw":
-                        playerOne.withdraw();
-                }
+                deployButtonEl.disabled = false;
+                improviseButtonEl.disabled = false;
             });
         });
+
+        // deployButtonEl.addEventListener("click", Player.deploy(this.activePlayer, card, theater));
+        // improviseButtonEl.addEventListener("click", Player.improvise(this.activePlayer, card, theater));
+        // withdrawButtonEl.addEventListener("click", Player.withdraw());
     }
 }
