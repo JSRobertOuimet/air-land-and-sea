@@ -3,11 +3,11 @@ export default class UI {
 
     }
 
-    createElement(element) {
+    static createElement(element) {
         return document.createElement(`${element}`);
     }
 
-    displayElement(element, target) {
+    static displayElement(element, target) {
         return target.appendChild(element);
     }
 }

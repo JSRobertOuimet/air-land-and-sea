@@ -12,15 +12,13 @@ export default class Battle {
         this.dealtCards = [];
         this.activePlayer = this.players[0];
         
-        const ui = new UI();
-        
         this.#shuffleCards(this.theaters);
         
         this.#shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
 
-        this.#displayTheaters(this.theaters, ui);
-        this.#displayCards(this.dealtCards, ui);
+        this.#displayTheaters(this.theaters);
+        this.#displayCards(this.dealtCards);
 
         this.#addEventListeners();
     }
@@ -54,12 +52,12 @@ export default class Battle {
 
     }
 
-    #displayTheaters(shuffledTheaters, ui) {
+    #displayTheaters(shuffledTheaters) {
         const theaterBoardsEl = document.querySelector("#theater-boards");
 
         shuffledTheaters.forEach(theater => {
-            const theaterEl = ui.createElement("div");
-            const nameEl = ui.createElement("div");
+            const theaterEl = UI.createElement("div");
+            const nameEl = UI.createElement("div");
 
             theaterEl.classList.add("theater-board");
 
@@ -80,19 +78,19 @@ export default class Battle {
 
             theaterEl.append(nameEl);
 
-            ui.displayElement(theaterEl, theaterBoardsEl);
+            UI.displayElement(theaterEl, theaterBoardsEl);
         });
     }
 
-    #displayCards(dealtCards, ui) {
+    #displayCards(dealtCards) {
         const playerOneHandEl = document.querySelector("#player-one .hand");
         const playerTwoHandEl = document.querySelector("#player-two .hand");
 
         dealtCards.forEach((card, i) => {
-            const cardEl = ui.createElement("div");
-            const strengthEl = ui.createElement("div");
-            const tacticalAbilityEl = ui.createElement("div");
-            const descriptionEl = ui.createElement("small");
+            const cardEl = UI.createElement("div");
+            const strengthEl = UI.createElement("div");
+            const tacticalAbilityEl = UI.createElement("div");
+            const descriptionEl = UI.createElement("small");
 
             cardEl.setAttribute("id", card.id);
             cardEl.classList.add("card");
@@ -121,9 +119,9 @@ export default class Battle {
             cardEl.append(strengthEl, tacticalAbilityEl, descriptionEl);
             
             if(i % 2 !== 0) {
-                ui.displayElement(cardEl, playerOneHandEl);
+                UI.displayElement(cardEl, playerOneHandEl);
             } else {
-                ui.displayElement(cardEl, playerTwoHandEl);
+                UI.displayElement(cardEl, playerTwoHandEl);
             }
         });
     }
