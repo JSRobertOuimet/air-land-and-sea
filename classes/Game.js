@@ -29,9 +29,9 @@ export default class Game {
 
     constructor() {
         this.id = Game.id++;
-        this.players = [];
         this.theaters = [];
         this.cards = [];
+        this.players = [];
         this.battles = [];
 
         this.#initializeGame(Game.theaters, Game.cards);
