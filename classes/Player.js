@@ -9,11 +9,11 @@ export default class Player {
         this.victoryPoints = 0;
     }
 
-    deploy(card, theater) {
+    static deploy(player, card, theater) {
         // Must validate if this card can be deployed on that theater.
     }
 
-    improvise(card, theater) {
+    static improvise(player, card, theater) {
         this.hand = this.hand.filter(element => element.id !== card.id);
         card.facedown = true;
 
@@ -31,7 +31,7 @@ export default class Player {
         console.log(`${this.name} played a card facedown (${card.tacticalAbility}) in the ${theater.name} theater.`);
     }
 
-    withdraw() {
+    static withdraw(player) {
 
     }
 }
