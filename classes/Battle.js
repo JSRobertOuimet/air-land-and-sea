@@ -5,22 +5,24 @@ export default class Battle {
     static id = 1;
 
     constructor(theaters, cards, players) {
-        this.id = Battle.id++;
+        this.id = (Battle.id++).toString();
         this.theaters = theaters;
         this.cards = cards;
         this.players = players;
         this.dealtCards = [];
         this.activePlayer = this.players[0];
+        this.selectedTheater = null;
+        this.selectedCard = null;
+        this.selectedAction = null;
         
         this.#shuffleCards(this.theaters);
-        
+        this.#displayTheaters(this.theaters);
+                
         this.#shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
-
-        this.#displayTheaters(this.theaters);
         this.#displayCards(this.dealtCards);
 
-        this.#addEventListeners();
+        this.#loadEventListeners();
     }
 
     #shuffleCards(cards) {
@@ -48,18 +50,49 @@ export default class Battle {
         }
     }
 
+    #performAction(selectedAction) {
+        switch(selectedAction) {
+            case "deploy":
+                this.#deploy(this.selectedCard, this.selectedTheater);
+            case "improvise":
+                this.#improvise(this.selectedCard, this.selectedTheater);
+                break;
+            case "withdraw":
+                this.#withdraw();
+        }
+    }
+
+    #deploy(selectedCard, selectedTheater) {
+        
+    }
+
+    #improvise(selectedCard, selectedTheater) {      
+        this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== selectedCard);
+        
+        if(this.activePlayer.id === "1") {
+            selectedTheater.playerOneCards.push(selectedCard);
+        } else {
+            selectedTheater.playerTwoCards.push(selectedCard);
+        }
+    }
+
+    #withdraw() {
+        
+    }
+
     rotateCards(shuffledTheaters) {
 
     }
 
     #displayTheaters(shuffledTheaters) {
-        const theaterBoardsEl = document.querySelector("#theater-boards");
+        const theatersEl = document.querySelector("#theaters");
 
         shuffledTheaters.forEach(theater => {
             const theaterEl = UI.createElement("div");
             const nameEl = UI.createElement("div");
 
-            theaterEl.classList.add("theater-board");
+            theaterEl.setAttribute("id", theater.id);
+            theaterEl.classList.add("theater");
 
             nameEl.innerHTML = `&ndash;${theater.name}&ndash;`;
             nameEl.classList.add("name");
@@ -78,7 +111,7 @@ export default class Battle {
 
             theaterEl.append(nameEl);
 
-            UI.displayElement(theaterEl, theaterBoardsEl);
+            UI.displayElement(theaterEl, theatersEl);
         });
     }
 
@@ -126,21 +159,34 @@ export default class Battle {
         });
     }
     
-    #addEventListeners() {
-        const dealtCardsEl = document.querySelectorAll(".card");
+    #loadEventListeners() {
+        const theatersEl = document.querySelector("#theaters");
+        const handEl = document.querySelector("#player-one .hand");
         const deployButtonEl = document.querySelector("#deploy");
         const improviseButtonEl = document.querySelector("#improvise");
         const withdrawButtonEl = document.querySelector("#withdraw");
 
-        dealtCardsEl.forEach(dealtCardEl => {
-            dealtCardEl.addEventListener("click", e => {
-                deployButtonEl.disabled = false;
-                improviseButtonEl.disabled = false;
-            });
+        theatersEl.addEventListener("click", e => {
+            if(e.target.classList.contains("theater")) {
+                this.selectedTheater = this.theaters.find(theater => theater.id === e.target.id);
+                console.log(this.selectedTheater);
+                this.#performAction(this.selectedAction);
+            }
         });
 
-        // deployButtonEl.addEventListener("click", Player.deploy(this.activePlayer, card, theater));
-        // improviseButtonEl.addEventListener("click", Player.improvise(this.activePlayer, card, theater));
-        // withdrawButtonEl.addEventListener("click", Player.withdraw());
+        handEl.addEventListener("click", e => {
+            if(e.target.classList.contains("card")) {
+                this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
+
+                deployButtonEl.disabled = false;
+                improviseButtonEl.disabled = false;
+            }
+        });
+        
+        deployButtonEl.addEventListener("click", this.#deploy.bind(this));
+        improviseButtonEl.addEventListener("click", e => {
+            this.selectedAction = e.target.id;
+        });
+        withdrawButtonEl.addEventListener("click", this.#withdraw.bind(this));
     }
 }
