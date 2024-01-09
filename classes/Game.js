@@ -28,7 +28,7 @@ export default class Game {
 ];
 
     constructor() {
-        this.id = Game.id++;
+        this.id = (Game.id++).toString();
         this.theaters = [];
         this.cards = [];
         this.players = [];
@@ -52,7 +52,6 @@ export default class Game {
     
     createPlayer(name) {
         this.players.push(new Player(name));
-        console.log(`${name} has joined the game.`);
     }
 
     createBattle() {

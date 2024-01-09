@@ -2,7 +2,7 @@ export default class Card {
     static id = 1;
 
     constructor(card) {
-        this.id = Card.id++;
+        this.id = (Card.id++).toString();
         this.theater = card.theater;
         this.strength = card.strength;
         this.tacticalAbility = card.tacticalAbility;
