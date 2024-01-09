@@ -12,7 +12,7 @@
     height: 100vh;
 }
 
-#theater-boards {
+#theaters {
     display: flex;
     justify-content: space-between;
 }
@@ -44,7 +44,7 @@
     background-color: #3D778E;
 }
 
-.theater-board {
+.theater {
     --width: 16vw;
     --card-factor: 0.7;
     width: var(--width);
