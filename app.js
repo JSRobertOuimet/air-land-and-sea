@@ -14,5 +14,5 @@ game.createPlayer("Jean-Simon");
 game.createBattle();
 
 // console.log(game);
-console.table(game.players[0].hand);
+// console.table(game.players[0].hand);
 // console.table(game.players[1].hand);
