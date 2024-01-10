@@ -14,6 +14,7 @@ export default class Battle {
         this.selectedTheater = null;
         this.selectedCard = null;
         this.selectedAction = null;
+        this.elements = UI.getElements();
         
         this.#shuffleCards(this.theaters);
         this.#displayTheaters(this.theaters);
@@ -85,6 +86,7 @@ export default class Battle {
             selectedTheater.playerTwoCards.push(selectedCard);
         }
 
+        console.log(`${this.activePlayer.name} played a card facedown (${this.selectedCard.tacticalAbility}) in the ${this.selectedTheater.name} theater.`)
         this.#endturn();
     }
 
@@ -94,6 +96,9 @@ export default class Battle {
 
     #endturn() {
         this.activePlayer.id === "1" ? this.activePlayer = this.players[1] : this.activePlayer = this.activePlayer[0];
+        this.selectedCard = null;
+        this.selectedTheater = null;
+        this.selectedAction = null;
     }
 
     rotateCards(shuffledTheaters) {
@@ -101,7 +106,7 @@ export default class Battle {
     }
 
     #displayTheaters(shuffledTheaters) {
-        const theatersEl = document.querySelector("#theaters");
+        const theatersEl = this.elements.theatersEl;
 
         shuffledTheaters.forEach(theater => {
             const theaterContainerEl = UI.createElement("div");
@@ -143,8 +148,8 @@ export default class Battle {
     }
 
     #displayCards(dealtCards) {
-        const playerOneHandEl = document.querySelector("#player-one .hand");
-        const playerTwoHandEl = document.querySelector("#player-two .hand");
+        const playerOneHandEl = this.elements.playerOneHandEl;
+        const playerTwoHandEl = this.elements.playerTwoHandEl;
 
         dealtCards.forEach((card, index) => {
             const cardEl = UI.createElement("div");
@@ -187,11 +192,11 @@ export default class Battle {
     }
     
     #loadEventListeners() {
-        const theatersEl = document.querySelector("#theaters");
-        const handEl = document.querySelector("#player-one .hand");
-        const deployButtonEl = document.querySelector("#deploy");
-        const improviseButtonEl = document.querySelector("#improvise");
-        const withdrawButtonEl = document.querySelector("#withdraw");
+        const theatersEl = this.elements.theatersEl;
+        const handEl = this.elements.handEl;
+        const deployButtonEl = this.elements.deployButtonEl;
+        const improviseButtonEl = this.elements.improviseButtonEl;
+        const withdrawButtonEl = this.elements.withdrawButtonEl;
 
         theatersEl.addEventListener("click", e => {
             if(e.target.classList.contains("theater")) {
