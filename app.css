@@ -47,6 +47,7 @@
 .theater {
     --width: 16vw;
     --card-factor: 0.7;
+
     width: var(--width);
     height: calc(var(--width) * var(--card-factor));
     border-radius: 0.5rem;
@@ -55,15 +56,29 @@
     user-select: none;
 }
 
+.theater:hover {
+    cursor: pointer;
+}
+
 .card {
     --width: 8vw;
     --card-factor: 1.4;
+    
+    position: relative;
     width: var(--width);
     height: calc(var(--width) * var(--card-factor));
     border-radius: 0.5rem;
     padding: 0.5rem;
     color: #EFEFEF;
     user-select: none;
+}
+
+.card:hover {
+    cursor: pointer;
+}
+
+.selected {
+    top: -5px;
 }
 
 .name {
@@ -72,4 +87,8 @@
 
 .tactical-ability, .description {
     font-family: sans-serif;
+}
+
+#deploy:hover, #improvise:hover, #withdraw:hover {
+    cursor: pointer;
 }
