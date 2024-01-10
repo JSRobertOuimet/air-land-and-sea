@@ -56,10 +56,6 @@
     user-select: none;
 }
 
-.theater:hover {
-    cursor: pointer;
-}
-
 .card {
     --width: 8vw;
     --card-factor: 1.4;
@@ -73,10 +69,6 @@
     user-select: none;
 }
 
-.card:hover {
-    cursor: pointer;
-}
-
 .selected {
     top: -5px;
 }
@@ -87,8 +79,4 @@
 
 .tactical-ability, .description {
     font-family: sans-serif;
-}
-
-#deploy:hover, #improvise:hover, #withdraw:hover {
-    cursor: pointer;
 }
