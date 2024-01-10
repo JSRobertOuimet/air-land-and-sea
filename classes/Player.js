@@ -4,7 +4,6 @@ export default class Player {
     constructor(name) {
         this.id = (Player.id++).toString();
         this.name = name;
-        this.isActive = this.id === 1 ? true : false;
         this.hand = [];
         this.victoryPoints = 0;
     }
