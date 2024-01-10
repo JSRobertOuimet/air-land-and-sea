@@ -1,4 +1,3 @@
-import Player from "./Player.js";
 import UI from "./UI.js";
 
 export default class Battle {
@@ -8,8 +7,9 @@ export default class Battle {
         this.id = (Battle.id++).toString();
         this.theaters = theaters;
         this.cards = cards;
-        this.players = players;
         this.dealtCards = [];
+        this.discardedCards = [];
+        this.players = players;
         this.activePlayer = this.players[0];
         this.selectedTheater = null;
         this.selectedCard = null;
@@ -39,15 +39,19 @@ export default class Battle {
     }
 
     #dealCards(players, shuffledCards) {
-        for(let i = 0; i < 12; i++) {
-            if(i % 2 !== 0) {
-                players[0].hand.push(shuffledCards[i]);
-                this.dealtCards.push(shuffledCards[i]);
+        shuffledCards.forEach((shuffledCard, index) => {
+            if(index < 12) {
+                if(index % 2 !== 0) {
+                    players[0].hand.push(shuffledCard);
+                    this.dealtCards.push(shuffledCard);
+                } else {
+                    players[1].hand.push(shuffledCard);
+                    this.dealtCards.push(shuffledCard);
+                }
             } else {
-                players[1].hand.push(shuffledCards[i]);
-                this.dealtCards.push(shuffledCards[i]);
+                this.discardedCards.push(shuffledCard);
             }
-        }
+        });
     }
 
     #performAction(selectedAction) {
@@ -66,18 +70,31 @@ export default class Battle {
         
     }
 
-    #improvise(selectedCard, selectedTheater) {      
+    #improvise(selectedCard, selectedTheater) {
+        const playerOneCardsEl = document.querySelector(`#theater-container-${selectedTheater.name.toLowerCase()} #player-one-cards`);
+        const selectedCardEl = document.querySelector(".selected");
+
         this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== selectedCard);
         
         if(this.activePlayer.id === "1") {
             selectedTheater.playerOneCards.push(selectedCard);
+            selectedCardEl.style.display = "none";
+            playerOneCardsEl.append(selectedCardEl);
+            selectedCardEl.style.display = "block";
+            selectedCardEl.classList.remove("selected");
         } else {
             selectedTheater.playerTwoCards.push(selectedCard);
         }
+
+        this.#endturn();
     }
 
     #withdraw() {
         
+    }
+
+    #endturn() {
+        this.activePlayer.id === "1" ? this.activePlayer = this.players[1] : this.activePlayer = this.activePlayer[0];
     }
 
     rotateCards(shuffledTheaters) {
@@ -88,8 +105,13 @@ export default class Battle {
         const theatersEl = document.querySelector("#theaters");
 
         shuffledTheaters.forEach(theater => {
+            const theaterContainerEl = UI.createElement("div");
             const theaterEl = UI.createElement("div");
             const nameEl = UI.createElement("div");
+            const playerOneCardsEl = UI.createElement("div");
+            const playerTwoCardsEl = UI.createElement("div");
+
+            theaterContainerEl.setAttribute("id", `theater-container-${theater.name.toLowerCase()}`);
 
             theaterEl.setAttribute("id", theater.id);
             theaterEl.classList.add("theater");
@@ -109,9 +131,15 @@ export default class Battle {
                     break;
             }
 
+            playerOneCardsEl.setAttribute("id", "player-one-cards");
+            playerTwoCardsEl.setAttribute("id", "player-two-cards");
+
+            theaterContainerEl.append(playerTwoCardsEl);
+            theaterContainerEl.append(theaterEl);
+            theaterContainerEl.append(playerOneCardsEl);
             theaterEl.append(nameEl);
 
-            UI.displayElement(theaterEl, theatersEl);
+            UI.displayElement(theaterContainerEl, theatersEl);
         });
     }
 
@@ -119,7 +147,7 @@ export default class Battle {
         const playerOneHandEl = document.querySelector("#player-one .hand");
         const playerTwoHandEl = document.querySelector("#player-two .hand");
 
-        dealtCards.forEach((card, i) => {
+        dealtCards.forEach((card, index) => {
             const cardEl = UI.createElement("div");
             const strengthEl = UI.createElement("div");
             const tacticalAbilityEl = UI.createElement("div");
@@ -134,8 +162,8 @@ export default class Battle {
             tacticalAbilityEl.classList.add("tactical-ability");
             tacticalAbilityEl.innerHTML = card.tacticalAbility;
             
-            // descriptionEl.innerHTML = card.description;
-            // descriptionEl.classList.add("description");
+            descriptionEl.innerHTML = card.description;
+            descriptionEl.classList.add("description");
 
             switch(card.theater) {
                 case "Air":
@@ -151,7 +179,7 @@ export default class Battle {
             
             cardEl.append(strengthEl, tacticalAbilityEl, descriptionEl);
             
-            if(i % 2 !== 0) {
+            if(index % 2 !== 0) {
                 UI.displayElement(cardEl, playerOneHandEl);
             } else {
                 UI.displayElement(cardEl, playerTwoHandEl);
@@ -169,24 +197,22 @@ export default class Battle {
         theatersEl.addEventListener("click", e => {
             if(e.target.classList.contains("theater")) {
                 this.selectedTheater = this.theaters.find(theater => theater.id === e.target.id);
-                console.log(this.selectedTheater);
-                this.#performAction(this.selectedAction);
+                this.#performAction(this.selectedAction, e.target);
             }
         });
 
         handEl.addEventListener("click", e => {
             if(e.target.classList.contains("card")) {
                 this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
+                e.target.classList.add("selected");
 
                 deployButtonEl.disabled = false;
                 improviseButtonEl.disabled = false;
             }
         });
         
-        deployButtonEl.addEventListener("click", this.#deploy.bind(this));
-        improviseButtonEl.addEventListener("click", e => {
-            this.selectedAction = e.target.id;
-        });
-        withdrawButtonEl.addEventListener("click", this.#withdraw.bind(this));
+        deployButtonEl.addEventListener("click", e => this.selectedAction = e.target.id);
+        improviseButtonEl.addEventListener("click", e => this.selectedAction = e.target.id);
+        withdrawButtonEl.addEventListener("click", e => this.selectedAction = e.target.id);
     }
 }
