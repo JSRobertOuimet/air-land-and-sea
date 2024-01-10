@@ -43,11 +43,10 @@ export default class Battle {
             if(index < 12) {
                 if(index % 2 !== 0) {
                     players[0].hand.push(shuffledCard);
-                    this.dealtCards.push(shuffledCard);
                 } else {
                     players[1].hand.push(shuffledCard);
-                    this.dealtCards.push(shuffledCard);
                 }
+                this.dealtCards.push(shuffledCard);
             } else {
                 this.discardedCards.push(shuffledCard);
             }
