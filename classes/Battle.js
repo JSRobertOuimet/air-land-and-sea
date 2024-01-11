@@ -73,6 +73,7 @@ export default class Battle {
     #improvise(selectedCard, selectedTheater) {
         const playerOneCardsEl = document.querySelector(`#theater-container-${selectedTheater.name.toLowerCase()} #player-one-cards`);
         const selectedCardEl = document.querySelector(".selected");
+        const descriptionEl = this.elements.descriptionEl;
 
         this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== selectedCard);
         
@@ -82,12 +83,17 @@ export default class Battle {
             playerOneCardsEl.append(selectedCardEl);
             selectedCardEl.style.display = "block";
             selectedCardEl.classList.remove("selected");
+            this.elements.deployButtonEl.disabled = true;
+            this.elements.improviseButtonEl.disabled = true;
+            descriptionEl.innerHTML = "";
         } else {
             selectedTheater.playerTwoCards.push(selectedCard);
         }
 
         console.log(`${this.activePlayer.name} played a card facedown (${this.selectedCard.tacticalAbility}) in the ${this.selectedTheater.name} theater.`)
-        this.#endturn();
+        
+        if(this.players[0].hand.length === 0) console.log(this);
+        // this.#endturn();
     }
 
     #withdraw() {
@@ -162,9 +168,6 @@ export default class Battle {
             strengthEl.innerHTML = card.strength;
             strengthEl.classList.add("strength");
 
-            tacticalAbilityEl.classList.add("tactical-ability");
-            tacticalAbilityEl.innerHTML = card.tacticalAbility;
-
             switch(card.theater) {
                 case "Air":
                     cardEl.classList.add("air");
@@ -204,7 +207,7 @@ export default class Battle {
         handEl.addEventListener("click", e => {
             if(e.target.classList.contains("card")) {
                 this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
-                this.elements.descriptionEl.innerHTML = this.selectedCard.description;
+                this.elements.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility}: ${this.selectedCard.description}`;
                 
                 Array.from(this.elements.handEl.children).forEach(cardEl => {
                     if(cardEl.classList.contains("selected")) {
