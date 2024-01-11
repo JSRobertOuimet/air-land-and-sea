@@ -155,7 +155,6 @@ export default class Battle {
             const cardEl = UI.createElement("div");
             const strengthEl = UI.createElement("div");
             const tacticalAbilityEl = UI.createElement("div");
-            const descriptionEl = UI.createElement("small");
 
             cardEl.setAttribute("id", card.id);
             cardEl.classList.add("card");
@@ -165,9 +164,6 @@ export default class Battle {
 
             tacticalAbilityEl.classList.add("tactical-ability");
             tacticalAbilityEl.innerHTML = card.tacticalAbility;
-            
-            descriptionEl.innerHTML = card.description;
-            descriptionEl.classList.add("description");
 
             switch(card.theater) {
                 case "Air":
@@ -181,7 +177,7 @@ export default class Battle {
                     break;
             }
             
-            cardEl.append(strengthEl, tacticalAbilityEl, descriptionEl);
+            cardEl.append(strengthEl, tacticalAbilityEl);
             
             if(index % 2 !== 0) {
                 UI.displayElement(cardEl, playerOneHandEl);
@@ -208,8 +204,16 @@ export default class Battle {
         handEl.addEventListener("click", e => {
             if(e.target.classList.contains("card")) {
                 this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
-                e.target.classList.add("selected");
+                this.elements.descriptionEl.innerHTML = this.selectedCard.description;
+                
+                Array.from(this.elements.handEl.children).forEach(cardEl => {
+                    if(cardEl.classList.contains("selected")) {
+                        cardEl.classList.remove("selected");
+                    }
+                });
 
+                e.target.classList.add("selected");
+                
                 deployButtonEl.disabled = false;
                 improviseButtonEl.disabled = false;
             }

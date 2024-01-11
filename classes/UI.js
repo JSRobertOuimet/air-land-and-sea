@@ -6,12 +6,13 @@ export default class UI {
     static getElements() {
         return {
             theatersEl: document.querySelector("#theaters"),
-            handEl: document.querySelector("#player-one .hand"),
             playerOneHandEl: document.querySelector("#player-one .hand"),
             playerTwoHandEl: document.querySelector("#player-two .hand"),
             deployButtonEl: document.querySelector("#deploy"),
             improviseButtonEl: document.querySelector("#improvise"),
-            withdrawButtonEl: document.querySelector("#withdraw")
+            withdrawButtonEl: document.querySelector("#withdraw"),
+            handEl: document.querySelector("#player-one .hand"),
+            descriptionEl: document.querySelector("#description")
         }
     }
 
