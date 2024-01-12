@@ -8,7 +8,7 @@ body {
     background-color: #EFEFEF;
 }
 
-.wrapper {
+#wrapper {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -17,9 +17,19 @@ body {
     font-family: sans-serif;
 }
 
+#main-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 #theaters {
     display: flex;
     justify-content: space-between;
+}
+
+#discarded-cards {
+    position: relative;
 }
 
 #player-one, #player-two {
@@ -98,6 +108,12 @@ body {
 
 .hand .card {
     margin-left: -2.5rem;
+}
+
+.discarded {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .selected {

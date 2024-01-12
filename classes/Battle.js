@@ -1,3 +1,4 @@
+import Log from "./Log.js";
 import UI from "./UI.js";
 
 export default class Battle {
@@ -14,6 +15,7 @@ export default class Battle {
         this.selectedTheater = null;
         this.selectedCard = null;
         this.selectedAction = null;
+        this.log = [];
         this.elements = UI.getElements();
         
         this.#shuffleCards(this.theaters);
@@ -21,7 +23,7 @@ export default class Battle {
                 
         this.#shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
-        this.#displayCards(this.dealtCards);
+        this.#displayCards(this.cards);
 
         this.#loadEventListeners();
     }
@@ -94,7 +96,9 @@ export default class Battle {
         this.elements.improviseButtonEl.disabled = true;
         descriptionEl.innerHTML = "";
 
-        console.log(`${this.activePlayer.name} played a card facedown (${this.selectedCard.tacticalAbility}) in the ${this.selectedTheater.name} theater.`)
+        this.log.push(new Log(this.activePlayer.name, this.selectedCard, this.selectedTheater, this.selectedAction));
+
+        console.log(this);
         
         // this.#endturn();
     }
@@ -156,11 +160,12 @@ export default class Battle {
         });
     }
 
-    #displayCards(dealtCards) {
+    #displayCards(cards) {
         const playerOneHandEl = this.elements.playerOneHandEl;
         const playerTwoHandEl = this.elements.playerTwoHandEl;
+        const discardedCardsEl = this.elements.discardedCardsEl;
 
-        dealtCards.forEach((card, index) => {
+        cards.forEach((card, index) => {
             const cardContainerEl = UI.createElement("div");
             const cardFrontEl = UI.createElement("div");
             const cardBackEl = UI.createElement("div");
@@ -197,13 +202,21 @@ export default class Battle {
             cardBackEl.append(defaultValueEl);
             cardContainerEl.append(cardFrontEl, cardBackEl);
             
-            if(index % 2 !== 0) {
-                UI.displayElement(cardContainerEl, playerOneHandEl);
-                cardContainerEl.lastChild.style.display = "none";
+            if(index < 12) {
+                if(index % 2 !== 0) {
+                    UI.displayElement(cardContainerEl, playerOneHandEl);
+                    cardContainerEl.lastChild.style.display = "none";
+                } else {
+                    UI.displayElement(cardContainerEl, playerTwoHandEl);
+                    cardContainerEl.classList.add("facedown");
+                    cardContainerEl.firstChild.style.display = "none";
+                }
             } else {
-                UI.displayElement(cardContainerEl, playerTwoHandEl);
+                UI.displayElement(cardContainerEl, discardedCardsEl);
                 cardContainerEl.classList.add("facedown");
+                cardContainerEl.classList.add("discarded");
                 cardContainerEl.firstChild.style.display = "none";
+                cardContainerEl.style.zIndex = index;
             }
         });
     }

@@ -6,6 +6,7 @@ export default class UI {
     static getElements() {
         return {
             theatersEl: document.querySelector("#theaters"),
+            discardedCardsEl: document.querySelector("#discarded-cards"),
             playerOneHandEl: document.querySelector("#player-one .hand"),
             playerTwoHandEl: document.querySelector("#player-two .hand"),
             deployButtonEl: document.querySelector("#deploy"),
