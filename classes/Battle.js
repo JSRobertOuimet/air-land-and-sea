@@ -96,7 +96,6 @@ export default class Battle {
 
         console.log(`${this.activePlayer.name} played a card facedown (${this.selectedCard.tacticalAbility}) in the ${this.selectedTheater.name} theater.`)
         
-        if(this.players[0].hand.length === 0) console.log(this);
         // this.#endturn();
     }
 
@@ -225,7 +224,12 @@ export default class Battle {
 
         handEl.addEventListener("click", e => {
             this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
-            this.elements.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility}: ${this.selectedCard.description}`;
+
+            if(this.selectedCard.strength === 6) {
+                this.elements.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility}`;
+            } else {
+                this.elements.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility} (${this.selectedCard.type}): ${this.selectedCard.description}`;
+            }
             
             Array.from(this.elements.handEl.children).forEach(cardEl => {
                 if(cardEl.classList.contains("selected")) {
