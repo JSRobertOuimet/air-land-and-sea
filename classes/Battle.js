@@ -76,6 +76,7 @@ export default class Battle {
         const descriptionEl = this.elements.descriptionEl;
 
         this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== selectedCard);
+        selectedCard.facedown = true;
 
         if(this.activePlayer.id === "1") {
             selectedTheater.playerOneCards.push(selectedCard);
@@ -85,6 +86,8 @@ export default class Battle {
 
         selectedCardEl.classList.remove("selected");
         selectedCardEl.classList.add("facedown");
+        selectedCardEl.firstChild.style.display = "none";
+        selectedCardEl.lastChild.style.display = "block";
         playerOneCardsEl.append(selectedCardEl);
 
         this.elements.deployButtonEl.disabled = true;
@@ -114,7 +117,7 @@ export default class Battle {
 
     #displayTheaters(shuffledTheaters) {
         const theatersEl = this.elements.theatersEl;
-
+        
         shuffledTheaters.forEach(theater => {
             const theaterContainerEl = UI.createElement("div");
             const theaterEl = UI.createElement("div");
@@ -197,8 +200,11 @@ export default class Battle {
             
             if(index % 2 !== 0) {
                 UI.displayElement(cardContainerEl, playerOneHandEl);
+                cardContainerEl.lastChild.style.display = "none";
             } else {
                 UI.displayElement(cardContainerEl, playerTwoHandEl);
+                cardContainerEl.classList.add("facedown");
+                cardContainerEl.firstChild.style.display = "none";
             }
         });
     }
@@ -218,21 +224,19 @@ export default class Battle {
         });
 
         handEl.addEventListener("click", e => {
-            if(e.target.classList.contains("card")) {
-                this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
-                this.elements.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility}: ${this.selectedCard.description}`;
-                
-                Array.from(this.elements.handEl.children).forEach(cardEl => {
-                    if(cardEl.classList.contains("selected")) {
-                        cardEl.classList.remove("selected");
-                    }
-                });
+            this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
+            this.elements.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility}: ${this.selectedCard.description}`;
+            
+            Array.from(this.elements.handEl.children).forEach(cardEl => {
+                if(cardEl.classList.contains("selected")) {
+                    cardEl.classList.remove("selected");
+                }
+            });
 
-                e.target.classList.add("selected");
-                
-                deployButtonEl.disabled = false;
-                improviseButtonEl.disabled = false;
-            }
+            e.target.classList.add("selected");
+            
+            deployButtonEl.disabled = false;
+            improviseButtonEl.disabled = false;
         });
         
         deployButtonEl.addEventListener("click", e => this.selectedAction = e.target.id);
