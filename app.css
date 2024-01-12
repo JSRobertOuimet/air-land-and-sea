@@ -54,6 +54,10 @@ body {
     background-color: #3D778E;
 }
 
+.facedown {
+    background-color: #37342f;
+}
+
 .theater {
     --width: 16vw;
     --card-factor: 0.7;

@@ -76,19 +76,20 @@ export default class Battle {
         const descriptionEl = this.elements.descriptionEl;
 
         this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== selectedCard);
-        
+
         if(this.activePlayer.id === "1") {
             selectedTheater.playerOneCards.push(selectedCard);
-            selectedCardEl.style.display = "none";
-            playerOneCardsEl.append(selectedCardEl);
-            selectedCardEl.style.display = "block";
-            selectedCardEl.classList.remove("selected");
-            this.elements.deployButtonEl.disabled = true;
-            this.elements.improviseButtonEl.disabled = true;
-            descriptionEl.innerHTML = "";
         } else {
             selectedTheater.playerTwoCards.push(selectedCard);
         }
+
+        selectedCardEl.classList.remove("selected");
+        selectedCardEl.classList.add("facedown");
+        playerOneCardsEl.append(selectedCardEl);
+
+        this.elements.deployButtonEl.disabled = true;
+        this.elements.improviseButtonEl.disabled = true;
+        descriptionEl.innerHTML = "";
 
         console.log(`${this.activePlayer.name} played a card facedown (${this.selectedCard.tacticalAbility}) in the ${this.selectedTheater.name} theater.`)
         
@@ -158,34 +159,46 @@ export default class Battle {
         const playerTwoHandEl = this.elements.playerTwoHandEl;
 
         dealtCards.forEach((card, index) => {
-            const cardEl = UI.createElement("div");
+            const cardContainerEl = UI.createElement("div");
+            const cardFrontEl = UI.createElement("div");
+            const cardBackEl = UI.createElement("div");
             const strengthEl = UI.createElement("div");
             const tacticalAbilityEl = UI.createElement("div");
+            const defaultValueEl = UI.createElement("div");
 
-            cardEl.setAttribute("id", card.id);
-            cardEl.classList.add("card");
-
-            strengthEl.innerHTML = card.strength;
-            strengthEl.classList.add("strength");
+            cardContainerEl.setAttribute("id", card.id);
+            cardContainerEl.classList.add("card");
 
             switch(card.theater) {
                 case "Air":
-                    cardEl.classList.add("air");
+                    cardContainerEl.classList.add("air");
                     break;
                 case "Land":
-                    cardEl.classList.add("land");
+                    cardContainerEl.classList.add("land");
                     break;
                 case "Sea":
-                    cardEl.classList.add("sea");
+                    cardContainerEl.classList.add("sea");
                     break;
             }
+
+            cardFrontEl.classList.add("front");
+            strengthEl.innerHTML = card.strength;
+            strengthEl.classList.add("strength");
+            tacticalAbilityEl.innerHTML = card.tacticalAbility;
+            tacticalAbilityEl.classList.add("tactical-ability");
             
-            cardEl.append(strengthEl, tacticalAbilityEl);
+            cardBackEl.classList.add("back");
+            defaultValueEl.innerHTML = "2";
+            defaultValueEl.classList.add("defaut-value");
+            
+            cardFrontEl.append(strengthEl, tacticalAbilityEl);
+            cardBackEl.append(defaultValueEl);
+            cardContainerEl.append(cardFrontEl, cardBackEl);
             
             if(index % 2 !== 0) {
-                UI.displayElement(cardEl, playerOneHandEl);
+                UI.displayElement(cardContainerEl, playerOneHandEl);
             } else {
-                UI.displayElement(cardEl, playerTwoHandEl);
+                UI.displayElement(cardContainerEl, playerTwoHandEl);
             }
         });
     }
