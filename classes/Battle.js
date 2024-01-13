@@ -85,7 +85,7 @@ export default class Battle {
     }
 
     #improvise(selectedCard, selectedTheater) {
-        const playerOneCardsEl = document.querySelector(`#theater-container-${selectedTheater.name.toLowerCase()} #player-one-cards`);
+        const playerOneColumn = document.querySelector(`#${selectedTheater.name.toLowerCase()}-depot #player-one-column`);
         const selectedCardEl = document.querySelector(".selected");
         const descriptionEl = this.elements.descriptionEl;
 
@@ -104,16 +104,13 @@ export default class Battle {
         selectedCardEl.classList.add("facedown");
         selectedCardEl.firstChild.style.display = "none";
         selectedCardEl.lastChild.style.display = "block";
-        playerOneCardsEl.append(selectedCardEl);
+        playerOneColumn.append(selectedCardEl);
 
         this.elements.deployButtonEl.disabled = true;
         this.elements.improviseButtonEl.disabled = true;
         descriptionEl.innerHTML = "";
 
-        this.log.push(new Log(this.activePlayer.name, this.selectedCard, this.selectedTheater, this.selectedAction));
-
-        console.log(this);
-        
+        this.log.push(new Log(this.activePlayer.name, selectedCard, selectedTheater, this.selectedAction));       
         // this.#endturn();
     }
 
@@ -136,14 +133,17 @@ export default class Battle {
         const mainAreaEl = this.elements.mainAreaEl;
         
         shuffledTheaters.forEach(theater => {
+            const depotEl = UI.createElement("div");
             const theaterContainerEl = UI.createElement("div");
             const theaterEl = UI.createElement("div");
             const nameEl = UI.createElement("div");
-            const playerOneCardsEl = UI.createElement("div");
-            const playerTwoCardsEl = UI.createElement("div");
+            const playerOneColumnEl = UI.createElement("div");
+            const playerTwoColumnEl = UI.createElement("div");
 
-            theaterContainerEl.setAttribute("id", `theater-container-${theater.name.toLowerCase()}`);
+            depotEl.setAttribute("id", `${theater.name.toLowerCase()}-depot`);
+            depotEl.classList.add("depot");
 
+            theaterContainerEl.classList.add("theater-container");
             theaterEl.setAttribute("id", theater.id);
             theaterEl.classList.add("theater");
 
@@ -162,15 +162,19 @@ export default class Battle {
                     break;
             }
 
-            playerOneCardsEl.setAttribute("id", "player-one-cards");
-            playerTwoCardsEl.setAttribute("id", "player-two-cards");
+            playerOneColumnEl.setAttribute("id", "player-one-column");
+            playerOneColumnEl.classList.add("column");
+            playerTwoColumnEl.setAttribute("id", "player-two-column");
+            playerTwoColumnEl.classList.add("column");
 
-            theaterContainerEl.append(playerTwoCardsEl);
-            theaterContainerEl.append(theaterEl);
-            theaterContainerEl.append(playerOneCardsEl);
             theaterEl.append(nameEl);
+            theaterContainerEl.append(theaterEl);
 
-            mainAreaEl.append(theaterContainerEl);
+            depotEl.append(playerTwoColumnEl);
+            depotEl.append(theaterContainerEl);
+            depotEl.append(playerOneColumnEl);
+
+            mainAreaEl.append(depotEl);
         });
     }
 
@@ -181,6 +185,7 @@ export default class Battle {
         const discardedCardsEl = UI.createElement("div");
 
         discardedCardsEl.setAttribute("id", "discarded-cards");
+        discardedCardsEl.classList.add("depot");
         mainAreaEl.append(discardedCardsEl);
 
         cards.forEach((card, index) => {
