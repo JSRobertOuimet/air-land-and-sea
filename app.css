@@ -18,7 +18,7 @@ body {
 #wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     padding: 1rem 3rem;
     height: 100vh;
     font-family: sans-serif;
@@ -27,6 +27,8 @@ body {
 #main-area {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    height: 100%;
 }
 
 #theaters {
@@ -110,8 +112,8 @@ body {
 }
 
 .discarded {
-    top: calc((8vw * 1.4) + 1rem);
-    margin-top: calc(-8vw * 1.4);
+    top: calc(var(--card-width) / 2 * var(--card-factor));
+    margin-top: calc(var(--card-width) * var(--card-factor) * -1);
 }
 
 .selected {
