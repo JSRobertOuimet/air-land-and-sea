@@ -18,6 +18,8 @@ export default class Battle {
         this.log = [];
         this.elements = UI.getElements();
         
+        this.#displayPlayersName(this.players);
+
         this.#shuffleCards(this.theaters);
         this.#displayTheaters(this.theaters);
                 
@@ -26,6 +28,16 @@ export default class Battle {
         this.#displayCards(this.cards);
 
         this.#loadEventListeners();
+
+        console.log(this);
+    }
+
+    #displayPlayersName(players) {
+        const playerOneNameEl = this.elements.playerOneName;
+        const playerTwoNameEl = this.elements.playerTwoName;
+
+        playerOneNameEl.innerHTML = players[0].name;
+        playerTwoNameEl.innerHTML = players[1].name;
     }
 
     #shuffleCards(cards) {
@@ -82,8 +94,10 @@ export default class Battle {
 
         if(this.activePlayer.id === "1") {
             selectedTheater.playerOneCards.push(selectedCard);
+            selectedTheater.playerOneCardsTotal += 2;
         } else {
             selectedTheater.playerTwoCards.push(selectedCard);
+            selectedTheater.playerTwoCardsTotal += 2;
         }
 
         selectedCardEl.classList.remove("selected");
@@ -156,13 +170,18 @@ export default class Battle {
             theaterContainerEl.append(playerOneCardsEl);
             theaterEl.append(nameEl);
 
-            mainAreaEl.prepend(theaterContainerEl);
+            mainAreaEl.append(theaterContainerEl);
         });
     }
 
     #displayCards(cards) {
+        const mainAreaEl = this.elements.mainAreaEl;
         const playerOneHandEl = this.elements.playerOneHandEl;
         const playerTwoHandEl = this.elements.playerTwoHandEl;
+        const discardedCardsEl = UI.createElement("div");
+
+        discardedCardsEl.setAttribute("id", "discarded-cards");
+        mainAreaEl.append(discardedCardsEl);
 
         cards.forEach((card, index) => {
             const cardContainerEl = UI.createElement("div");
@@ -171,7 +190,7 @@ export default class Battle {
             const strengthEl = UI.createElement("div");
             const tacticalAbilityEl = UI.createElement("div");
             const defaultValueEl = UI.createElement("div");
-
+            
             cardContainerEl.setAttribute("id", card.id);
             cardContainerEl.classList.add("card");
 
@@ -211,11 +230,9 @@ export default class Battle {
                     cardContainerEl.firstChild.style.display = "none";
                 }
             } else {
-                cardContainerEl.classList.add("facedown");
-                cardContainerEl.classList.add("discarded");
+                discardedCardsEl.append(cardContainerEl);
+                cardContainerEl.classList.add("facedown", "discarded");
                 cardContainerEl.firstChild.style.display = "none";
-                cardContainerEl.style.zIndex = index;
-                this.elements.discardedCardsEl.append(cardContainerEl);
             }
         });
     }
@@ -240,7 +257,7 @@ export default class Battle {
             if(this.selectedCard.strength === 6) {
                 this.elements.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility}`;
             } else {
-                this.elements.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility} (${this.selectedCard.type}): ${this.selectedCard.description}`;
+                this.elements.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility} ${this.selectedCard.typeSymbol} &ndash; ${this.selectedCard.description}`;
             }
             
             Array.from(this.elements.handEl.children).forEach(cardEl => {

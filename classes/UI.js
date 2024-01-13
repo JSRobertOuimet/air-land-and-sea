@@ -6,14 +6,15 @@ export default class UI {
     static getElements() {
         return {
             mainAreaEl: document.querySelector("#main-area"),
-            discardedCardsEl: document.querySelector("#discarded-cards"),
             playerOneHandEl: document.querySelector("#player-one .hand"),
             playerTwoHandEl: document.querySelector("#player-two .hand"),
             deployButtonEl: document.querySelector("#deploy"),
             improviseButtonEl: document.querySelector("#improvise"),
             withdrawButtonEl: document.querySelector("#withdraw"),
             handEl: document.querySelector("#player-one .hand"),
-            descriptionEl: document.querySelector("#description")
+            descriptionEl: document.querySelector("#description"),
+            playerOneName: document.querySelector("#player-one-name"),
+            playerTwoName: document.querySelector("#player-two-name")
         }
     }
 

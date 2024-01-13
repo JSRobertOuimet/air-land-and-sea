@@ -7,6 +7,7 @@ export default class Card {
         this.strength = card.strength;
         this.tacticalAbility = card.tacticalAbility;
         this.type = card.type;
+        this.typeSymbol = card.typeSymbol;
         this.description = card.description;
         this.facedown = false;
         this.covered = false;

@@ -18,10 +18,17 @@ body {
 #wrapper {
     display: flex;
     flex-direction: column;
-    /* justify-content: space-between; */
     padding: 1rem 3rem;
     height: 100vh;
     font-family: sans-serif;
+}
+
+#player-one-name {
+    margin-top: 1rem;
+}
+
+#player-two-name {
+    margin-bottom: 1rem;
 }
 
 #main-area {
