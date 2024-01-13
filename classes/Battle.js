@@ -119,7 +119,7 @@ export default class Battle {
     }
 
     #displayTheaters(shuffledTheaters) {
-        const theatersEl = this.elements.theatersEl;
+        const mainAreaEl = this.elements.mainAreaEl;
         
         shuffledTheaters.forEach(theater => {
             const theaterContainerEl = UI.createElement("div");
@@ -156,14 +156,13 @@ export default class Battle {
             theaterContainerEl.append(playerOneCardsEl);
             theaterEl.append(nameEl);
 
-            UI.displayElement(theaterContainerEl, theatersEl);
+            mainAreaEl.prepend(theaterContainerEl);
         });
     }
 
     #displayCards(cards) {
         const playerOneHandEl = this.elements.playerOneHandEl;
         const playerTwoHandEl = this.elements.playerTwoHandEl;
-        const discardedCardsEl = this.elements.discardedCardsEl;
 
         cards.forEach((card, index) => {
             const cardContainerEl = UI.createElement("div");
@@ -198,37 +197,37 @@ export default class Battle {
             defaultValueEl.innerHTML = "2";
             defaultValueEl.classList.add("defaut-value");
             
-            cardFrontEl.append(strengthEl, tacticalAbilityEl);
+            cardFrontEl.append(strengthEl);
             cardBackEl.append(defaultValueEl);
             cardContainerEl.append(cardFrontEl, cardBackEl);
             
             if(index < 12) {
                 if(index % 2 !== 0) {
-                    UI.displayElement(cardContainerEl, playerOneHandEl);
+                    playerOneHandEl.append(cardContainerEl);
                     cardContainerEl.lastChild.style.display = "none";
                 } else {
-                    UI.displayElement(cardContainerEl, playerTwoHandEl);
+                    playerTwoHandEl.append(cardContainerEl);
                     cardContainerEl.classList.add("facedown");
                     cardContainerEl.firstChild.style.display = "none";
                 }
             } else {
-                UI.displayElement(cardContainerEl, discardedCardsEl);
                 cardContainerEl.classList.add("facedown");
                 cardContainerEl.classList.add("discarded");
                 cardContainerEl.firstChild.style.display = "none";
                 cardContainerEl.style.zIndex = index;
+                this.elements.discardedCardsEl.append(cardContainerEl);
             }
         });
     }
     
     #loadEventListeners() {
-        const theatersEl = this.elements.theatersEl;
+        const mainAreaEl = this.elements.mainAreaEl;
         const handEl = this.elements.handEl;
         const deployButtonEl = this.elements.deployButtonEl;
         const improviseButtonEl = this.elements.improviseButtonEl;
         const withdrawButtonEl = this.elements.withdrawButtonEl;
 
-        theatersEl.addEventListener("click", e => {
+        mainAreaEl.addEventListener("click", e => {
             if(e.target.classList.contains("theater")) {
                 this.selectedTheater = this.theaters.find(theater => theater.id === e.target.id);
                 this.#performAction(this.selectedAction, e.target);

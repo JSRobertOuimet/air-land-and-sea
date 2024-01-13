@@ -5,7 +5,7 @@ export default class UI {
 
     static getElements() {
         return {
-            theatersEl: document.querySelector("#theaters"),
+            mainAreaEl: document.querySelector("#main-area"),
             discardedCardsEl: document.querySelector("#discarded-cards"),
             playerOneHandEl: document.querySelector("#player-one .hand"),
             playerTwoHandEl: document.querySelector("#player-two .hand"),
@@ -19,9 +19,5 @@ export default class UI {
 
     static createElement(element) {
         return document.createElement(`${element}`);
-    }
-
-    static displayElement(element, target) {
-        return target.appendChild(element);
     }
 }

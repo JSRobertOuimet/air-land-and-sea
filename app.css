@@ -4,6 +4,13 @@
     padding: 0;
 }
 
+:root {
+    --card-width: 8vw;
+    --card-factor: 1.4;
+    --theater-width: 16vw;
+    --theater-factor: 0.7;
+}
+
 body {
     background-color: #EFEFEF;
 }
@@ -19,13 +26,11 @@ body {
 
 #main-area {
     display: flex;
-    align-items: center;
     justify-content: space-between;
 }
 
 #theaters {
     display: flex;
-    justify-content: space-between;
 }
 
 #discarded-cards {
@@ -69,11 +74,8 @@ body {
 }
 
 .theater {
-    --width: 16vw;
-    --card-factor: 0.7;
-
-    width: var(--width);
-    height: calc(var(--width) * var(--card-factor));
+    width: var(--theater-width);
+    height: calc(var(--theater-width) * var(--theater-factor));
     border-radius: 0.5rem;
     margin: 1rem 0;
     padding: 0.5rem;
@@ -93,12 +95,9 @@ body {
 }
 
 .card {
-    --width: 8vw;
-    --card-factor: 1.4;
-    
     position: relative;
-    width: var(--width);
-    height: calc(var(--width) * var(--card-factor));
+    width: var(--card-width);
+    height: calc(var(--card-width) * var(--card-factor));
     border-radius: 0.5rem;
     padding: 0.5rem;
     color: #EFEFEF;
@@ -111,9 +110,8 @@ body {
 }
 
 .discarded {
-    position: absolute;
-    top: 0;
-    left: 0;
+    top: calc((8vw * 1.4) + 1rem);
+    margin-top: calc(-8vw * 1.4);
 }
 
 .selected {
@@ -121,7 +119,7 @@ body {
 }
 
 #description {
-    margin-top: 1rem;
+    margin-top: 2rem;
     height: 1rem;
 }
 
