@@ -13,8 +13,8 @@ export default class UI {
             withdrawButtonEl: document.querySelector("#withdraw"),
             handEl: document.querySelector("#player-one .hand"),
             descriptionEl: document.querySelector("#description"),
-            playerOneName: document.querySelector("#player-one-name"),
-            playerTwoName: document.querySelector("#player-two-name")
+            playerOneNameEl: document.querySelector("#player-one-name"),
+            playerTwoNameEl: document.querySelector("#player-two-name")
         }
     }
 
