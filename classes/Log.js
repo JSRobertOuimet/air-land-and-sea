@@ -4,6 +4,6 @@ export default class Log {
         this.selectedCard = selectedCard;
         this.selectedTheater = selectedTheater;
         this.selectedAction = selectedAction;
-        this.time = new Date().toLocaleString();
+        this.time = new Date().toLocaleTimeString();
     }
 }
