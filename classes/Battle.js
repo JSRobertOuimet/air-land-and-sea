@@ -107,7 +107,7 @@ export default class Battle {
         this.elements.descriptionEl.innerHTML = "";
 
         this.log.push(new Log(this.activePlayer.name, selectedCard, selectedTheater, this.selectedAction));        
-        this.#endturn();
+        // this.#endturn();
     }
 
     #withdraw() {
@@ -258,7 +258,7 @@ export default class Battle {
                 this.elements.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility} ${this.selectedCard.typeSymbol} &ndash; ${this.selectedCard.description}`;
             }
             
-            Array.from(this.elements.this.elements.handEl.children).forEach(cardEl => {
+            Array.from(this.elements.handEl.children).forEach(cardEl => {
                 if(cardEl.classList.contains("selected")) {
                     cardEl.classList.remove("selected");
                 }
@@ -266,8 +266,8 @@ export default class Battle {
 
             e.target.classList.add("selected");
             
-            deployButtonEl.disabled = false;
-            improviseButtonEl.disabled = false;
+            this.elements.deployButtonEl.disabled = false;
+            this.elements.improviseButtonEl.disabled = false;
         });
         
         this.elements.deployButtonEl.addEventListener("click", e => this.selectedAction = e.target.id);
