@@ -68,28 +68,28 @@ export default class Battle {
     #performAction(selectedAction) {
         switch(selectedAction) {
             case "deploy":
-                this.#deploy(this.selectedCard, this.selectedTheater);
+                this.#deploy(this.activePlayer, this.selectedCard, this.selectedTheater);
             case "improvise":
-                this.#improvise(this.selectedCard, this.selectedTheater);
+                this.#improvise(this.activePlayer, this.selectedCard, this.selectedTheater);
                 break;
             case "withdraw":
-                this.#withdraw();
+                this.#withdraw(this.activePlayer);
         }
     }
 
-    #deploy(selectedCard, selectedTheater) {
+    #deploy(activePlayer, selectedCard, selectedTheater) {
         
     }
 
-    #improvise(selectedCard, selectedTheater) {
-        const playerOneColumn = document.querySelector(`#${selectedTheater.name.toLowerCase()}-depot #player-one-column`);
+    #improvise(activePlayer, selectedCard, selectedTheater) {
         const selectedCardEl = document.querySelector(".selected");
+        const playerColumn = this.activePlayer.id === "1" ? document.querySelector(`#${selectedTheater.name.toLowerCase()}-depot #player-one-column`) : document.querySelector(`#${selectedTheater.name.toLowerCase()}-depot #player-two-column`);
 
         selectedCardEl.classList.remove("selected");
         selectedCardEl.classList.add("facedown");
         selectedCardEl.firstChild.style.display = "none";
         selectedCardEl.lastChild.style.display = "block";
-        playerOneColumn.append(selectedCardEl);
+        playerColumn.append(selectedCardEl);
 
         this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== selectedCard);
         selectedCard.facedown = true;
@@ -107,10 +107,10 @@ export default class Battle {
         this.elements.descriptionEl.innerHTML = "";
 
         this.log.push(new Log(this.activePlayer.name, selectedCard, selectedTheater, this.selectedAction));        
-        // this.#endturn();
+        this.#endturn();
     }
 
-    #withdraw() {
+    #withdraw(activePlayer) {
         
     }
 
@@ -249,7 +249,8 @@ export default class Battle {
             }
         });
 
-        this.elements.handEl.addEventListener("click", e => {
+        // Player One
+        this.elements.playerOneHandEl.addEventListener("click", e => {
             this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
 
             if(this.selectedCard.strength === 6) {
@@ -258,7 +259,23 @@ export default class Battle {
                 this.elements.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility} ${this.selectedCard.typeSymbol} &ndash; ${this.selectedCard.description}`;
             }
             
-            Array.from(this.elements.handEl.children).forEach(cardEl => {
+            Array.from(this.elements.playerOneHandEl.children).forEach(cardEl => {
+                if(cardEl.classList.contains("selected")) {
+                    cardEl.classList.remove("selected");
+                }
+            });
+
+            e.target.classList.add("selected");
+            
+            this.elements.deployButtonEl.disabled = false;
+            this.elements.improviseButtonEl.disabled = false;
+        });
+        
+        // Player Two
+        this.elements.playerTwoHandEl.addEventListener("click", e => {
+            this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
+            
+            Array.from(this.elements.playerTwoHandEl.children).forEach(cardEl => {
                 if(cardEl.classList.contains("selected")) {
                     cardEl.classList.remove("selected");
                 }

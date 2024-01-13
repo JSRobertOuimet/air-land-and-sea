@@ -1,0 +1,128 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #EFEFEF;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0;
+    height: 100vh;
+    font-family: sans-serif;
+}
+
+/* ==================== */
+/* Main Area */
+/* ==================== */
+
+#main-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 800px;
+}
+
+.depot {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.theater-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#theaters {
+    display: flex;
+}
+
+.column {
+    justify-content: flex-start;
+    height: 100%;
+}
+
+#player-one-column, #player-two-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#player-one-column {
+    margin-top: 1rem;
+}
+
+#player-two-column {
+    margin-bottom: 1rem;
+}
+
+#player-two-column {
+    transform: rotate(180deg);
+}
+
+#player-one-column .card:not(:first-of-type) {
+    margin-top: -5rem;
+}
+
+#player-two-column .card:not(:first-of-type) {
+    margin-top: -5rem;
+}
+
+.discarded {
+    top: calc(var(--card-width) / 2 * var(--card-factor));
+    margin-top: calc(var(--card-width) * var(--card-factor) * -1);
+}
+
+/* ==================== */
+/* Player Area */
+/* ==================== */
+
+#player-one, #player-two {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button {
+    padding: 0.5rem 1rem;
+}
+
+#description {
+    margin-top: 2rem;
+    height: 1rem;
+}
+
+.hand .card {
+    margin-left: calc(var(--card-offset) * -1);
+}
+
+.hand {
+    display: flex;
+    flex-direction: row;
+    height: calc(var(--card-width) * var(--card-factor));
+}
+
+#player-one .hand {
+    margin-top: 2rem;
+    margin-left: var(--card-offset);
+}
+
+#player-two .hand {
+    margin-left: 3rem;
+}
+
+#player-one-name {
+    margin-top: 1rem;
+}
+
+#player-two-name {
+    margin-bottom: 1rem;
+}

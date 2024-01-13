@@ -1,0 +1,7 @@
+:root {
+    --card-width: 80px;
+    --card-factor: 1.4;
+    --card-offset: 3rem;
+    --theater-width: 160px;
+    --theater-factor: 0.7;
+}
