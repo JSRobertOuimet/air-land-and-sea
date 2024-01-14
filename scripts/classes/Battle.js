@@ -16,23 +16,15 @@ export default class Battle {
         this.selectedCard = null;
         this.selectedAction = null;
         this.log = [];
-        this.elements = UI.getElements();
         
-        this.#displayPlayersName(this.players);
-
         this.#shuffleCards(this.theaters);
-        this.#displayTheaters(this.theaters);
-                
         this.#shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
-        this.#displayCards(this.cards);
-
         this.#loadEventListeners();
-    }
 
-    #displayPlayersName(players) {
-        this.elements.playerOneNameEl.innerHTML = players[0].name;
-        this.elements.playerTwoNameEl.innerHTML = players[1].name;
+        UI.displayPlayersName(this.players);
+        UI.displayTheaters(this.theaters);
+        UI.displayCards(this.cards);
     }
 
     #shuffleCards(cards) {
@@ -106,9 +98,9 @@ export default class Battle {
             selectedTheater.playerTwoCardsTotal += 2;
         }
 
-        this.elements.deployButtonEl.disabled = true;
-        this.elements.improviseButtonEl.disabled = true;
-        this.elements.descriptionEl.innerHTML = "";
+        UI.deployButtonEl.disabled = true;
+        UI.improviseButtonEl.disabled = true;
+        UI.descriptionEl.innerHTML = "";
 
         this.log.push(new Log(this.activePlayer.name, selectedCard, selectedTheater, `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`));
         
@@ -122,10 +114,14 @@ export default class Battle {
     }
 
     #endturn() {
-        this.activePlayer = this.#changeActivePlayer(this.activePlayer);
         this.selectedCard = null;
         this.selectedTheater = null;
         this.selectedAction = null;
+        this.activePlayer = this.#changeActivePlayer(this.activePlayer);
+        
+        if(this.activePlayer.id === "2") {
+            this.activePlayer.play();
+        }
     }
 
     rotateCards(shuffledTheaters) {
@@ -140,134 +136,25 @@ export default class Battle {
         }
     }
 
-    #displayTheaters(shuffledTheaters) {        
-        shuffledTheaters.forEach(theater => {
-            const depotEl = UI.createElement("div");
-            const theaterContainerEl = UI.createElement("div");
-            const theaterEl = UI.createElement("div");
-            const nameEl = UI.createElement("div");
-            const playerOneColumnEl = UI.createElement("div");
-            const playerTwoColumnEl = UI.createElement("div");
-
-            depotEl.setAttribute("id", `${theater.name.toLowerCase()}-depot`);
-            depotEl.classList.add("depot");
-
-            theaterContainerEl.classList.add("theater-container");
-            theaterEl.setAttribute("id", theater.id);
-            theaterEl.classList.add("theater");
-
-            nameEl.innerHTML = `&ndash;${theater.name}&ndash;`;
-            nameEl.classList.add("name");
-
-            switch(theater.name) {
-                case "Air":
-                    theaterEl.classList.add("air");
-                    break;
-                case "Land":
-                    theaterEl.classList.add("land");
-                    break;
-                case "Sea":
-                    theaterEl.classList.add("sea");
-                    break;
-            }
-
-            playerOneColumnEl.setAttribute("id", "player-one-column");
-            playerOneColumnEl.classList.add("column");
-            playerTwoColumnEl.setAttribute("id", "player-two-column");
-            playerTwoColumnEl.classList.add("column");
-
-            theaterEl.append(nameEl);
-            theaterContainerEl.append(theaterEl);
-
-            depotEl.append(playerTwoColumnEl);
-            depotEl.append(theaterContainerEl);
-            depotEl.append(playerOneColumnEl);
-
-            this.elements.mainAreaEl.append(depotEl);
-        });
-    }
-
-    #displayCards(cards) {
-        const discardedCardsEl = UI.createElement("div");
-
-        discardedCardsEl.setAttribute("id", "discarded-cards");
-        discardedCardsEl.classList.add("depot");
-        this.elements.mainAreaEl.append(discardedCardsEl);
-
-        cards.forEach((card, index) => {
-            const cardContainerEl = UI.createElement("div");
-            const cardFrontEl = UI.createElement("div");
-            const cardBackEl = UI.createElement("div");
-            const strengthEl = UI.createElement("div");
-            const tacticalAbilityEl = UI.createElement("div");
-            const defaultValueEl = UI.createElement("div");
-            
-            cardContainerEl.setAttribute("id", card.id);
-            cardContainerEl.classList.add("card");
-            cardContainerEl.setAttribute("data-description", `${card.tacticalAbility} ${card.typeSymbol} – ${card.description}`);
-
-            switch(card.theater) {
-                case "Air":
-                    cardContainerEl.classList.add("air");
-                    break;
-                case "Land":
-                    cardContainerEl.classList.add("land");
-                    break;
-                case "Sea":
-                    cardContainerEl.classList.add("sea");
-                    break;
-            }
-
-            cardFrontEl.classList.add("front");
-            strengthEl.innerHTML = card.strength;
-            strengthEl.classList.add("strength");
-            tacticalAbilityEl.innerHTML = card.tacticalAbility;
-            tacticalAbilityEl.classList.add("tactical-ability");
-            
-            cardBackEl.classList.add("back");
-            defaultValueEl.innerHTML = "2";
-            defaultValueEl.classList.add("defaut-value");
-            
-            cardFrontEl.append(strengthEl);
-            cardBackEl.append(defaultValueEl);
-            cardContainerEl.append(cardFrontEl, cardBackEl);
-            
-            if(index < 12) {
-                if(index % 2 !== 0) {
-                    this.elements.playerOneHandEl.append(cardContainerEl);
-                    cardContainerEl.lastChild.style.display = "none";
-                } else {
-                    this.elements.playerTwoHandEl.append(cardContainerEl);
-                    cardContainerEl.classList.add("facedown");
-                    cardContainerEl.firstChild.style.display = "none";
-                }
-            } else {
-                discardedCardsEl.append(cardContainerEl);
-                cardContainerEl.classList.add("facedown", "discarded");
-                cardContainerEl.firstChild.style.display = "none";
-            }
-        });
-    }
-    
     #loadEventListeners() {
-        this.elements.mainAreaEl.addEventListener("click", e => {
+        UI.mainAreaEl.addEventListener("click", e => {
             if(e.target.classList.contains("theater")) {
                 this.selectedTheater = this.theaters.find(theater => theater.id === e.target.id);
-                this.#performAction(this.selectedAction, e.target);
+                this.#performAction(this.selectedAction);
             }
         });
 
         // Player One
-        this.elements.playerOneHandEl.addEventListener("click", e => {
+        UI.playerOneHandEl.addEventListener("click", e => {
             this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
 
             if(this.selectedCard.strength === 6) {
-                this.elements.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility}`;
+                UI.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility}`;
             } else {
-                this.elements.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility} ${this.selectedCard.typeSymbol} – ${this.selectedCard.description}`;
+                UI.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility} ${this.selectedCard.typeSymbol} – ${this.selectedCard.description}`;
             }
             
-            Array.from(this.elements.playerOneHandEl.children).forEach(cardEl => {
+            Array.from(UI.playerOneHandEl.children).forEach(cardEl => {
                 if(cardEl.classList.contains("selected")) {
                     cardEl.classList.remove("selected");
                 }
@@ -275,15 +162,15 @@ export default class Battle {
 
             e.target.classList.add("selected");
             
-            this.elements.deployButtonEl.disabled = false;
-            this.elements.improviseButtonEl.disabled = false;
+            UI.deployButtonEl.disabled = false;
+            UI.improviseButtonEl.disabled = false;
         });
         
         // Player Two
-        this.elements.playerTwoHandEl.addEventListener("click", e => {
+        UI.playerTwoHandEl.addEventListener("click", e => {
             this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
             
-            Array.from(this.elements.playerTwoHandEl.children).forEach(cardEl => {
+            Array.from(UI.playerTwoHandEl.children).forEach(cardEl => {
                 if(cardEl.classList.contains("selected")) {
                     cardEl.classList.remove("selected");
                 }
@@ -291,12 +178,12 @@ export default class Battle {
 
             e.target.classList.add("selected");
             
-            this.elements.deployButtonEl.disabled = false;
-            this.elements.improviseButtonEl.disabled = false;
+            UI.deployButtonEl.disabled = false;
+            UI.improviseButtonEl.disabled = false;
         });
         
-        this.elements.deployButtonEl.addEventListener("click", e => this.selectedAction = e.target.id);
-        this.elements.improviseButtonEl.addEventListener("click", e => this.selectedAction = e.target.id);
-        this.elements.withdrawButtonEl.addEventListener("click", e => this.selectedAction = e.target.id);
+        UI.deployButtonEl.addEventListener("click", e => this.selectedAction = e.target.id);
+        UI.improviseButtonEl.addEventListener("click", e => this.selectedAction = e.target.id);
+        UI.withdrawButtonEl.addEventListener("click", e => this.selectedAction = e.target.id);
     }
 }
