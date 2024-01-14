@@ -30,7 +30,7 @@
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-#player-one-column .card:hover::after {
+#player-one-column .card:active::after {
     display: block;
 }
 
