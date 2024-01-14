@@ -28,8 +28,6 @@ export default class Battle {
         this.#displayCards(this.cards);
 
         this.#loadEventListeners();
-
-        console.log(this);
     }
 
     #displayPlayersName(players) {
@@ -68,12 +66,12 @@ export default class Battle {
     #performAction(selectedAction) {
         switch(selectedAction) {
             case "deploy":
-                this.#deploy(this.activePlayer, this.selectedCard, this.selectedTheater);
+                this.#deploy(this.selectedCard, this.selectedTheater);
             case "improvise":
-                this.#improvise(this.activePlayer, this.selectedCard, this.selectedTheater);
+                this.#improvise(this.selectedCard, this.selectedTheater);
                 break;
             case "withdraw":
-                this.#withdraw(this.activePlayer);
+                this.#withdraw();
         }
     }
 
@@ -81,7 +79,7 @@ export default class Battle {
         
     }
 
-    #improvise(activePlayer, selectedCard, selectedTheater) {
+    #improvise(selectedCard, selectedTheater) {
         const selectedCardEl = document.querySelector(".selected");
         const playerColumn = this.activePlayer.id === "1" ? document.querySelector(`#${selectedTheater.name.toLowerCase()}-depot #player-one-column`) : document.querySelector(`#${selectedTheater.name.toLowerCase()}-depot #player-two-column`);
 
@@ -96,9 +94,15 @@ export default class Battle {
 
         if(this.activePlayer.id === "1") {
             selectedTheater.playerOneCards.push(selectedCard);
+            if(selectedTheater.playerOneCards.length > 1) {
+                selectedTheater.playerOneCards.slice(-2)[0].covered = true;
+            }
             selectedTheater.playerOneCardsTotal += 2;
         } else {
             selectedTheater.playerTwoCards.push(selectedCard);
+            if(selectedTheater.playerTwoCards.length > 1) {
+                selectedTheater.playerTwoCards.slice(-2)[0].covered = true;
+            }
             selectedTheater.playerTwoCardsTotal += 2;
         }
 
@@ -106,7 +110,10 @@ export default class Battle {
         this.elements.improviseButtonEl.disabled = true;
         this.elements.descriptionEl.innerHTML = "";
 
-        this.log.push(new Log(this.activePlayer.name, selectedCard, selectedTheater, this.selectedAction));        
+        this.log.push(new Log(this.activePlayer.name, selectedCard, selectedTheater, `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`));
+        
+        console.log(this);
+        
         this.#endturn();
     }
 
