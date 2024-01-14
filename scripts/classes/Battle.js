@@ -197,6 +197,7 @@ export default class Battle {
             
             cardContainerEl.setAttribute("id", card.id);
             cardContainerEl.classList.add("card");
+            cardContainerEl.setAttribute("data-description", `${card.tacticalAbility} ${card.typeSymbol} – ${card.description}`);
 
             switch(card.theater) {
                 case "Air":
@@ -256,7 +257,7 @@ export default class Battle {
             if(this.selectedCard.strength === 6) {
                 this.elements.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility}`;
             } else {
-                this.elements.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility} ${this.selectedCard.typeSymbol} &ndash; ${this.selectedCard.description}`;
+                this.elements.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility} ${this.selectedCard.typeSymbol} – ${this.selectedCard.description}`;
             }
             
             Array.from(this.elements.playerOneHandEl.children).forEach(cardEl => {
