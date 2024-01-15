@@ -4,7 +4,7 @@ import UI from "./UI.js";
 export default class Battle {
     static id = 1;
 
-    constructor(theaters, cards, players) {
+    constructor(players, theaters, cards) {
         this.id = (Battle.id++).toString();
         this.theaters = theaters;
         this.cards = cards;
@@ -80,28 +80,32 @@ export default class Battle {
         selectedCardEl.firstChild.style.display = "none";
         selectedCardEl.lastChild.style.display = "block";
         playerColumn.append(selectedCardEl);
-
+        
         this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== selectedCard);
         selectedCard.facedown = true;
 
         if(this.activePlayer.id === "1") {
+            UI.deployButtonEl.disabled = true;
+            UI.improviseButtonEl.disabled = true;
+            UI.descriptionEl.innerHTML = "";
+
             selectedTheater.playerOneCards.push(selectedCard);
+
             if(selectedTheater.playerOneCards.length > 1) {
                 selectedTheater.playerOneCards.slice(-2)[0].covered = true;
             }
+
             selectedTheater.playerOneCardsTotal += 2;
+
         } else {
             selectedTheater.playerTwoCards.push(selectedCard);
+
             if(selectedTheater.playerTwoCards.length > 1) {
                 selectedTheater.playerTwoCards.slice(-2)[0].covered = true;
             }
+
             selectedTheater.playerTwoCardsTotal += 2;
         }
-
-        UI.deployButtonEl.disabled = true;
-        UI.improviseButtonEl.disabled = true;
-        UI.descriptionEl.innerHTML = "";
-
         this.log.push(new Log(this.activePlayer.name, selectedCard, selectedTheater, `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`));
         
         console.log(this);
@@ -120,7 +124,15 @@ export default class Battle {
         this.activePlayer = this.#changeActivePlayer(this.activePlayer);
         
         if(this.activePlayer.id === "2") {
-            this.activePlayer.play();
+            const selection = this.activePlayer.play(this.theaters);
+
+            this.selectedCard = selection.selectedCard;
+            this.selectedAction = selection.selectedAction;
+            this.selectedTheater = selection.selectedTheater;
+
+            setTimeout(() => {
+                this.#performAction(this.selectedAction);
+            }, 1000);
         }
     }
 
@@ -144,7 +156,6 @@ export default class Battle {
             }
         });
 
-        // Player One
         UI.playerOneHandEl.addEventListener("click", e => {
             this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
 
@@ -154,23 +165,7 @@ export default class Battle {
                 UI.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility} ${this.selectedCard.typeSymbol} – ${this.selectedCard.description}`;
             }
             
-            Array.from(UI.playerOneHandEl.children).forEach(cardEl => {
-                if(cardEl.classList.contains("selected")) {
-                    cardEl.classList.remove("selected");
-                }
-            });
-
-            e.target.classList.add("selected");
-            
-            UI.deployButtonEl.disabled = false;
-            UI.improviseButtonEl.disabled = false;
-        });
-        
-        // Player Two
-        UI.playerTwoHandEl.addEventListener("click", e => {
-            this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
-            
-            Array.from(UI.playerTwoHandEl.children).forEach(cardEl => {
+            Array.from(UI.playerOneHandEl.childNodes).forEach(cardEl => {
                 if(cardEl.classList.contains("selected")) {
                     cardEl.classList.remove("selected");
                 }

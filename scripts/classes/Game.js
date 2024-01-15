@@ -1,4 +1,5 @@
 import Player from "./Player.js";
+import Bot from "./Bot.js";
 import Theater from "./Theater.js";
 import Card from "./Card.js";
 import Battle from "./Battle.js";
@@ -34,12 +35,9 @@ export default class Game {
         this.players = [];
         this.battles = [];
 
-        this.#initializeGame(Game.theaters, Game.cards);
-    }
-
-    #initializeGame(theaters, cards) {
-        this.#createTheaters(theaters);
-        this.#createCards(cards);
+        this.players.push(new Bot());
+        this.#createTheaters(Game.theaters);
+        this.#createCards(Game.cards);
     }
 
     #createTheaters(theaters) {
@@ -51,10 +49,10 @@ export default class Game {
     }
     
     createPlayer(name) {
-        this.players.push(new Player(name));
+        this.players.unshift(new Player(name));
     }
 
     createBattle() {
-        this.battles.push(new Battle(this.theaters, this.cards, this.players));
+        this.battles.push(new Battle(this.players, this.theaters, this.cards));
     }
 }
