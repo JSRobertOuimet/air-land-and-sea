@@ -73,13 +73,13 @@ export default class Battle {
 
     #improvise(selectedCard, selectedTheater) {
         const selectedCardEl = document.querySelector(".selected");
-        const playerColumn = this.activePlayer.id === "1" ? document.querySelector(`#${selectedTheater.name.toLowerCase()}-depot #player-one-column`) : document.querySelector(`#${selectedTheater.name.toLowerCase()}-depot #player-two-column`);
+        const playerColumnEl = this.activePlayer.id === "1" ? document.querySelector(`#${selectedTheater.name.toLowerCase()}-depot #player-one-column`) : document.querySelector(`#${selectedTheater.name.toLowerCase()}-depot #player-two-column`);
 
         selectedCardEl.classList.remove("selected");
         selectedCardEl.classList.add("facedown");
         selectedCardEl.firstChild.style.display = "none";
         selectedCardEl.lastChild.style.display = "block";
-        playerColumn.append(selectedCardEl);
+        playerColumnEl.append(selectedCardEl);
         
         this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== selectedCard);
         selectedCard.facedown = true;
