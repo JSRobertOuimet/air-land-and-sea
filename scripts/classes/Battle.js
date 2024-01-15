@@ -113,7 +113,7 @@ export default class Battle {
         this.#endturn();
     }
 
-    #withdraw(activePlayer) {
+    #withdraw() {
         
     }
 
