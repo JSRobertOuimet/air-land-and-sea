@@ -1,3 +1,7 @@
+/* ==================== */
+/* Background */
+/* ==================== */
+
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -37,15 +41,6 @@ body {
     height: 100%;
 }
 
-.theater-container {
-    display: flex;
-    flex-direction: column;
-}
-
-#theaters {
-    display: flex;
-}
-
 .column {
     justify-content: flex-start;
     height: 100%;
@@ -77,6 +72,11 @@ body {
     margin-top: -5rem;
 }
 
+.theater-container {
+    display: flex;
+    flex-direction: column;
+}
+
 .discarded {
     top: calc(var(--card-width) / 2 * var(--card-factor));
     margin-top: calc(var(--card-width) * var(--card-factor) * -1);
@@ -102,10 +102,6 @@ body {
     height: 1rem;
 }
 
-.hand .card {
-    margin-left: calc(var(--card-offset) * -1);
-}
-
 .hand {
     display: flex;
     flex-direction: row;
@@ -119,6 +115,10 @@ body {
 
 #player-two .hand {
     margin-left: 3rem;
+}
+
+.hand .card {
+    margin-left: calc(var(--card-offset) * -1);
 }
 
 #player-one-name {
