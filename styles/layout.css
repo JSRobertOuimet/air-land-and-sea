@@ -27,6 +27,7 @@ body {
     align-items: center;
     height: 100%;
     width: 800px;
+    transform: perspective(50px) rotateX(1deg);
 }
 
 .depot {
@@ -89,6 +90,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    z-index: 2;
 }
 
 .button {
