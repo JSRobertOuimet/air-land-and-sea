@@ -28,7 +28,7 @@ export default class Bot {
         return theaters[Math.floor(Math.random() * theaters.length)];
     }
 
-    play(theaters) {
+    makeSelection(theaters) {
         return {
             selectedCard: this.#selectCard(),
             selectedAction: this.#selectAction(),
