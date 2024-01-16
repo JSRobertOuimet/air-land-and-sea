@@ -11,10 +11,12 @@ export default class Battle {
         this.dealtCards = [];
         this.discardedCards = [];
         this.players = players;
+        this.firstPlayer = this.players[0];
         this.activePlayer = this.players[0];
-        this.selectedTheater = null;
         this.selectedCard = null;
         this.selectedAction = null;
+        this.selectedTheater = null;
+        this.winner = null;
         this.log = [];
         
         this.#shuffleCards(this.theaters);
@@ -108,9 +110,15 @@ export default class Battle {
         }
         this.log.push(new Log(this.activePlayer.name, selectedCard, selectedTheater, `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`));
         
-        console.log(this);
-        
-        this.#endturn();
+        this.selectedCard = null;
+        this.selectedAction = null;
+        this.selectedTheater = null;
+
+        if(this.#areAllCardsPlayed()) {
+            this.#endBattle();
+        } else {
+            this.#endturn();
+        }
     }
 
     #withdraw() {
@@ -118,13 +126,10 @@ export default class Battle {
     }
 
     #endturn() {
-        this.selectedCard = null;
-        this.selectedTheater = null;
-        this.selectedAction = null;
         this.activePlayer = this.#changeActivePlayer(this.activePlayer);
         
         if(this.activePlayer.id === "2") {
-            const selection = this.activePlayer.play(this.theaters);
+            const selection = this.activePlayer.makeSelection(this.theaters);
 
             this.selectedCard = selection.selectedCard;
             this.selectedAction = selection.selectedAction;
@@ -132,19 +137,53 @@ export default class Battle {
 
             setTimeout(() => {
                 this.#performAction(this.selectedAction);
-            }, 1000);
+            }, 0);
         }
     }
 
-    rotateCards(shuffledTheaters) {
+    #areAllCardsPlayed() {
+        return this.players[0].hand.length === 0 && this.players[1].hand.length === 0 ? true : false;
+    }
+
+    #endBattle() {
+        this.#determineWinner(this.theaters);
+    }
+
+    #determineWinner(theaters) {
+        let theatersControlledByPlayerOne = 0;
+        let theatersControlledByPlayerTwo = 0;
+
+        theaters.forEach(theater => {
+            if(theater.playerOneCardsTotal === theater.playerTwoCardsTotal) {
+                if(this.firstPlayer === this.players[0]) {
+                    theatersControlledByPlayerOne++;
+                } else {
+                    theatersControlledByPlayerTwo++;
+                }
+            } else if(theater.playerOneCardsTotal > theater.playerTwoCardsTotal) {
+                theatersControlledByPlayerOne++;
+            } else {
+                theatersControlledByPlayerTwo++;
+            }
+        });
+
+        if(theatersControlledByPlayerOne > theatersControlledByPlayerTwo) {
+            this.winner = this.players[0];
+        } else {
+            this.winner = this.players[1];
+        }
+    }
+
+    rotateCards(theaters) {
 
     }
 
     #changeActivePlayer(activePlayer) {
-        if(activePlayer.id === "1") {
-            return this.activePlayer = this.players[1];
-        } else {
-            return this.activePlayer = this.players[0];
+        switch(activePlayer.id) {
+            case "1":
+                return this.activePlayer = this.players[1];
+            case "2":
+                return this.activePlayer = this.players[0];
         }
     }
 
