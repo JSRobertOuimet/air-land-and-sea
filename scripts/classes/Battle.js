@@ -69,7 +69,7 @@ export default class Battle {
         }
     }
 
-    #deploy(activePlayer, selectedCard, selectedTheater) {
+    #deploy(selectedCard, selectedTheater) {
         
     }
 
