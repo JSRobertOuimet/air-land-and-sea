@@ -1,6 +1,6 @@
 import Game from "./classes/Game.js";
 
-const game = new Game();
+window.game = new Game();
 
-game.createPlayer("Jean-Simon");
-game.createBattle();
+window.game.createPlayer("Jean-Simon");
+window.game.createBattle();

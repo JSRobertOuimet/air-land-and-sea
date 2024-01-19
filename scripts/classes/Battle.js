@@ -27,6 +27,8 @@ export default class Battle {
         UI.displayPlayersName(this.players);
         UI.displayTheaters(this.theaters);
         UI.displayCards(this.cards);
+
+        console.log(window.game);
     }
 
     #shuffleCards(cards) {
@@ -147,6 +149,13 @@ export default class Battle {
 
     #endBattle() {
         this.#determineWinner(this.theaters);
+
+        UI.overlayEl.style.display = "block";
+        UI.nextBattleButtonEl.addEventListener("click", e => {
+            UI.mainAreaEl.innerHTML = "";
+            UI.overlayEl.style.display = "none";
+            window.game.createBattle();
+        });
     }
 
     #determineWinner(theaters) {

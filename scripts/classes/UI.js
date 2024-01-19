@@ -1,5 +1,6 @@
 export default class UI {
     static mainAreaEl = document.querySelector("#main-area");
+    static columnEls = document.querySelectorAll(".column");
     static playerOneHandEl = document.querySelector("#player-one .hand");
     static playerTwoHandEl = document.querySelector("#player-two .hand");
     static deployButtonEl = document.querySelector("#deploy");
@@ -8,6 +9,8 @@ export default class UI {
     static descriptionEl = document.querySelector("#description");
     static playerOneNameEl = document.querySelector("#player-one-name");
     static playerTwoNameEl = document.querySelector("#player-two-name");
+    static overlayEl = document.querySelector("#overlay");
+    static nextBattleButtonEl = document.querySelector("#next-battle");
     
     constructor() {
 
