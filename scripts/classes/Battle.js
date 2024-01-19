@@ -4,13 +4,14 @@ import UI from "./UI.js";
 export default class Battle {
     static id = 1;
 
-    constructor(players, theaters, cards) {
+    constructor(game) {
         this.id = (Battle.id++).toString();
-        this.theaters = theaters;
-        this.cards = cards;
+        this.game = game;
+        this.players = game.players;
+        this.theaters = game.theaters;
+        this.cards = game.cards;
         this.dealtCards = [];
         this.discardedCards = [];
-        this.players = players;
         this.firstPlayer = this.players[0];
         this.activePlayer = this.players[0];
         this.selectedCard = null;
@@ -28,7 +29,7 @@ export default class Battle {
         UI.displayTheaters(this.theaters);
         UI.displayCards(this.cards);
 
-        console.log(window.game);
+        console.log(game);
     }
 
     #shuffleCards(cards) {
@@ -154,7 +155,7 @@ export default class Battle {
         UI.nextBattleButtonEl.addEventListener("click", e => {
             UI.mainAreaEl.innerHTML = "";
             UI.overlayEl.style.display = "none";
-            window.game.createBattle();
+            this.game.createBattle();
         });
     }
 

@@ -28,16 +28,17 @@ export default class Game {
         {"theater": "Sea", "strength": 6, "tacticalAbility": "Super Battleship", "type": "N/A", "typeSymbol": "N/A", "description": "N/A"}
 ];
 
-    constructor() {
+    constructor(name) {
         this.id = (Game.id++).toString();
+        this.players = [];
         this.theaters = [];
         this.cards = [];
-        this.players = [];
         this.battles = [];
 
-        this.players.push(new Bot());
+        this.players.push(new Player(name), new Bot());
         this.#createTheaters(Game.theaters);
         this.#createCards(Game.cards);
+        this.createBattle(this);
     }
 
     #createTheaters(theaters) {
@@ -47,12 +48,8 @@ export default class Game {
     #createCards(cards) {
         cards.forEach(card => this.cards.push(new Card(card)));
     }
-    
-    createPlayer(name) {
-        this.players.unshift(new Player(name));
-    }
 
     createBattle() {
-        this.battles.push(new Battle(this.players, this.theaters, this.cards));
+        this.battles.push(new Battle(this));
     }
 }
