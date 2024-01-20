@@ -8,7 +8,7 @@ export default class Bot {
         this.victoryPoints = 0;
     }
 
-    #selectCard() {
+    selectCard() {
         const selectedCard = this.hand[Math.floor(Math.random() * this.hand.length)];
 
         UI.playerTwoHandEl.childNodes.forEach(cardEl => {
@@ -20,19 +20,11 @@ export default class Bot {
         return selectedCard;
     }
 
-    #selectAction() {
+    selectAction() {
         return "improvise";
     }
 
-    #selectTheater(theaters) {
+    selectTheater(theaters) {
         return theaters[Math.floor(Math.random() * theaters.length)];
-    }
-
-    makeSelection(theaters) {
-        return {
-            selectedCard: this.#selectCard(),
-            selectedAction: this.#selectAction(),
-            selectedTheater: this.#selectTheater(theaters)
-        }
     }
 }
