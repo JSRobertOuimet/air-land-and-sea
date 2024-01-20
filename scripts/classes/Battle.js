@@ -12,8 +12,8 @@ export default class Battle {
         this.cards = game.cards;
         this.dealtCards = [];
         this.discardedCards = [];
-        this.firstPlayer = this.players[0];
-        this.activePlayer = this.players[0];
+        this.firstPlayer = this.game.battles.length === 2 ? this.players[1] : this.players[0];
+        this.activePlayer = this.firstPlayer;
         this.selectedCard = null;
         this.selectedAction = null;
         this.selectedTheater = null;
@@ -47,7 +47,7 @@ export default class Battle {
 
     #dealCards(players, shuffledCards) {
         shuffledCards.forEach((shuffledCard, index) => {
-            if(index < 12) {
+            if(index < 2) {
                 if(index % 2 !== 0) {
                     players[0].hand.push(shuffledCard);
                 } else {
@@ -151,7 +151,7 @@ export default class Battle {
     #endBattle() {
         this.#determineWinner(this.theaters);
 
-        UI.overlayEl.style.display = "block";
+        UI.overlayEl.style.display = "flex";
         UI.nextBattleButtonEl.addEventListener("click", e => {
             UI.mainAreaEl.innerHTML = "";
             UI.overlayEl.style.display = "none";
