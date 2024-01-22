@@ -85,10 +85,10 @@ export default class Battle {
     #performAction(selectedAction) {
         switch (selectedAction) {
             case "deploy":
-                this.#deploy(this.selectedCard, this.selectedTheater);
+                this.#deploy();
                 break;
             case "improvise":
-                this.#improvise(this.activePlayer, this.selectedCard, this.selectedTheater);
+                this.#improvise();
                 this.log.push(new Log(this.activePlayer.name, this.selectedCard, this.selectedTheater, `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`));
                 this.#endTurn();
                 break;
@@ -98,14 +98,20 @@ export default class Battle {
         }
     }
 
-    #deploy(selectedCard, selectedTheater) {}
+    #deploy() {}
 
-    #improvise(activePlayer, selectedCard, selectedTheater) {
+    #improvise() {
         let selectedCardEl = document.querySelector(".selected");
-        let playerColumnEl =
-            activePlayer instanceof Player
-                ? document.querySelector(`#${selectedTheater.name.toLowerCase()}-depot #player-one-column`)
-                : document.querySelector(`#${selectedTheater.name.toLowerCase()}-depot #player-two-column`);
+        let playerColumnEl;
+
+        switch (this.activePlayer.id) {
+            case "1":
+                playerColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-one-column`);
+                break;
+            case "2":
+                playerColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-two-column`);
+                break;
+        };
 
         selectedCardEl.classList.remove("selected");
         selectedCardEl.classList.add("facedown");
@@ -113,41 +119,43 @@ export default class Battle {
         selectedCardEl.lastChild.style.display = "block";
         playerColumnEl.append(selectedCardEl);
 
-        activePlayer.hand = activePlayer.hand.filter(card => card !== selectedCard);
-        selectedCard.facedown = true;
+        this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
+        this.selectedCard.facedown = true;
 
-        if (activePlayer.id === "1") {
+        if (this.activePlayer.id === "1") {
             UI.deployButtonEl.disabled = true;
             UI.improviseButtonEl.disabled = true;
             UI.descriptionEl.innerHTML = "";
 
-            selectedTheater.playerOneCards.push(selectedCard);
+            this.selectedTheater.playerOneCards.push(this.selectedCard);
 
-            if (selectedTheater.playerOneCards.length > 1) {
-                selectedTheater.playerOneCards.slice(-2)[0].covered = true;
+            if (this.selectedTheater.playerOneCards.length > 1) {
+                this.selectedTheater.playerOneCards.slice(-2)[0].covered = true;
             }
 
-            selectedTheater.playerOneCardsTotal += 2;
+            this.selectedTheater.playerOneCardsTotal += 2;
         } else {
-            selectedTheater.playerTwoCards.push(selectedCard);
+            this.selectedTheater.playerTwoCards.push(this.selectedCard);
 
-            if (selectedTheater.playerTwoCards.length > 1) {
-                selectedTheater.playerTwoCards.slice(-2)[0].covered = true;
+            if (this.selectedTheater.playerTwoCards.length > 1) {
+                this.selectedTheater.playerTwoCards.slice(-2)[0].covered = true;
             }
 
-            selectedTheater.playerTwoCardsTotal += 2;
+            this.selectedTheater.playerTwoCardsTotal += 2;
         }
 
         playerColumnEl = null;
+
+        console.log(this);
     }
 
     #withdraw() {}
 
     #endTurn() {
-        debugger;
         this.selectedCard = null;
         this.selectedAction = null;
         this.selectedTheater = null;
+
         if(this.log.length === 4) {
             this.#endBattle();
         } else {
@@ -159,8 +167,8 @@ export default class Battle {
                 case "2":
                     this.activePlayer = this.players[0];
                     break;
-            }
-        }
+            };
+        };
     }
 
     #endBattle() {
