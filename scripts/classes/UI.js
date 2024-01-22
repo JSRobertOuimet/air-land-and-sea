@@ -117,7 +117,7 @@ export default class UI {
             cardBackEl.append(defaultValueEl);
             cardContainerEl.append(cardFrontEl, cardBackEl);
             
-            if(index < 2) {
+            if(index < 4) {
                 if(index % 2 !== 0) {
                     UI.playerOneHandEl.append(cardContainerEl);
                     cardContainerEl.lastChild.style.display = "none";
