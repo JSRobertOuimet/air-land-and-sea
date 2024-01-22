@@ -1,3 +1,5 @@
+import Player from "./Player.js";
+import Bot from "./Bot.js";
 import Log from "./Log.js";
 import UI from "./UI.js";
 
@@ -12,43 +14,61 @@ export default class Battle {
         this.cards = game.cards;
         this.dealtCards = [];
         this.discardedCards = [];
-        this.firstPlayer = this.game.battles.length === 2 ? this.players[1] : this.players[0];
-        this.activePlayer = this.firstPlayer;
+        this.startingPlayer = null;
+        this.activePlayer = null;
         this.selectedCard = null;
         this.selectedAction = null;
         this.selectedTheater = null;
         this.winner = null;
         this.log = [];
-        
+
         this.#shuffleCards(this.theaters);
         this.#shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
         this.#loadEventListeners();
-
+        this.#determineStartingPlayer();
+        
         UI.displayPlayersName(this.players);
         UI.displayTheaters(this.theaters);
         UI.displayCards(this.cards);
 
-        console.log(game);
+        console.clear();
+        console.log(this.id);
+        console.log("Starting Player: ", this.startingPlayer);
+        console.log("Active Player: ", this.activePlayer);
+
+        if(this.startingPlayer instanceof Bot) {
+            this.#playTurn();
+        }
+    }
+
+    #determineStartingPlayer() {
+        if (this.id === "1" || this.id === "3") {
+            this.startingPlayer = this.players[0];
+        } else {
+            this.startingPlayer = this.players[1];
+        }
+
+        this.activePlayer = this.startingPlayer;
     }
 
     #shuffleCards(cards) {
         let currentIndex = cards.length;
         let randomIndex;
-    
-        while(currentIndex > 0) {
+
+        while (currentIndex > 0) {
             randomIndex = Math.floor(Math.random() * currentIndex);
             currentIndex--;
             [cards[currentIndex], cards[randomIndex]] = [cards[randomIndex], cards[currentIndex]];
         }
-    
+
         return cards;
     }
 
     #dealCards(players, shuffledCards) {
         shuffledCards.forEach((shuffledCard, index) => {
-            if(index < 2) {
-                if(index % 2 !== 0) {
+            if (index < 4) {
+                if (index % 2 !== 0) {
                     players[0].hand.push(shuffledCard);
                 } else {
                     players[1].hand.push(shuffledCard);
@@ -60,103 +80,93 @@ export default class Battle {
         });
     }
 
+    rotateTheaters(theaters) {}
+
     #performAction(selectedAction) {
-        switch(selectedAction) {
+        switch (selectedAction) {
             case "deploy":
                 this.#deploy(this.selectedCard, this.selectedTheater);
+                break;
             case "improvise":
-                this.#improvise(this.selectedCard, this.selectedTheater);
+                this.#improvise(this.activePlayer, this.selectedCard, this.selectedTheater);
+                this.log.push(new Log(this.activePlayer.name, this.selectedCard, this.selectedTheater, `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`));
+                this.#endTurn();
                 break;
             case "withdraw":
                 this.#withdraw();
+                break;
         }
     }
 
-    #deploy(selectedCard, selectedTheater) {
-        
-    }
+    #deploy(selectedCard, selectedTheater) {}
 
-    #improvise(selectedCard, selectedTheater) {
-        const selectedCardEl = document.querySelector(".selected");
-        const playerColumnEl = this.activePlayer.id === "1" ? document.querySelector(`#${selectedTheater.name.toLowerCase()}-depot #player-one-column`) : document.querySelector(`#${selectedTheater.name.toLowerCase()}-depot #player-two-column`);
+    #improvise(activePlayer, selectedCard, selectedTheater) {
+        let selectedCardEl = document.querySelector(".selected");
+        let playerColumnEl =
+            activePlayer instanceof Player
+                ? document.querySelector(`#${selectedTheater.name.toLowerCase()}-depot #player-one-column`)
+                : document.querySelector(`#${selectedTheater.name.toLowerCase()}-depot #player-two-column`);
 
         selectedCardEl.classList.remove("selected");
         selectedCardEl.classList.add("facedown");
         selectedCardEl.firstChild.style.display = "none";
         selectedCardEl.lastChild.style.display = "block";
         playerColumnEl.append(selectedCardEl);
-        
-        this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== selectedCard);
+
+        activePlayer.hand = activePlayer.hand.filter(card => card !== selectedCard);
         selectedCard.facedown = true;
 
-        if(this.activePlayer.id === "1") {
+        if (activePlayer.id === "1") {
             UI.deployButtonEl.disabled = true;
             UI.improviseButtonEl.disabled = true;
             UI.descriptionEl.innerHTML = "";
 
             selectedTheater.playerOneCards.push(selectedCard);
 
-            if(selectedTheater.playerOneCards.length > 1) {
+            if (selectedTheater.playerOneCards.length > 1) {
                 selectedTheater.playerOneCards.slice(-2)[0].covered = true;
             }
 
             selectedTheater.playerOneCardsTotal += 2;
-
         } else {
             selectedTheater.playerTwoCards.push(selectedCard);
 
-            if(selectedTheater.playerTwoCards.length > 1) {
+            if (selectedTheater.playerTwoCards.length > 1) {
                 selectedTheater.playerTwoCards.slice(-2)[0].covered = true;
             }
 
             selectedTheater.playerTwoCardsTotal += 2;
         }
-        this.log.push(new Log(this.activePlayer.name, selectedCard, selectedTheater, `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`));
-        
+
+        playerColumnEl = null;
+    }
+
+    #withdraw() {}
+
+    #endTurn() {
+        debugger;
         this.selectedCard = null;
         this.selectedAction = null;
         this.selectedTheater = null;
-
-        if(this.#areAllCardsPlayed()) {
+        if(this.log.length === 4) {
             this.#endBattle();
         } else {
-            this.#endturn();
+            switch (this.activePlayer.id) {
+                case "1":
+                    this.activePlayer = this.players[1];
+                    this.#playTurn();
+                    break;
+                case "2":
+                    this.activePlayer = this.players[0];
+                    break;
+            }
         }
-    }
-
-    #withdraw() {
-        
-    }
-
-    #endturn() {
-        this.activePlayer = this.#changeActivePlayer(this.activePlayer);
-        
-        if(this.activePlayer.id === "2") {
-            const selection = this.activePlayer.makeSelection(this.theaters);
-
-            this.selectedCard = selection.selectedCard;
-            this.selectedAction = selection.selectedAction;
-            this.selectedTheater = selection.selectedTheater;
-
-            setTimeout(() => {
-                this.#performAction(this.selectedAction);
-            }, 0);
-        }
-    }
-
-    #areAllCardsPlayed() {
-        return this.players[0].hand.length === 0 && this.players[1].hand.length === 0 ? true : false;
     }
 
     #endBattle() {
         this.#determineWinner(this.theaters);
-
+        this.#removeEventListeners();
         UI.overlayEl.style.display = "flex";
-        UI.nextBattleButtonEl.addEventListener("click", e => {
-            UI.mainAreaEl.innerHTML = "";
-            UI.overlayEl.style.display = "none";
-            this.game.createBattle();
-        });
     }
 
     #determineWinner(theaters) {
@@ -164,70 +174,113 @@ export default class Battle {
         let theatersControlledByPlayerTwo = 0;
 
         theaters.forEach(theater => {
-            if(theater.playerOneCardsTotal === theater.playerTwoCardsTotal) {
-                if(this.firstPlayer === this.players[0]) {
+            if (theater.playerOneCardsTotal === theater.playerTwoCardsTotal) {
+                if (this.startingPlayer === this.players[0]) {
                     theatersControlledByPlayerOne++;
                 } else {
                     theatersControlledByPlayerTwo++;
                 }
-            } else if(theater.playerOneCardsTotal > theater.playerTwoCardsTotal) {
+            } else if (theater.playerOneCardsTotal > theater.playerTwoCardsTotal) {
                 theatersControlledByPlayerOne++;
             } else {
                 theatersControlledByPlayerTwo++;
             }
         });
 
-        if(theatersControlledByPlayerOne > theatersControlledByPlayerTwo) {
+        if (theatersControlledByPlayerOne > theatersControlledByPlayerTwo) {
             this.winner = this.players[0];
         } else {
             this.winner = this.players[1];
         }
     }
 
-    rotateCards(theaters) {
-
-    }
-
-    #changeActivePlayer(activePlayer) {
-        switch(activePlayer.id) {
-            case "1":
-                return this.activePlayer = this.players[1];
-            case "2":
-                return this.activePlayer = this.players[0];
-        }
+    #playTurn() {
+        this.selectedCard = this.activePlayer.selectCard();
+        this.selectedAction = this.activePlayer.selectAction();
+        this.selectedTheater = this.activePlayer.selectTheater(this.theaters);
+        this.#performAction(this.selectedAction);
     }
 
     #loadEventListeners() {
-        UI.mainAreaEl.addEventListener("click", e => {
-            if(e.target.classList.contains("theater")) {
-                this.selectedTheater = this.theaters.find(theater => theater.id === e.target.id);
-                this.#performAction(this.selectedAction);
+        UI.playerOneHandEl.addEventListener("click", this.#handleCardSelection.bind(this));
+        UI.deployButtonEl.addEventListener("click", this.#handleActionSelection.bind(this));
+        UI.improviseButtonEl.addEventListener("click", this.#handleActionSelection.bind(this));
+        UI.withdrawButtonEl.addEventListener("click", this.#handleActionSelection.bind(this));
+        UI.mainAreaEl.addEventListener("click", this.#handleTheaterSelection.bind(this));
+        UI.nextBattleButtonEl.addEventListener("click", this.#handleBattleCreation.bind(this));
+    }
+
+    #removeEventListeners() {
+        UI.playerOneHandEl.removeEventListener("click", this.#handleCardSelection);
+        UI.deployButtonEl.removeEventListener("click", this.#handleActionSelection);
+        UI.improviseButtonEl.removeEventListener("click", this.#handleActionSelection);
+        UI.withdrawButtonEl.removeEventListener("click", this.#handleActionSelection);
+        UI.mainAreaEl.removeEventListener("click", this.#handleTheaterSelection);
+        UI.nextBattleButtonEl.removeEventListener("click", this.#handleBattleCreation);
+    }
+
+    #handleCardSelection(e) {
+        debugger;
+        console.log(this);
+
+        this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
+
+        Array.from(UI.playerOneHandEl.childNodes).forEach(cardEl => {
+            if (cardEl.classList.contains("selected")) {
+                cardEl.classList.remove("selected");
             }
         });
 
-        UI.playerOneHandEl.addEventListener("click", e => {
+        e.target.classList.add("selected");
+
+        if (e.target.classList.contains("card")) {
             this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
 
-            if(this.selectedCard.strength === 6) {
-                UI.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility}`;
-            } else {
-                UI.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility} ${this.selectedCard.typeSymbol} – ${this.selectedCard.description}`;
-            }
-            
             Array.from(UI.playerOneHandEl.childNodes).forEach(cardEl => {
-                if(cardEl.classList.contains("selected")) {
+                if (cardEl.classList.contains("selected")) {
                     cardEl.classList.remove("selected");
                 }
             });
 
             e.target.classList.add("selected");
-            
-            UI.deployButtonEl.disabled = false;
-            UI.improviseButtonEl.disabled = false;
-        });
-        
-        UI.deployButtonEl.addEventListener("click", e => this.selectedAction = e.target.id);
-        UI.improviseButtonEl.addEventListener("click", e => this.selectedAction = e.target.id);
-        UI.withdrawButtonEl.addEventListener("click", e => this.selectedAction = e.target.id);
+        }
+
+        if (e.target.classList.contains("strength")) {
+            this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.parentNode.parentNode.id);
+
+            Array.from(UI.playerOneHandEl.childNodes).forEach(cardEl => {
+                if (cardEl.classList.contains("selected")) {
+                    cardEl.classList.remove("selected");
+                }
+            });
+
+            e.target.parentNode.parentNode.classList.add("selected");
+        }
+
+        if (this.selectedCard.strength === 6) {
+            UI.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility}`;
+        } else {
+            UI.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility} ${this.selectedCard.typeSymbol} – ${this.selectedCard.description}`;
+        }
+
+        UI.deployButtonEl.disabled = false;
+        UI.improviseButtonEl.disabled = false;
+    }
+
+    #handleActionSelection(e) {
+        this.selectedAction = e.target.id;
+    }
+
+    #handleTheaterSelection(e) {
+        if (e.target.classList.contains("theater")) {
+            this.selectedTheater = this.theaters.find(theater => theater.id === e.target.id);
+            this.#performAction(this.selectedAction);
+        }
+    }
+
+    #handleBattleCreation() {
+        UI.mainAreaEl.innerHTML = "";
+        UI.overlayEl.style.display = "none";
+        this.game.createBattle();
     }
 }
