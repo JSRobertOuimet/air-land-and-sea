@@ -26,7 +26,7 @@ export default class Game {
         {"theater": "Sea", "strength": 4, "tacticalAbility": "Redeploy", "type": "Instant", "typeSymbol": "💥", "description": "You may return 1 of your facedown cards to your hand. If you do, play a card."},
         {"theater": "Sea", "strength": 5, "tacticalAbility": "Blockade", "type": "Ongoing", "typeSymbol": "🔄", "description": "If any player plays a card to an adjacent theater occupied by at least 3 other cards, destroy that card."},
         {"theater": "Sea", "strength": 6, "tacticalAbility": "Super Battleship", "type": "N/A", "typeSymbol": "N/A", "description": "N/A"}
-];
+    ];
 
     constructor(name) {
         this.id = (Game.id++).toString();
@@ -38,7 +38,7 @@ export default class Game {
         this.players.push(new Player(name), new Bot());
         this.#createTheaters(Game.theaters);
         this.#createCards(Game.cards);
-        this.createBattle(this);
+        this.createBattle();
     }
 
     #createTheaters(theaters) {
