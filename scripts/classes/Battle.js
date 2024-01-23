@@ -17,7 +17,7 @@ export default class Battle {
         this.startingPlayer = null;
         this.activePlayer = null;
         this.selectedCard = null;
-        this.selectedAction = null;
+        this.selectedAction = "";
         this.selectedTheater = null;
         this.winner = null;
         this.log = [];
@@ -33,7 +33,7 @@ export default class Battle {
         UI.displayCards(this.cards);
 
         console.clear();
-        console.log(this.id);
+        console.log(this);
         console.log("Starting Player: ", this.startingPlayer);
         console.log("Active Player: ", this.activePlayer);
 
@@ -145,15 +145,13 @@ export default class Battle {
         }
 
         playerColumnEl = null;
-
-        console.log(this);
     }
 
     #withdraw() {}
 
     #endTurn() {
         this.selectedCard = null;
-        this.selectedAction = null;
+        this.selectedAction = "";
         this.selectedTheater = null;
 
         if(this.log.length === 4) {
@@ -228,9 +226,6 @@ export default class Battle {
     }
 
     #handleCardSelection(e) {
-        debugger;
-        console.log(this);
-
         this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
 
         Array.from(UI.playerOneHandEl.childNodes).forEach(cardEl => {
