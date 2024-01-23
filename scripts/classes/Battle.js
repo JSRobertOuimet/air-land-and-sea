@@ -1,3 +1,4 @@
+import Game from "./Game.js";
 import Player from "./Player.js";
 import Bot from "./Bot.js";
 import Log from "./Log.js";
@@ -9,8 +10,9 @@ export default class Battle {
     constructor(game) {
         this.id = (Battle.id++).toString();
         this.game = game;
-        this.players = game.players;
         this.theaters = game.theaters;
+        this.battle = null;
+        this.players = game.players;
         this.cards = game.cards;
         this.dealtCards = [];
         this.discardedCards = [];
@@ -22,14 +24,12 @@ export default class Battle {
         this.winner = null;
         this.log = [];
 
-        this.#shuffleCards(this.theaters);
-        this.#shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
         this.#loadEventListeners();
         this.#determineStartingPlayer();
-        
-        UI.displayPlayersName(this.players);
-        UI.displayTheaters(this.theaters);
+
+        UI.displayPlayersName(game.players);
+        UI.displayTheaters(game.theaters);
         UI.displayCards(this.cards);
 
         console.clear();
@@ -38,7 +38,7 @@ export default class Battle {
         console.log("Active Player: ", this.activePlayer);
 
         if(this.startingPlayer instanceof Bot) {
-            this.#playTurn();
+            this.#play();
         }
     }
 
@@ -50,19 +50,6 @@ export default class Battle {
         }
 
         this.activePlayer = this.startingPlayer;
-    }
-
-    #shuffleCards(cards) {
-        let currentIndex = cards.length;
-        let randomIndex;
-
-        while (currentIndex > 0) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-            [cards[currentIndex], cards[randomIndex]] = [cards[randomIndex], cards[currentIndex]];
-        }
-
-        return cards;
     }
 
     #dealCards(players, shuffledCards) {
@@ -79,8 +66,6 @@ export default class Battle {
             }
         });
     }
-
-    rotateTheaters(theaters) {}
 
     #performAction(selectedAction) {
         switch (selectedAction) {
@@ -160,7 +145,7 @@ export default class Battle {
             switch (this.activePlayer.id) {
                 case "1":
                     this.activePlayer = this.players[1];
-                    this.#playTurn();
+                    this.#play();
                     break;
                 case "2":
                     this.activePlayer = this.players[0];
@@ -200,7 +185,7 @@ export default class Battle {
         }
     }
 
-    #playTurn() {
+    #play() {
         this.selectedCard = this.activePlayer.selectCard();
         this.selectedAction = this.activePlayer.selectAction();
         this.selectedTheater = this.activePlayer.selectTheater(this.theaters);

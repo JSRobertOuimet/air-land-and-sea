@@ -11,5 +11,5 @@ const game = new Game();
 game.createPlayers([new Player("Franklin D. Roosevelt"), new Bot()]);
 game.createTheaters(game.shuffleCards(THEATERS));
 game.createCards(game.shuffleCards(CARDS));
-
 game.createBattle();
+
