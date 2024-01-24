@@ -1,11 +1,11 @@
 import UI from "./UI.js";
 
-export default class Bot {    
+export default class Bot {
     constructor() {
         this.id = "2";
         this.name = "Bot";
+        this.active = false;
         this.hand = [];
-        this.victoryPoints = 0;
     }
 
     selectCard() {
