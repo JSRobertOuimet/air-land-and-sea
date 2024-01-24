@@ -1,3 +1,7 @@
+import { THEATERS } from "../data/THEATERS.js";
+import { CARDS } from "../data/CARDS.js";
+import Player from "./Player.js";
+import Bot from "./Bot.js";
 import Theater from "./Theater.js";
 import Card from "./Card.js";
 import Battle from "./Battle.js";
@@ -5,29 +9,34 @@ import Battle from "./Battle.js";
 export default class Game {
     static id = 1;
 
-    constructor() {
+    constructor(playerName) {
         this.id = (Game.id++).toString();
-        this.players = [];
+        this.players = [new Bot()];
         this.theaters = [];
         this.cards = [];
         this.battles = [];
+
+        this.#initializeGame(playerName);
+        this.createBattle(this);
+    }
+    
+    #initializeGame(playerName) {
+        this.#createPlayer(playerName);
+        this.#createTheaters(THEATERS);
+        this.#createCards(CARDS);
+        this.shuffleCards(this.theaters);
     }
 
-    createPlayers(players) {
-        this.players.push(...players);
+    #createPlayer(playerName) {
+        this.players.unshift(new Player(playerName));
     }
 
-    createTheaters(theaters) {
+    #createTheaters(theaters) {
         theaters.forEach(theater => this.theaters.push(new Theater(theater)));
     }
 
-    createCards(cards) {
+    #createCards(cards) {
         cards.forEach(card => this.cards.push(new Card(card)));
-    }
-
-    createBattle() {
-        this.battles.push(new Battle(this));
-        console.log(this.battles);
     }
 
     shuffleCards(cards) {
@@ -43,7 +52,11 @@ export default class Game {
         return cards;
     }
 
-    rotateTheaters(theaters) {
+    createBattle(game) {
+        this.battles.push(new Battle(game));
+    }
+
+    #rotateTheaters(theaters) {
         const lastTheater = theaters.pop();
 
         this.theaters.unshift(lastTheater);
