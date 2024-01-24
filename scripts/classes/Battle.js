@@ -11,45 +11,47 @@ export default class Battle {
         this.id = (Battle.id++).toString();
         this.game = game;
         this.theaters = game.theaters;
-        this.battle = null;
         this.players = game.players;
         this.cards = game.cards;
         this.dealtCards = [];
         this.discardedCards = [];
-        this.startingPlayer = null;
-        this.activePlayer = null;
+        this.turns = 0;
         this.selectedCard = null;
         this.selectedAction = "";
         this.selectedTheater = null;
         this.winner = null;
         this.log = [];
 
+        this.#initializeBattle();
+
+        // console.clear();
+        // console.log(this);
+        // console.log("Starting Player: ", this.startingPlayer);
+        // console.log("Active Player: ", this.#getActivePlayer());
+    }
+
+    #initializeBattle() {
+        this.game.shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
         this.#loadEventListeners();
-        this.#determineStartingPlayer();
-
-        UI.displayPlayersName(game.players);
-        UI.displayTheaters(game.theaters);
+        
+        UI.displayPlayersName(this.players);
+        UI.displayTheaters(this.theaters);
         UI.displayCards(this.cards);
-
-        console.clear();
-        console.log(this);
-        console.log("Starting Player: ", this.startingPlayer);
-        console.log("Active Player: ", this.activePlayer);
-
-        if(this.startingPlayer instanceof Bot) {
+        
+        if(this.#getActivePlayer() instanceof Bot) {
             this.#play();
         }
     }
 
-    #determineStartingPlayer() {
-        if (this.id === "1" || this.id === "3") {
-            this.startingPlayer = this.players[0];
-        } else {
-            this.startingPlayer = this.players[1];
-        }
+    #getActivePlayer() {
+        return this.players.find(player => player.active);
+    }
 
-        this.activePlayer = this.startingPlayer;
+    #switchActivePlayer() {
+        this.players.forEach(player => {
+            player.active = player.active === true ? false : true;
+        });
     }
 
     #dealCards(players, shuffledCards) {
@@ -65,6 +67,8 @@ export default class Battle {
                 this.discardedCards.push(shuffledCard);
             }
         });
+        
+        this.turns = this.dealtCards.length;
     }
 
     #performAction(selectedAction) {
@@ -74,7 +78,7 @@ export default class Battle {
                 break;
             case "improvise":
                 this.#improvise();
-                this.log.push(new Log(this.activePlayer.name, this.selectedCard, this.selectedTheater, `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`));
+                this.log.push(new Log(this.#getActivePlayer().name, this.selectedCard, this.selectedTheater, `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`));
                 this.#endTurn();
                 break;
             case "withdraw":
@@ -86,17 +90,17 @@ export default class Battle {
     #deploy() {}
 
     #improvise() {
+        debugger;
         let selectedCardEl = document.querySelector(".selected");
         let playerColumnEl;
 
-        switch (this.activePlayer.id) {
-            case "1":
-                playerColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-one-column`);
-                break;
-            case "2":
-                playerColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-two-column`);
-                break;
-        };
+        console.log(selectedCardEl);
+
+        if(this.#getActivePlayer() instanceof Player) {
+            playerColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-one-column`);
+        } else {
+            playerColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-two-column`);
+        }
 
         selectedCardEl.classList.remove("selected");
         selectedCardEl.classList.add("facedown");
@@ -104,10 +108,10 @@ export default class Battle {
         selectedCardEl.lastChild.style.display = "block";
         playerColumnEl.append(selectedCardEl);
 
-        this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
+        this.#getActivePlayer().hand = this.#getActivePlayer().hand.filter(card => card !== this.selectedCard);
         this.selectedCard.facedown = true;
 
-        if (this.activePlayer.id === "1") {
+        if (this.#getActivePlayer().id === "1") {
             UI.deployButtonEl.disabled = true;
             UI.improviseButtonEl.disabled = true;
             UI.descriptionEl.innerHTML = "";
@@ -129,7 +133,7 @@ export default class Battle {
             this.selectedTheater.playerTwoCardsTotal += 2;
         }
 
-        playerColumnEl = null;
+        playerColumnEl = undefined;
     }
 
     #withdraw() {}
@@ -138,25 +142,23 @@ export default class Battle {
         this.selectedCard = null;
         this.selectedAction = "";
         this.selectedTheater = null;
+        this.turns--;
 
-        if(this.log.length === 4) {
+        if(this.turns === 0) {
             this.#endBattle();
         } else {
-            switch (this.activePlayer.id) {
-                case "1":
-                    this.activePlayer = this.players[1];
-                    this.#play();
-                    break;
-                case "2":
-                    this.activePlayer = this.players[0];
-                    break;
-            };
-        };
+            this.#switchActivePlayer();
+
+            if(this.#getActivePlayer() instanceof Bot) {
+                this.#play();
+            }
+        }
+
     }
 
     #endBattle() {
         this.#determineWinner(this.theaters);
-        this.#removeEventListeners();
+        // this.#removeEventListeners();
         UI.overlayEl.style.display = "flex";
     }
 
@@ -186,9 +188,9 @@ export default class Battle {
     }
 
     #play() {
-        this.selectedCard = this.activePlayer.selectCard();
-        this.selectedAction = this.activePlayer.selectAction();
-        this.selectedTheater = this.activePlayer.selectTheater(this.theaters);
+        this.selectedCard = this.#getActivePlayer().selectCard();
+        this.selectedAction = this.#getActivePlayer().selectAction();
+        this.selectedTheater = this.#getActivePlayer().selectTheater(this.theaters);
         this.#performAction(this.selectedAction);
     }
 
@@ -211,7 +213,7 @@ export default class Battle {
     }
 
     #handleCardSelection(e) {
-        this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
+        this.selectedCard = this.#getActivePlayer().hand.find(card => card.id === e.target.id);
 
         Array.from(UI.playerOneHandEl.childNodes).forEach(cardEl => {
             if (cardEl.classList.contains("selected")) {
@@ -222,7 +224,7 @@ export default class Battle {
         e.target.classList.add("selected");
 
         if (e.target.classList.contains("card")) {
-            this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
+            this.selectedCard = this.#getActivePlayer().hand.find(card => card.id === e.target.id);
 
             Array.from(UI.playerOneHandEl.childNodes).forEach(cardEl => {
                 if (cardEl.classList.contains("selected")) {
@@ -234,7 +236,7 @@ export default class Battle {
         }
 
         if (e.target.classList.contains("strength")) {
-            this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.parentNode.parentNode.id);
+            this.selectedCard = this.#getActivePlayer().hand.find(card => card.id === e.target.parentNode.parentNode.id);
 
             Array.from(UI.playerOneHandEl.childNodes).forEach(cardEl => {
                 if (cardEl.classList.contains("selected")) {
@@ -269,6 +271,6 @@ export default class Battle {
     #handleBattleCreation() {
         UI.mainAreaEl.innerHTML = "";
         UI.overlayEl.style.display = "none";
-        this.game.createBattle();
+        this.game.createBattle(this.game);
     }
 }

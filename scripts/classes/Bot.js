@@ -16,7 +16,7 @@ export default class Bot {
                 cardEl.classList.add("selected");
             }
         });
-
+        
         return selectedCard;
     }
 
