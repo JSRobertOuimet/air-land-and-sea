@@ -91,16 +91,8 @@ export default class Battle {
 
     #improvise() {
         debugger;
-        let selectedCardEl = document.querySelector(".selected");
-        let playerColumnEl;
-
-        console.log(selectedCardEl);
-
-        if(this.#getActivePlayer() instanceof Player) {
-            playerColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-one-column`);
-        } else {
-            playerColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-two-column`);
-        }
+        const selectedCardEl = document.querySelector(".selected");
+        const playerColumnEl = this.#getActivePlayer() instanceof Player ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-one-column`) : document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-two-column`);
 
         selectedCardEl.classList.remove("selected");
         selectedCardEl.classList.add("facedown");
@@ -132,8 +124,6 @@ export default class Battle {
 
             this.selectedTheater.playerTwoCardsTotal += 2;
         }
-
-        playerColumnEl = undefined;
     }
 
     #withdraw() {}

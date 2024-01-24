@@ -1,3 +1,4 @@
 import Game from "./classes/Game.js";
 
-const game = new Game("Franklin D. Roosevelt");
+const playerName = "Franklin D. Roosevelt";
+const game = new Game(playerName);
