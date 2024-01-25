@@ -11,16 +11,16 @@ export default class UI {
     static playerTwoNameEl = document.querySelector("#player-two-name");
     static overlayEl = document.querySelector("#overlay");
     static nextBattleButtonEl = document.querySelector("#next-battle");
-    
-    constructor() {
 
+    constructor() {
+        
     }
 
     static createElement(element) {
         return document.createElement(`${element}`);
     }
 
-    static displayTheaters(shuffledTheaters) {        
+    static displayTheaters(shuffledTheaters) {
         shuffledTheaters.forEach(theater => {
             const depotEl = UI.createElement("div");
             const theaterContainerEl = UI.createElement("div");
@@ -39,7 +39,7 @@ export default class UI {
             nameEl.innerHTML = `&ndash;${theater.name}&ndash;`;
             nameEl.classList.add("name");
 
-            switch(theater.name) {
+            switch (theater.name) {
                 case "Air":
                     theaterEl.classList.add("air");
                     break;
@@ -81,17 +81,20 @@ export default class UI {
             const strengthEl = UI.createElement("div");
             const tacticalAbilityEl = UI.createElement("div");
             const defaultValueEl = UI.createElement("div");
-            
+
             cardContainerEl.setAttribute("id", card.id);
             cardContainerEl.classList.add("card");
 
-            if(card.strength === 6) {
+            if (card.strength === 6) {
                 cardContainerEl.setAttribute("data-description", `${card.tacticalAbility}`);
             } else {
-                cardContainerEl.setAttribute("data-description", `${card.tacticalAbility} ${card.typeSymbol} – ${card.description}`);
+                cardContainerEl.setAttribute(
+                    "data-description",
+                    `${card.tacticalAbility} ${card.typeSymbol} – ${card.description}`
+                );
             }
 
-            switch(card.theater) {
+            switch (card.theater) {
                 case "Air":
                     cardContainerEl.classList.add("air");
                     break;
@@ -108,17 +111,17 @@ export default class UI {
             strengthEl.classList.add("strength");
             tacticalAbilityEl.innerHTML = card.tacticalAbility;
             tacticalAbilityEl.classList.add("tactical-ability");
-            
+
             cardBackEl.classList.add("back");
             defaultValueEl.innerHTML = "2";
             defaultValueEl.classList.add("defaut-value");
-            
+
             cardFrontEl.append(strengthEl);
             cardBackEl.append(defaultValueEl);
             cardContainerEl.append(cardFrontEl, cardBackEl);
-            
-            if(index < 4) {
-                if(index % 2 !== 0) {
+
+            if (index < 12) {
+                if (index % 2 !== 0) {
                     UI.playerOneHandEl.append(cardContainerEl);
                     cardContainerEl.lastChild.style.display = "none";
                 } else {
