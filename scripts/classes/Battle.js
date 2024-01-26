@@ -241,9 +241,7 @@ export default class Battle {
                 this.switchActivePlayer();
                 this.play();
             }
-        }
-        
-        if(activePlayer instanceof Bot) {
+        } else {
             this.turns--;
             console.log(this.turns);
 
