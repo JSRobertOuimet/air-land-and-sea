@@ -16,7 +16,7 @@ export default class Battle {
         this.cards = game.cards;
         this.dealtCards = [];
         this.discardedCards = [];
-        this.startingPlayer = this.getStartingPlayer();
+        this.startingPlayer = this.#getStartingPlayer();
         this.turns = CONFIG.cardsInHand;
         this.selectedCard = null;
         this.selectedAction = "";
@@ -28,8 +28,8 @@ export default class Battle {
 
         // console.clear();
         // console.log(this);
-        // console.log("Starting Player: ", this.getStartingPlayer());
-        // console.log("Active Player: ", this.getActivePlayer());
+        // console.log("Starting Player: ", this.#getStartingPlayer());
+        // console.log("Active Player: ", this.#getActivePlayer());
     }
 
     #initializeBattle() {
@@ -39,7 +39,7 @@ export default class Battle {
         this.#loadEventListeners();
 
         if (this.startingPlayer instanceof Bot) {
-            this.play();
+            this.#play();
         }
     }
 
@@ -70,7 +70,9 @@ export default class Battle {
     }
 
     #handleCardSelection(e) {
-        this.selectedCard = this.getActivePlayer().hand.find(card => card.id === e.target.id);
+        const activePlayer = this.#getActivePlayer();
+
+        this.selectedCard = activePlayer.hand.find(card => card.id === e.target.id);
 
         Array.from(UI.playerOneHandEl.childNodes).forEach(cardEl => {
             if (cardEl.classList.contains("selected")) {
@@ -81,7 +83,7 @@ export default class Battle {
         e.target.classList.add("selected");
 
         if (e.target.classList.contains("card")) {
-            this.selectedCard = this.getActivePlayer().hand.find(card => card.id === e.target.id);
+            this.selectedCard = activePlayer.hand.find(card => card.id === e.target.id);
 
             Array.from(UI.playerOneHandEl.childNodes).forEach(cardEl => {
                 if (cardEl.classList.contains("selected")) {
@@ -93,7 +95,7 @@ export default class Battle {
         }
 
         if (e.target.classList.contains("strength")) {
-            this.selectedCard = this.getActivePlayer().hand.find(
+            this.selectedCard = activePlayer.hand.find(
                 card => card.id === e.target.parentNode.parentNode.id
             );
 
@@ -133,15 +135,15 @@ export default class Battle {
         this.game.createBattle(this.game);
     }
 
-    getStartingPlayer() {
+    #getStartingPlayer() {
         return this.id === "1" || this.id === "3" ? this.players[0] : this.players[1];
     }
 
-    getActivePlayer() {
+    #getActivePlayer() {
         return this.players.find(player => player.active);
     }
 
-    switchActivePlayer() {
+    #switchActivePlayer() {
         this.players.forEach(player => {
             player.active = player.active === true ? false : true;
         });
@@ -163,8 +165,8 @@ export default class Battle {
         }
     }
 
-    play() {
-        const activePlayer = this.getActivePlayer();
+    #play() {
+        const activePlayer = this.#getActivePlayer();
 
         this.selectedCard = activePlayer.selectCard();
         this.selectedAction = activePlayer.selectAction();
@@ -175,7 +177,7 @@ export default class Battle {
     #deploy() {}
 
     #improvise() {
-        const activePlayer = this.getActivePlayer();
+        const activePlayer = this.#getActivePlayer();
         const selectedCardEl = document.querySelector(".selected");
         const playerColumnEl =
             activePlayer instanceof Player
@@ -214,7 +216,14 @@ export default class Battle {
         playerColumnEl.append(selectedCardEl);
         selectedCardEl.classList.remove("selected");
 
-        this.log.push(new Log(activePlayer.name, this.selectedCard, this.selectedTheater, `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`));
+        this.log.push(
+            new Log(
+                activePlayer.name,
+                this.selectedCard,
+                this.selectedTheater,
+                `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`
+            )
+        );
         this.#endTurn();
     }
 
@@ -223,7 +232,7 @@ export default class Battle {
     }
 
     #endTurn() {
-        const activePlayer = this.getActivePlayer();
+        const activePlayer = this.#getActivePlayer();
 
         console.log(activePlayer.name);
 
@@ -231,24 +240,24 @@ export default class Battle {
         this.selectedAction = "";
         this.selectedTheater = null;
 
-        if(activePlayer instanceof Player) {
+        if (activePlayer instanceof Player) {
             this.turns--;
             console.log(this.turns);
 
-            if(this.turns === 0) {
+            if (this.turns === 0) {
                 this.#endBattle();
             } else {
-                this.switchActivePlayer();
-                this.play();
+                this.#switchActivePlayer();
+                this.#play();
             }
         } else {
             this.turns--;
             console.log(this.turns);
 
-            if(this.turns === 0) {
+            if (this.turns === 0) {
                 this.#endBattle();
             } else {
-                this.switchActivePlayer();
+                this.#switchActivePlayer();
                 // How to stop the execution?
             }
         }
