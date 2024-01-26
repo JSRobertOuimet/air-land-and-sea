@@ -5,6 +5,7 @@ import Bot from "./Bot.js";
 import Theater from "./Theater.js";
 import Card from "./Card.js";
 import Battle from "./Battle.js";
+import UI from "./UI.js";
 
 export default class Game {
     static id = 1;
@@ -60,5 +61,11 @@ export default class Game {
         const lastTheater = theaters.pop();
 
         this.theaters.unshift(lastTheater);
+    }
+
+    render(players, theaters, cards) {
+        UI.displayPlayersName(players);
+        UI.displayTheaters(theaters);
+        UI.displayCards(cards);
     }
 }

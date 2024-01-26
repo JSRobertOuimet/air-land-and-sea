@@ -1,3 +1,5 @@
+import { CONFIG } from "../data/CONFIG.js";
+
 export default class UI {
     static mainAreaEl = document.querySelector("#main-area");
     static columnEls = document.querySelectorAll(".column");
@@ -120,7 +122,7 @@ export default class UI {
             cardBackEl.append(defaultValueEl);
             cardContainerEl.append(cardFrontEl, cardBackEl);
 
-            if (index < 12) {
+            if (index < CONFIG.cardsInHand) {
                 if (index % 2 !== 0) {
                     UI.playerOneHandEl.append(cardContainerEl);
                     cardContainerEl.lastChild.style.display = "none";

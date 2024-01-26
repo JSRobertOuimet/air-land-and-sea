@@ -1,3 +1,4 @@
+import { CONFIG } from "../data/CONFIG.js";
 import Game from "./Game.js";
 import Player from "./Player.js";
 import Bot from "./Bot.js";
@@ -16,7 +17,7 @@ export default class Battle {
         this.dealtCards = [];
         this.discardedCards = [];
         this.startingPlayer = this.getStartingPlayer();
-        this.turns = 0;
+        this.turns = CONFIG.cardsInHand;
         this.selectedCard = null;
         this.selectedAction = "";
         this.selectedTheater = null;
@@ -25,22 +26,26 @@ export default class Battle {
 
         this.#initializeBattle();
 
-        console.clear();
-        console.log(this);
-        console.log("Starting Player: ", this.getStartingPlayer());
-        console.log("Active Player: ", this.getActivePlayer());
+        // console.clear();
+        // console.log(this);
+        // console.log("Starting Player: ", this.getStartingPlayer());
+        // console.log("Active Player: ", this.getActivePlayer());
     }
 
     #initializeBattle() {
         this.game.shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
-        this.#renderUI();
+        this.game.render(this.players, this.theaters, this.cards);
         this.#loadEventListeners();
+
+        if (this.startingPlayer instanceof Bot) {
+            this.play();
+        }
     }
 
     #dealCards(players, shuffledCards) {
         shuffledCards.forEach((shuffledCard, index) => {
-            if (index < 12) {
+            if (index < CONFIG.cardsInHand) {
                 if (index % 2 !== 0) {
                     players[0].hand.push(shuffledCard);
                 } else {
@@ -53,12 +58,6 @@ export default class Battle {
         });
 
         this.turns = this.dealtCards.length;
-    }
-
-    #renderUI() {
-        UI.displayPlayersName(this.players);
-        UI.displayTheaters(this.theaters);
-        UI.displayCards(this.cards);
     }
 
     #loadEventListeners() {
@@ -131,7 +130,7 @@ export default class Battle {
     #handleBattleCreation() {
         UI.mainAreaEl.innerHTML = "";
         UI.overlayEl.style.display = "none";
-        console.log("Create a new battle.");
+        this.game.createBattle(this.game);
     }
 
     getStartingPlayer() {
@@ -159,29 +158,34 @@ export default class Battle {
             case "withdraw":
                 this.#withdraw();
                 break;
+            default:
+                break;
         }
     }
 
     play() {
-        this.selectedCard = this.getActivePlayer().selectCard();
-        this.selectedAction = this.getActivePlayer().selectAction();
-        this.selectedTheater = this.getActivePlayer().selectTheater(this.theaters);
+        const activePlayer = this.getActivePlayer();
+
+        this.selectedCard = activePlayer.selectCard();
+        this.selectedAction = activePlayer.selectAction();
+        this.selectedTheater = activePlayer.selectTheater(this.theaters);
         this.#performAction(this.selectedAction);
     }
 
     #deploy() {}
 
     #improvise() {
+        const activePlayer = this.getActivePlayer();
         const selectedCardEl = document.querySelector(".selected");
         const playerColumnEl =
-            this.getActivePlayer() instanceof Player
+            activePlayer instanceof Player
                 ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-one-column`)
                 : document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-two-column`);
 
-        this.getActivePlayer().hand = this.getActivePlayer().hand.filter(card => card !== this.selectedCard);
+        activePlayer.hand = activePlayer.hand.filter(card => card !== this.selectedCard);
         this.selectedCard.facedown = true;
 
-        if (this.getActivePlayer() instanceof Player) {
+        if (activePlayer instanceof Player) {
             selectedCardEl.classList.add("facedown");
             selectedCardEl.firstChild.style.display = "none";
             selectedCardEl.lastChild.style.display = "block";
@@ -210,19 +214,46 @@ export default class Battle {
         playerColumnEl.append(selectedCardEl);
         selectedCardEl.classList.remove("selected");
 
-        this.log.push(new Log(this.getActivePlayer().name, this.selectedCard, this.selectedTheater, `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`));
+        this.log.push(new Log(activePlayer.name, this.selectedCard, this.selectedTheater, `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`));
         this.#endTurn();
     }
 
-    #withdraw() {}
+    #withdraw() {
+        console.log("Clicked!");
+    }
 
     #endTurn() {
+        const activePlayer = this.getActivePlayer();
+
+        console.log(activePlayer.name);
+
         this.selectedCard = null;
         this.selectedAction = "";
         this.selectedTheater = null;
-        this.turns--;
 
-        return;
+        if(activePlayer instanceof Player) {
+            this.turns--;
+            console.log(this.turns);
+
+            if(this.turns === 0) {
+                this.#endBattle();
+            } else {
+                this.switchActivePlayer();
+                this.play();
+            }
+        }
+        
+        if(activePlayer instanceof Bot) {
+            this.turns--;
+            console.log(this.turns);
+
+            if(this.turns === 0) {
+                this.#endBattle();
+            } else {
+                this.switchActivePlayer();
+                // How to stop the execution?
+            }
+        }
     }
 
     #endBattle() {
@@ -253,7 +284,5 @@ export default class Battle {
         } else {
             this.winner = this.players[1];
         }
-
-        console.log(`Player ${this.winner.id} has won this battle.`);
     }
 }
