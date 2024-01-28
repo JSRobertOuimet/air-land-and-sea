@@ -5,12 +5,9 @@ import UI from "./UI.js";
 
 export default class Battle {
     static id = 1;
-    
+
     #dealtCards = [];
     #discardedCards = [];
-    #selectedCard = null;
-    #selectedAction = "";
-    #selectedTheater = null;
     #winner = null;
     #log = [];
 
@@ -20,12 +17,14 @@ export default class Battle {
         this.players = game.players;
         this.theaters = game.theaters;
         this.cards = game.cards;
+        this.selectedCard = null;
+        this.selectedAction = "";
+        this.selectedTheater = null;
         this.startingPlayer = this.#getStartingPlayer();
-        this.activePlayer = this.startingPlayer;
+        this.activePlayer = this.#getActivePlayer();
         this.turns = CONFIG.cardsInHand;
 
         this.#initializeBattle();
-        this.#runBattle();
     }
 
     get dealtCards() {
@@ -44,29 +43,29 @@ export default class Battle {
         this.#discardedCards = value;
     }
 
-    get selectedCard() {
-        return this.#selectedCard;
-    }
+    // get selectedCard() {
+    //     return this.selectedCard;
+    // }
 
-    set selectedCard(value) {
-        this.#selectedCard = value;
-    }
+    // set selectedCard(value) {
+    //     this.selectedCard = value;
+    // }
 
-    get selectedAction() {
-        return this.#selectedAction;
-    }
+    // get selectedAction() {
+    //     return this.selectedAction;
+    // }
 
-    set selectedAction(value) {
-        this.#selectedAction = value;
-    }
+    // set selectedAction(value) {
+    //     this.selectedAction = value;
+    // }
 
-    get selectedTheater() {
-        return this.#selectedTheater;
-    }
+    // get selectedTheater() {
+    //     return this.selectedTheater;
+    // }
 
-    set selectedTheater(value) {
-        this.#selectedTheater = value;
-    }
+    // set selectedTheater(value) {
+    //     this.selectedTheater = value;
+    // }
 
     get winner() {
         return this.#winner;
@@ -88,8 +87,9 @@ export default class Battle {
         this.game.shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
         this.game.render(this.players, this.theaters, this.cards);
-
-        console.log(this.game);
+        Log.logStartingPlayer(this.startingPlayer);
+        Log.logActivePlayer(this.activePlayer);
+        this.#runBattle();
     }
 
     #dealCards(players, shuffledCards) {
@@ -115,8 +115,8 @@ export default class Battle {
         } else {
             if (this.activePlayer instanceof Player) {
                 await this.#makingCardSelection();
-                await this.#makingActionSelection();
-                await this.#makingTheaterSelection();
+                await this.#makingActionSelection(this);
+                await this.#makingTheaterSelection(this);
                 this.#performAction(this.selectedAction);
                 this.#endTurn();
             } else {
@@ -191,10 +191,10 @@ export default class Battle {
         }
     }
 
-    async #startingBattleCreation(e) {
-        return new Promise((resolve, reject) => {
-            UI.nextBattleButtonEl.addEventListener("click", e => resolve(this.#handleBattleCreation(e)));
-        });
+    #endBattle() {
+        this.#determineWinner(this.theaters);
+        UI.overlayEl.style.display = "flex";
+        UI.nextBattleButtonEl.addEventListener("click", this.#handleBattleCreation.bind(this));
     }
 
     #handleBattleCreation() {
@@ -204,7 +204,7 @@ export default class Battle {
     }
 
     #getStartingPlayer() {
-        return this.id === "1" || this.id === "3" ? this.players[0] : this.players[1];
+        return this.id === "2" ? this.players[1] : this.players[0];
     }
 
     #getActivePlayer() {
@@ -217,6 +217,7 @@ export default class Battle {
         });
 
         this.activePlayer = this.#getActivePlayer();
+        Log.logActivePlayer(this.activePlayer);
     }
 
     #performAction(selectedAction) {
@@ -303,13 +304,6 @@ export default class Battle {
         this.selectedCard = this.activePlayer.selectCard();
         this.selectedAction = this.activePlayer.selectAction();
         this.selectedTheater = this.activePlayer.selectTheater(this.theaters);
-    }
-
-    async #endBattle() {
-        this.#determineWinner(this.theaters);
-        UI.overlayEl.style.display = "flex";
-
-        await this.#startingBattleCreation();
     }
 
     #determineWinner(theaters) {
