@@ -1,9 +1,8 @@
 import UI from "./UI.js";
 
 export default class Bot {
-    #id = "2";
-
     constructor() {
+        this.id = "2"
         this.name = "Bot";
         this.active = false;
         this.hand = [];
