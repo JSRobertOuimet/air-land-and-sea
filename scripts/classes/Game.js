@@ -1,3 +1,4 @@
+import { CONFIG } from "../data/CONFIG.js";
 import { THEATERS } from "../data/THEATERS.js";
 import { CARDS } from "../data/CARDS.js";
 import Player from "./Player.js";
@@ -12,7 +13,7 @@ export default class Game {
 
     constructor(playerName) {
         this.id = (Game.id++).toString();
-        this.players = [new Bot()];
+        this.players = [];
         this.theaters = [];
         this.cards = [];
         this.battles = [];
@@ -23,13 +24,18 @@ export default class Game {
     
     #initializeGame(playerName) {
         this.#createPlayer(playerName);
+        this.#createPlayer();
         this.#createTheaters(THEATERS);
         this.#createCards(CARDS);
         this.shuffleCards(this.theaters);
     }
 
     #createPlayer(playerName) {
-        this.players.unshift(new Player(playerName));
+        if(playerName != undefined) {
+            this.players.push(new Player(playerName));
+        } else {
+            this.players.push(new Bot());
+        }
     }
 
     #createTheaters(theaters) {

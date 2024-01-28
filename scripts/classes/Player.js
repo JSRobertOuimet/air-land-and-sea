@@ -1,6 +1,7 @@
 export default class Player {   
+    #id = "1";
+    
     constructor(name) {
-        this.id = "1";
         this.name = name;
         this.active = true;
         this.hand = [];
