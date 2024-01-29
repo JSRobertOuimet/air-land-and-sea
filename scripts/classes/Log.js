@@ -3,6 +3,7 @@ import Player from "./Player.js";
 export default class Log {
     static playerStyles = "padding: 2px; color: white; background-color: red;";
     static botStyles = "padding: 2px; color: white; background-color: blue;";
+    static gameStyles = "padding: 2px; color: white; background-color: green;";
 
     constructor(activePlayer, selectedCard, selectedTheater, selectedAction) {
         this.activePlayer = activePlayer;
@@ -28,7 +29,7 @@ export default class Log {
         return this.botStyles;
     }
 
-    static logStartingPlayer(startingPlayer) {
+    static startingPlayer(startingPlayer) {
         const symbol = startingPlayer instanceof Player ? "🧑🏻" : "🤖";
         const styles = startingPlayer instanceof Player ? Log.playerStyles : Log.botStyles;
     
@@ -36,10 +37,22 @@ export default class Log {
         console.log(`Starting: %c${symbol} ${startingPlayer.name}`, styles);
     }
 
-    static logActivePlayer(activePlayer) {
+    static activePlayer(activePlayer) {
         const symbol = activePlayer instanceof Player ? "🧑🏻" : "🤖";
         const styles = activePlayer instanceof Player ? Log.playerStyles : Log.botStyles;
 
         console.log(`Active: %c${symbol} ${activePlayer.name}`, styles);
+    }
+
+    static selectedCard(selectedCard) {
+        console.log(`Card: %c🎲 ${selectedCard.strength} ${selectedCard.tacticalAbility}`, this.gameStyles);
+    }
+
+    static selectedAction(selectedAction) {
+        console.log(`Action: %c🎲 ${selectedAction.charAt(0).toUpperCase()}${selectedAction.slice(1)}`, this.gameStyles);
+    }
+
+    static selectedTheater(selectedTheater) {
+        console.log(`Theater: %c🎲 ${selectedTheater.name}`, this.gameStyles);
     }
 }

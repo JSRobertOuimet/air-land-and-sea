@@ -17,9 +17,9 @@ export default class Battle {
         this.players = game.players;
         this.theaters = game.theaters;
         this.cards = game.cards;
-        this.selectedCard = null;
-        this.selectedAction = "";
-        this.selectedTheater = null;
+        this._selectedCard = null;
+        this._selectedAction = "";
+        this._selectedTheater = null;
         this.startingPlayer = this.#getStartingPlayer();
         this.activePlayer = this.#getActivePlayer();
         this.turns = CONFIG.cardsInHand;
@@ -43,29 +43,29 @@ export default class Battle {
         this.#discardedCards = value;
     }
 
-    // get selectedCard() {
-    //     return this.selectedCard;
-    // }
+    get selectedCard() {
+        return this._selectedCard;
+    }
 
-    // set selectedCard(value) {
-    //     this.selectedCard = value;
-    // }
+    set selectedCard(value) {
+        this._selectedCard = value;
+    }
 
-    // get selectedAction() {
-    //     return this.selectedAction;
-    // }
+    get selectedAction() {
+        return this._selectedAction;
+    }
 
-    // set selectedAction(value) {
-    //     this.selectedAction = value;
-    // }
+    set selectedAction(value) {
+        this._selectedAction = value;
+    }
 
-    // get selectedTheater() {
-    //     return this.selectedTheater;
-    // }
+    get selectedTheater() {
+        return this._selectedTheater;
+    }
 
-    // set selectedTheater(value) {
-    //     this.selectedTheater = value;
-    // }
+    set selectedTheater(value) {
+        this._selectedTheater = value;
+    }
 
     get winner() {
         return this.#winner;
@@ -87,8 +87,8 @@ export default class Battle {
         this.game.shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
         this.game.render(this.players, this.theaters, this.cards);
-        Log.logStartingPlayer(this.startingPlayer);
-        Log.logActivePlayer(this.activePlayer);
+        Log.startingPlayer(this.startingPlayer);
+        Log.activePlayer(this.activePlayer);
         this.#runBattle();
     }
 
@@ -167,6 +167,8 @@ export default class Battle {
 
         UI.deployButtonEl.disabled = false;
         UI.improviseButtonEl.disabled = false;
+
+        Log.selectedCard(this.selectedCard);
     }
 
     async #makingActionSelection() {
@@ -177,6 +179,7 @@ export default class Battle {
 
     #handleActionSelection(e) {
         this.selectedAction = e.target.id;
+        Log.selectedAction(this.selectedAction);
     }
 
     async #makingTheaterSelection() {
@@ -188,6 +191,7 @@ export default class Battle {
     #handleTheaterSelection(e) {
         if (e.target.classList.contains("theater")) {
             this.selectedTheater = this.theaters.find(theater => theater.id === e.target.id);
+            Log.selectedTheater(this.selectedTheater);
         }
     }
 
@@ -217,7 +221,7 @@ export default class Battle {
         });
 
         this.activePlayer = this.#getActivePlayer();
-        Log.logActivePlayer(this.activePlayer);
+        Log.activePlayer(this.activePlayer);
     }
 
     #performAction(selectedAction) {
