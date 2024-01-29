@@ -115,8 +115,8 @@ export default class Battle {
         } else {
             if (this.activePlayer instanceof Player) {
                 await this.#makingCardSelection();
-                await this.#makingActionSelection(this);
-                await this.#makingTheaterSelection(this);
+                await this.#makingActionSelection();
+                await this.#makingTheaterSelection();
                 this.#performAction(this.selectedAction);
                 this.#endTurn();
             } else {
