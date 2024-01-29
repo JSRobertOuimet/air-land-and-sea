@@ -43,6 +43,22 @@ export default class Battle {
         this.#discardedCards = value;
     }
 
+    get winner() {
+        return this.#winner;
+    }
+
+    set winner(value) {
+        this.#winner = value;
+    }
+
+    get log() {
+        return this.#log;
+    }
+
+    set log(value) {
+        this.#log = value;
+    }
+
     get selectedCard() {
         return this._selectedCard;
     }
@@ -67,22 +83,6 @@ export default class Battle {
         this._selectedTheater = value;
     }
 
-    get winner() {
-        return this.#winner;
-    }
-
-    set winner(value) {
-        this.#winner = value;
-    }
-
-    get log() {
-        return this.#log;
-    }
-
-    set log(value) {
-        this.#log = value;
-    }
-
     #initializeBattle() {
         this.game.shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
@@ -105,8 +105,6 @@ export default class Battle {
                 this.discardedCards.push(shuffledCard);
             }
         });
-
-        this.turns = this.dealtCards.length;
     }
 
     async #runBattle() {
