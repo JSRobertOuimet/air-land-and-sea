@@ -4,6 +4,10 @@
     padding: 0;
 }
 
+html {
+    font-family: sans-serif;
+}
+
 body {
     background-color: #EFEFEF;
 }
@@ -14,17 +18,23 @@ body {
     align-items: center;
     padding: 2rem 0;
     height: 100vh;
-    font-family: sans-serif;
 }
 
 #overlay {
     display: none;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     position: absolute;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.8);
     z-index: 999;
+}
+
+#battle-winner {
+    margin-bottom: 4rem;
+    font-size: 2rem;
+    color: #FFFFFF;
 }
 
 #main-area {

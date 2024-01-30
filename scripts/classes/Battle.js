@@ -347,5 +347,7 @@ export default class Battle {
         } else {
             this.winner = this.players[1];
         }
+
+        UI.battleWinnerEl.innerHTML = `${this.winner.name} wins the battle!`;
     }
 }

@@ -12,6 +12,7 @@ export default class UI {
     static playerOneNameEl = document.querySelector("#player-one-name");
     static playerTwoNameEl = document.querySelector("#player-two-name");
     static overlayEl = document.querySelector("#overlay");
+    static battleWinnerEl = document.querySelector("#battle-winner");
     static nextBattleButtonEl = document.querySelector("#next-battle");
 
     constructor() {
