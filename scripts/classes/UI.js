@@ -18,18 +18,14 @@ export default class UI {
         
     }
 
-    static createElement(element) {
-        return document.createElement(`${element}`);
-    }
-
     static displayTheaters(shuffledTheaters) {
         shuffledTheaters.forEach(theater => {
-            const depotEl = UI.createElement("div");
-            const theaterContainerEl = UI.createElement("div");
-            const theaterEl = UI.createElement("div");
-            const nameEl = UI.createElement("div");
-            const playerOneColumnEl = UI.createElement("div");
-            const playerTwoColumnEl = UI.createElement("div");
+            const depotEl = document.createElement("div");
+            const theaterContainerEl = document.createElement("div");
+            const theaterEl = document.createElement("div");
+            const nameEl = document.createElement("div");
+            const playerOneColumnEl = document.createElement("div");
+            const playerTwoColumnEl = document.createElement("div");
 
             depotEl.setAttribute("id", `${theater.name.toLowerCase()}-depot`);
             depotEl.classList.add("depot");
@@ -70,19 +66,19 @@ export default class UI {
     }
 
     static displayCards(cards) {
-        const discardedCardsEl = UI.createElement("div");
+        const discardedCardsEl = document.createElement("div");
 
         discardedCardsEl.setAttribute("id", "discarded-cards");
         discardedCardsEl.classList.add("depot");
         UI.mainAreaEl.append(discardedCardsEl);
 
         cards.forEach((card, index) => {
-            const cardContainerEl = UI.createElement("div");
-            const cardFrontEl = UI.createElement("div");
-            const cardBackEl = UI.createElement("div");
-            const strengthEl = UI.createElement("div");
-            const tacticalAbilityEl = UI.createElement("div");
-            const defaultValueEl = UI.createElement("div");
+            const cardContainerEl = document.createElement("div");
+            const cardFrontEl = document.createElement("div");
+            const cardBackEl = document.createElement("div");
+            const strengthEl = document.createElement("div");
+            const tacticalAbilityEl = document.createElement("div");
+            const defaultValueEl = document.createElement("div");
 
             cardContainerEl.setAttribute("id", card.id);
             cardContainerEl.classList.add("card");
@@ -140,7 +136,8 @@ export default class UI {
     }
 
     static displayPlayersName(players) {
-        UI.playerOneNameEl.innerHTML = players[0].name;
-        UI.playerTwoNameEl.innerHTML = players[1].name;
+        players.forEach(player => {
+            UI.playerOneNameEl.innerHTML = player.name;
+        });
     }
 }

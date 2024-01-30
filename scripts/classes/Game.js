@@ -25,7 +25,6 @@ export default class Game {
         this.#createPlayer();
         this.#createTheaters(THEATERS);
         this.#createCards(CARDS);
-        this.shuffleCards(this.theaters);
         this.createBattle(this);
     }
 
@@ -45,19 +44,6 @@ export default class Game {
         cards.forEach(card => this.cards.push(new Card(card)));
     }
 
-    shuffleCards(cards) {
-        let currentIndex = cards.length;
-        let randomIndex;
-
-        while (currentIndex > 0) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-            [cards[currentIndex], cards[randomIndex]] = [cards[randomIndex], cards[currentIndex]];
-        }
-
-        return cards;
-    }
-
     createBattle(game) {
         this.battles.push(new Battle(game));
     }
@@ -66,11 +52,5 @@ export default class Game {
         const lastTheater = theaters.pop();
 
         this.theaters.unshift(lastTheater);
-    }
-
-    render(players, theaters, cards) {
-        UI.displayPlayersName(players);
-        UI.displayTheaters(theaters);
-        UI.displayCards(cards);
     }
 }

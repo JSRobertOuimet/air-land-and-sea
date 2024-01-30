@@ -84,12 +84,28 @@ export default class Battle {
     }
 
     #initializeBattle() {
-        this.game.shuffleCards(this.cards);
+        this.#shuffleCards(this.theaters);
+        this.#shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
-        this.game.render(this.players, this.theaters, this.cards);
+        UI.displayTheaters(this.theaters);
+        UI.displayCards(this.cards);
+        UI.displayPlayersName(this.players);
         Log.startingPlayer(this.startingPlayer);
         Log.activePlayer(this.activePlayer);
         this.#runBattle();
+    }
+
+    #shuffleCards(cards) {
+        let currentIndex = cards.length;
+        let randomIndex;
+
+        while (currentIndex > 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [cards[currentIndex], cards[randomIndex]] = [cards[randomIndex], cards[currentIndex]];
+        }
+
+        return cards;
     }
 
     #dealCards(players, shuffledCards) {
