@@ -137,8 +137,7 @@ export default class UI {
     }
 
     static displayPlayersName(players) {
-        players.forEach(player => {
-            UI.playerOneNameEl.innerHTML = player.name;
-        });
+        UI.playerOneNameEl.innerHTML = players[0].name;
+        UI.playerTwoNameEl.innerHTML = players[1].name;
     }
 }
