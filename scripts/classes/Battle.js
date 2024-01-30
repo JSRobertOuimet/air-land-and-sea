@@ -84,14 +84,17 @@ export default class Battle {
     }
 
     #initializeBattle() {
-        this.#shuffleCards(this.theaters);
+        this.id === "1" ? this.#shuffleCards(this.theaters) : this.#rotateTheaters(this.theaters);
         this.#shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
+
         UI.displayTheaters(this.theaters);
         UI.displayCards(this.cards);
         UI.displayPlayersName(this.players);
+
         Log.startingPlayer(this.startingPlayer);
         Log.activePlayer(this.activePlayer);
+
         this.#runBattle();
     }
 
@@ -106,6 +109,12 @@ export default class Battle {
         }
 
         return cards;
+    }
+
+    #rotateTheaters(theaters) {
+        const lastTheater = theaters.pop();
+
+        this.theaters.unshift(lastTheater);
     }
 
     #dealCards(players, shuffledCards) {
@@ -142,7 +151,7 @@ export default class Battle {
         }
     }
 
-    async #makingCardSelection() {
+    #makingCardSelection() {
         return new Promise((resolve, reject) => {
             UI.playerOneHandEl.addEventListener("click", e => resolve(this.#handleCardSelection(e)));
         });
@@ -185,7 +194,7 @@ export default class Battle {
         Log.selectedCard(this.selectedCard);
     }
 
-    async #makingActionSelection() {
+    #makingActionSelection() {
         return new Promise((resolve, reject) => {
             UI.improviseButtonEl.addEventListener("click", e => resolve(this.#handleActionSelection(e)));
         });
@@ -196,7 +205,7 @@ export default class Battle {
         Log.selectedAction(this.selectedAction);
     }
 
-    async #makingTheaterSelection() {
+    #makingTheaterSelection() {
         return new Promise((resolve, reject) => {
             UI.mainAreaEl.addEventListener("click", e => resolve(this.#handleTheaterSelection(e)));
         });
@@ -218,7 +227,7 @@ export default class Battle {
     #handleBattleCreation() {
         UI.mainAreaEl.innerHTML = "";
         UI.overlayEl.style.display = "none";
-        this.game.createBattle(this.game);
+        this.game.createBattle();
     }
 
     #getStartingPlayer() {
@@ -348,6 +357,6 @@ export default class Battle {
             this.winner = this.players[1];
         }
 
-        UI.battleWinnerEl.innerHTML = `${this.winner.name} wins the battle!`;
+        UI.battleWinnerEl.innerHTML = `${this.winner.name} won the battle!`;
     }
 }

@@ -25,7 +25,7 @@ export default class Game {
         this.#createPlayer();
         this.#createTheaters(THEATERS);
         this.#createCards(CARDS);
-        this.createBattle(this);
+        this.createBattle();
     }
 
     #createPlayer(playerName) {
@@ -44,13 +44,7 @@ export default class Game {
         cards.forEach(card => this.cards.push(new Card(card)));
     }
 
-    createBattle(game) {
-        this.battles.push(new Battle(game));
-    }
-
-    #rotateTheaters(theaters) {
-        const lastTheater = theaters.pop();
-
-        this.theaters.unshift(lastTheater);
+    createBattle() {
+        this.battles.push(new Battle(this));
     }
 }
