@@ -5,7 +5,6 @@ import Bot from "./Bot.js";
 import Theater from "./Theater.js";
 import Card from "./Card.js";
 import Battle from "./Battle.js";
-import UI from "./UI.js";
 
 export default class Game {
     static id = 1;
