@@ -137,13 +137,15 @@ export default class Battle {
             this.#endBattle();
         } else {
             if (this.activePlayer instanceof Player) {
-                await this.#makingCardSelection();
-                await this.#makingActionSelection();
-                await this.#makingTheaterSelection();
+                this.selectedCard = await this.#makingCardSelection();
+                this.selectedAction = await this.#makingActionSelection();
+                this.selectedTheater = await this.#makingTheaterSelection();
                 this.#performAction(this.selectedAction);
                 this.#endTurn();
             } else {
-                this.#makeSelections();
+                this.selectedCard = this.activePlayer.selectCard();
+                this.selectedAction = this.activePlayer.selectAction();
+                this.selectedTheater = this.activePlayer.selectTheater(this.theaters);
                 this.#performAction(this.selectedAction);
                 this.#endTurn();
             }
@@ -158,8 +160,10 @@ export default class Battle {
     }
 
     #handleCardSelection(e) {
+        let selectedCard;
+
         if (e.target.classList.contains("card")) {
-            this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
+            selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
 
             Array.from(UI.playerOneHandEl.childNodes).forEach(cardEl => {
                 if (cardEl.classList.contains("selected")) {
@@ -171,7 +175,7 @@ export default class Battle {
         }
 
         if (e.target.classList.contains("strength")) {
-            this.selectedCard = this.activePlayer.hand.find(card => card.id === e.target.parentNode.parentNode.id);
+            selectedCard = this.activePlayer.hand.find(card => card.id === e.target.parentNode.parentNode.id);
 
             Array.from(UI.playerOneHandEl.childNodes).forEach(cardEl => {
                 if (cardEl.classList.contains("selected")) {
@@ -182,16 +186,18 @@ export default class Battle {
             e.target.parentNode.parentNode.classList.add("selected");
         }
 
-        if (this.selectedCard.strength === 6) {
-            UI.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility}`;
+        if (selectedCard.strength === 6) {
+            UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility}`;
         } else {
-            UI.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility} ${this.selectedCard.typeSymbol} – ${this.selectedCard.description}`;
+            UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility} ${selectedCard.typeSymbol} – ${selectedCard.description}`;
         }
 
         UI.deployButtonEl.disabled = false;
         UI.improviseButtonEl.disabled = false;
 
-        Log.selectedCard(this.selectedCard);
+        Log.selectedCard(selectedCard);
+
+        return selectedCard;
     }
 
     #makingActionSelection() {
@@ -201,8 +207,11 @@ export default class Battle {
     }
 
     #handleActionSelection(e) {
-        this.selectedAction = e.target.id;
-        Log.selectedAction(this.selectedAction);
+        const selectedAction = e.target.id;
+
+        Log.selectedAction(selectedAction);
+        
+        return selectedAction;
     }
 
     #makingTheaterSelection() {
@@ -213,8 +222,12 @@ export default class Battle {
 
     #handleTheaterSelection(e) {
         if (e.target.classList.contains("theater")) {
-            this.selectedTheater = this.theaters.find(theater => theater.id === e.target.id);
-            Log.selectedTheater(this.selectedTheater);
+            let selectedTheater;
+
+            selectedTheater = this.theaters.find(theater => theater.id === e.target.id);
+            Log.selectedTheater(selectedTheater);
+            
+            return selectedTheater;
         }
     }
 
@@ -225,8 +238,10 @@ export default class Battle {
     }
 
     #handleBattleCreation() {
-        UI.mainAreaEl.innerHTML = "";
         UI.overlayEl.style.display = "none";
+        UI.mainAreaEl.innerHTML = "";
+        UI.playerOneHandEl.innerHTML = "";
+        UI.playerTwoHandEl.innerHTML = "";
         this.game.createBattle();
     }
 
@@ -319,18 +334,12 @@ export default class Battle {
     #endTurn() {
         this.selectedCard = null;
         this.selectedAction = "";
-        this.selectedTheater = null;
+        this.selectedTheater = null;       
         this.turns--;
 
         if (this.turns > 0) {
             this.#switchActivePlayer();
         }
-    }
-
-    #makeSelections() {
-        this.selectedCard = this.activePlayer.selectCard();
-        this.selectedAction = this.activePlayer.selectAction();
-        this.selectedTheater = this.activePlayer.selectTheater(this.theaters);
     }
 
     #determineWinner(theaters) {
