@@ -4,6 +4,7 @@ export default class UI {
     static mainAreaEl = document.querySelector("#main-area");
     static columnEls = document.querySelectorAll(".column");
     static playerOneHandEl = document.querySelector("#player-one .hand");
+    static playerOneCardEls = document.querySelectorAll("#player-one .card");
     static playerTwoHandEl = document.querySelector("#player-two .hand");
     static deployButtonEl = document.querySelector("#deploy");
     static improviseButtonEl = document.querySelector("#improvise");
