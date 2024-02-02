@@ -137,9 +137,9 @@ export default class Battle {
             this.#endBattle();
         } else {
             if (this.activePlayer instanceof Player) {
-                this.selectedCard = await this.#makingCardSelection();
-                this.selectedAction = await this.#makingActionSelection();
-                this.selectedTheater = await this.#makingTheaterSelection();
+                await this.#makingCardSelection();
+                await this.#makingActionSelection();
+                await this.#makingTheaterSelection();
                 this.#performAction(this.selectedAction);
                 this.#endTurn();
             } else {
@@ -155,15 +155,15 @@ export default class Battle {
 
     #makingCardSelection() {
         return new Promise((resolve, reject) => {
-            UI.playerOneHandEl.addEventListener("click", e => resolve(this.#handleCardSelection(e)));
+            document.querySelectorAll("#player-one .card").forEach(playerOneCardEl => {
+               playerOneCardEl.addEventListener("click", e => resolve(this.#handleCardSelection(e)));
+            });
         });
     }
 
     #handleCardSelection(e) {
-        let selectedCard;
-
-        if (e.target.classList.contains("card")) {
-            selectedCard = this.activePlayer.hand.find(card => card.id === e.target.id);
+        if (e.currentTarget.classList.contains("card")) {
+            this.selectedCard = this.activePlayer.hand.find(card => card.id === e.currentTarget.id);
 
             Array.from(UI.playerOneHandEl.childNodes).forEach(cardEl => {
                 if (cardEl.classList.contains("selected")) {
@@ -171,33 +171,12 @@ export default class Battle {
                 }
             });
 
-            e.target.classList.add("selected");
+            this.selectedCard.strength === 6 ? UI.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility}` : UI.descriptionEl.innerHTML = `${this.selectedCard.tacticalAbility} ${this.selectedCard.typeSymbol} – ${this.selectedCard.description}`;
+            e.currentTarget.classList.add("selected");
+            UI.deployButtonEl.disabled = false;
+            UI.improviseButtonEl.disabled = false;
+            Log.selectedCard(this.selectedCard);
         }
-
-        if (e.target.classList.contains("strength")) {
-            selectedCard = this.activePlayer.hand.find(card => card.id === e.target.parentNode.parentNode.id);
-
-            Array.from(UI.playerOneHandEl.childNodes).forEach(cardEl => {
-                if (cardEl.classList.contains("selected")) {
-                    cardEl.classList.remove("selected");
-                }
-            });
-
-            e.target.parentNode.parentNode.classList.add("selected");
-        }
-
-        if (selectedCard.strength === 6) {
-            UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility}`;
-        } else {
-            UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility} ${selectedCard.typeSymbol} – ${selectedCard.description}`;
-        }
-
-        UI.deployButtonEl.disabled = false;
-        UI.improviseButtonEl.disabled = false;
-
-        Log.selectedCard(selectedCard);
-
-        return selectedCard;
     }
 
     #makingActionSelection() {
@@ -207,11 +186,8 @@ export default class Battle {
     }
 
     #handleActionSelection(e) {
-        const selectedAction = e.target.id;
-
-        Log.selectedAction(selectedAction);
-        
-        return selectedAction;
+        this.selectedAction = e.target.id;
+        Log.selectedAction(this.selectedAction);
     }
 
     #makingTheaterSelection() {
@@ -222,12 +198,8 @@ export default class Battle {
 
     #handleTheaterSelection(e) {
         if (e.target.classList.contains("theater")) {
-            let selectedTheater;
-
-            selectedTheater = this.theaters.find(theater => theater.id === e.target.id);
-            Log.selectedTheater(selectedTheater);
-            
-            return selectedTheater;
+            this.selectedTheater = this.theaters.find(theater => theater.id === e.target.id);
+            Log.selectedTheater(this.selectedTheater);
         }
     }
 
