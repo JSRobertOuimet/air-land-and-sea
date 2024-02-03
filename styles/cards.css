@@ -19,21 +19,6 @@
     user-select: none;
 }
 
-#player-one-column .card::after {
-    content: attr(data-description);
-    display: none;
-    position: absolute;
-    z-index: 10;
-    padding: 0.25rem;
-    width: 150px;
-    font-size: 0.75rem;
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-#player-one-column .card:active::after {
-    display: block;
-}
-
 .air {
     background-color: #6E665B;
 }

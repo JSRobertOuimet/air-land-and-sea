@@ -84,15 +84,6 @@ export default class UI {
             cardContainerEl.setAttribute("id", card.id);
             cardContainerEl.classList.add("card");
 
-            if (card.strength === 6) {
-                cardContainerEl.setAttribute("data-description", `${card.tacticalAbility}`);
-            } else {
-                cardContainerEl.setAttribute(
-                    "data-description",
-                    `${card.tacticalAbility} ${card.typeSymbol} – ${card.description}`
-                );
-            }
-
             switch (card.theater) {
                 case "Air":
                     cardContainerEl.classList.add("air");

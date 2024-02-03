@@ -5,11 +5,11 @@ export default class Log {
     static botStyles = "padding: 2px; color: white; background-color: blue;";
     static gameStyles = "padding: 2px; color: white; background-color: green;";
 
-    constructor(activePlayer, selectedCard, selectedTheater, selectedAction) {
+    constructor(activePlayer, selectedCard, selectedAction, selectedTheater) {
         this.activePlayer = activePlayer;
         this.selectedCard = selectedCard;
-        this.selectedTheater = selectedTheater;
         this.selectedAction = selectedAction;
+        this.selectedTheater = selectedTheater;
         this.time = new Date().toLocaleTimeString();
     }
 

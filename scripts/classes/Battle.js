@@ -95,6 +95,8 @@ export default class Battle {
         Log.startingPlayer(this.startingPlayer);
         Log.activePlayer(this.activePlayer);
 
+        console.log(this);
+
         this.#runBattle();
     }
 
@@ -154,9 +156,9 @@ export default class Battle {
     }
 
     #makingCardSelection() {
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
             document.querySelectorAll("#player-one .card").forEach(playerOneCardEl => {
-               playerOneCardEl.addEventListener("click", e => resolve(this.#handleCardSelection(e)));
+                playerOneCardEl.addEventListener("click", e => resolve(this.#handleCardSelection(e)));
             });
         });
     }
@@ -171,7 +173,9 @@ export default class Battle {
                 }
             });
 
-            selectedCard.strength === 6 ? UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility}` : UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility} ${selectedCard.typeSymbol} – ${selectedCard.description}`;
+            selectedCard.strength === 6
+                ? (UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility}`)
+                : (UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility} ${selectedCard.typeSymbol} – ${selectedCard.description}`);
             e.currentTarget.classList.add("selected");
             UI.deployButtonEl.disabled = false;
             UI.improviseButtonEl.disabled = false;
@@ -181,10 +185,8 @@ export default class Battle {
     }
 
     #makingActionSelection() {
-        return new Promise((resolve, reject) => {
-            UI.improviseButtonEl.addEventListener("click", e => {
-                resolve(this.#handleActionSelection(e))
-            });
+        return new Promise(resolve => {
+            UI.improviseButtonEl.addEventListener("click", e => resolve(this.#handleActionSelection(e)));
         });
     }
 
@@ -193,7 +195,7 @@ export default class Battle {
     }
 
     #makingTheaterSelection() {
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
             UI.mainAreaEl.addEventListener("click", e => resolve(this.#handleTheaterSelection(e)));
         });
     }
@@ -207,6 +209,8 @@ export default class Battle {
     #endBattle() {
         this.winner = this.#determineWinner(this.theaters);
         UI.overlayEl.style.display = "flex";
+        UI.battleWinnerEl.innerHTML = `${this.winner.name} won the battle!`;
+
         UI.nextBattleButtonEl.addEventListener("click", () => {
             UI.overlayEl.style.display = "none";
             UI.mainAreaEl.innerHTML = "";
@@ -294,8 +298,8 @@ export default class Battle {
             new Log(
                 this.activePlayer.name,
                 this.selectedCard,
-                this.selectedTheater,
-                `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`
+                `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`,
+                this.selectedTheater
             )
         );
     }
@@ -305,7 +309,7 @@ export default class Battle {
     #endTurn() {
         this.selectedCard = null;
         this.selectedAction = "";
-        this.selectedTheater = null;       
+        this.selectedTheater = null;
         this.turns--;
 
         if (this.turns > 0) {
@@ -338,8 +342,6 @@ export default class Battle {
             winner = this.players[1];
         }
 
-        UI.battleWinnerEl.innerHTML = `${winner.name} won the battle!`;
-        
         return winner;
     }
 }
