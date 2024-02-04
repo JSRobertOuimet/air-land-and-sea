@@ -21,8 +21,8 @@ export default class Battle {
         this._selectedAction = "";
         this._selectedTheater = null;
         this.startingPlayer = this.#getStartingPlayer();
-        this.activePlayer = this.#getActivePlayer();
-        this.turns = CONFIG.cardsInHand;
+        this.activePlayer = this.startingPlayer;
+        this.turns = CONFIG.cardsDealt;
 
         this.#initializeBattle();
     }
@@ -114,14 +114,12 @@ export default class Battle {
     }
 
     #rotateTheaters(theaters) {
-        const lastTheater = theaters.pop();
-
-        this.theaters.unshift(lastTheater);
+        this.theaters.unshift(theaters.pop());
     }
 
     #dealCards(players, shuffledCards) {
         shuffledCards.forEach((shuffledCard, index) => {
-            if (index < CONFIG.cardsInHand) {
+            if (index < CONFIG.cardsDealt) {
                 if (index % 2 !== 0) {
                     players[0].hand.push(shuffledCard);
                 } else {
@@ -210,14 +208,7 @@ export default class Battle {
         this.winner = this.#determineWinner(this.theaters);
         UI.overlayEl.style.display = "flex";
         UI.battleWinnerEl.innerHTML = `${this.winner.name} won the battle!`;
-
-        UI.nextBattleButtonEl.addEventListener("click", () => {
-            UI.overlayEl.style.display = "none";
-            UI.mainAreaEl.innerHTML = "";
-            UI.playerOneHandEl.innerHTML = "";
-            UI.playerTwoHandEl.innerHTML = "";
-            this.game.createBattle();
-        });
+        UI.nextBattleButtonEl.disabled = false;
     }
 
     #getStartingPlayer() {

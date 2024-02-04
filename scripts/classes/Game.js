@@ -5,6 +5,7 @@ import Bot from "./Bot.js";
 import Theater from "./Theater.js";
 import Card from "./Card.js";
 import Battle from "./Battle.js";
+import UI from "./UI.js";
 
 export default class Game {
     static id = 1;
@@ -24,7 +25,8 @@ export default class Game {
         this.#createPlayer();
         this.#createTheaters(THEATERS);
         this.#createCards(CARDS);
-        this.createBattle();
+        this.#addEventListeners();
+        this.#createBattle();
     }
 
     #createPlayer(playerName) {
@@ -43,7 +45,18 @@ export default class Game {
         cards.forEach(card => this.cards.push(new Card(card)));
     }
 
-    createBattle() {
+    #addEventListeners() {
+        UI.nextBattleButtonEl.addEventListener("click", () => {
+            UI.overlayEl.style.display = "none";
+            UI.mainAreaEl.innerHTML = "";
+            UI.playerOneHandEl.innerHTML = "";
+            UI.playerTwoHandEl.innerHTML = "";
+            this.#createBattle();
+        });
+    }
+
+    #createBattle() {
         this.battles.push(new Battle(this));
+        UI.nextBattleButtonEl.disabled = true;
     }
 }

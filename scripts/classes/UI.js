@@ -15,9 +15,7 @@ export default class UI {
     static battleWinnerEl = document.querySelector("#battle-winner");
     static nextBattleButtonEl = document.querySelector("#next-battle");
 
-    constructor() {
-        
-    }
+    constructor() {}
 
     static displayTheaters(shuffledTheaters) {
         shuffledTheaters.forEach(theater => {
@@ -110,7 +108,7 @@ export default class UI {
             cardBackEl.append(defaultValueEl);
             cardContainerEl.append(cardFrontEl, cardBackEl);
 
-            if (index < CONFIG.cardsInHand) {
+            if (index < CONFIG.cardsDealt) {
                 if (index % 2 !== 0) {
                     UI.playerOneHandEl.append(cardContainerEl);
                     cardContainerEl.lastChild.style.display = "none";
