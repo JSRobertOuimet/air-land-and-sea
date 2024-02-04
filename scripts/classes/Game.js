@@ -10,14 +10,15 @@ import UI from "./UI.js";
 export default class Game {
     static id = 1;
 
-    constructor(playerName) {
+    constructor(app) {
         this.id = (Game.id++).toString();
+        this.app = app;
         this.players = [];
         this.theaters = [];
         this.cards = [];
         this.battles = [];
 
-        this.#initializeGame(playerName);
+        this.#initializeGame(app.playerName);
     }
     
     #initializeGame(playerName) {

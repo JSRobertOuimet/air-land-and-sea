@@ -37,6 +37,17 @@ body {
     color: #FFFFFF;
 }
 
+#game-winner {
+    display: none;
+    margin-bottom: 4rem;
+    font-size: 2rem;
+    color: #FFFFFF;
+}
+
+#next-game {
+    display: none;
+}
+
 #main-area {
     display: flex;
     justify-content: space-between;

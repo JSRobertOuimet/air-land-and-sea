@@ -7,6 +7,7 @@ export default class Bot {
         this.name = "Bot";
         this.active = false;
         this.hand = [];
+        this.victoryPoints = 0;
     }
 
     selectCard() {

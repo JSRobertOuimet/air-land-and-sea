@@ -4,5 +4,6 @@ export default class Player {
         this.name = name;
         this.active = true;
         this.hand = [];
+        this.victoryPoints = 0;
     }
 }

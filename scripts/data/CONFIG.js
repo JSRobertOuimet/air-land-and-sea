@@ -1,4 +1,4 @@
 export const CONFIG = {
     startingPlayer: "Player",
-    cardsDealt: 12
+    cardsDealt: 4,
 };
