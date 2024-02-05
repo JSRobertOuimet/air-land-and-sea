@@ -140,15 +140,21 @@ export default class Battle {
                 this.selectedCard = await this.#makingCardSelection();
                 this.selectedAction = await this.#makingActionSelection();
                 this.selectedTheater = await this.#makingTheaterSelection();
-                this.#performAction(this.selectedAction);
-                this.#endTurn();
             } else {
                 this.selectedCard = this.activePlayer.selectCard();
                 this.selectedAction = this.activePlayer.selectAction();
                 this.selectedTheater = this.activePlayer.selectTheater(this.theaters);
-                this.#performAction(this.selectedAction);
-                this.#endTurn();
             }
+            this.#performAction(this.selectedAction);
+            this.log.push(
+                new Log(
+                    this.activePlayer.name,
+                    this.selectedCard,
+                    `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`,
+                    this.selectedTheater
+                )
+            );
+            this.#endTurn();
             this.#runBattle();
         }
     }
@@ -185,6 +191,7 @@ export default class Battle {
     #makingActionSelection() {
         return new Promise(resolve => {
             UI.improviseButtonEl.addEventListener("click", e => resolve(this.#handleActionSelection(e)));
+            UI.deployButtonEl.addEventListener("click", e => resolve(this.#handleActionSelection(e)));
         });
     }
 
@@ -255,7 +262,40 @@ export default class Battle {
         }
     }
 
-    #deploy() {}
+    #deploy() {
+        const selectedCardEl = document.querySelector(".selected");
+        const playerColumnEl =
+            this.activePlayer instanceof Player
+                ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-one-column`)
+                : document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-two-column`);
+
+        this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
+
+        if (this.activePlayer instanceof Player) {
+            UI.deployButtonEl.disabled = true;
+            UI.improviseButtonEl.disabled = true;
+            UI.descriptionEl.innerHTML = "";
+
+            this.selectedTheater.playerOneCards.push(this.selectedCard);
+
+            if (this.selectedTheater.playerOneCards.length > 1) {
+                this.selectedTheater.playerOneCards.slice(-2)[0].covered = true;
+            }
+
+            this.selectedTheater.playerOneCardsTotal += this.selectedCard.strength;
+        } else {
+            this.selectedTheater.playerTwoCards.push(this.selectedCard);
+
+            if (this.selectedTheater.playerTwoCards.length > 1) {
+                this.selectedTheater.playerTwoCards.slice(-2)[0].covered = true;
+            }
+
+            this.selectedTheater.playerTwoCardsTotal += this.selectedCard.strength;
+        }
+
+        playerColumnEl.append(selectedCardEl);
+        selectedCardEl.classList.remove("selected");
+    }
 
     #improvise() {
         const selectedCardEl = document.querySelector(".selected");
@@ -295,15 +335,6 @@ export default class Battle {
 
         playerColumnEl.append(selectedCardEl);
         selectedCardEl.classList.remove("selected");
-
-        this.log.push(
-            new Log(
-                this.activePlayer.name,
-                this.selectedCard,
-                `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`,
-                this.selectedTheater
-            )
-        );
     }
 
     #withdraw() {}
