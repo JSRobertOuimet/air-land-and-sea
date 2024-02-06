@@ -145,14 +145,7 @@ export default class Battle {
                 this.selectedTheater = this.activePlayer.selectTheater(this.theaters);
             }
             this.#performAction(this.selectedAction);
-            this.log.push(
-                new Log(
-                    this.activePlayer.name,
-                    this.selectedCard,
-                    `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`,
-                    this.selectedTheater
-                )
-            );
+            this.log.push(new Log(this.activePlayer.name, this.selectedCard, `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`, this.selectedTheater));
             this.#endTurn();
             this.#runBattle();
         }
@@ -176,9 +169,7 @@ export default class Battle {
                 }
             });
 
-            selectedCard.strength === 6
-                ? (UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility}`)
-                : (UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility} ${selectedCard.typeSymbol} – ${selectedCard.description}`);
+            selectedCard.deployStrength === 6 ? (UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility}`) : (UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility} ${selectedCard.typeSymbol} – ${selectedCard.description}`);
             e.currentTarget.classList.add("selected");
             UI.deployButtonEl.disabled = false;
             UI.improviseButtonEl.disabled = false;
@@ -280,7 +271,7 @@ export default class Battle {
                 this.selectedTheater.playerOneCards.slice(-2)[0].covered = true;
             }
 
-            this.selectedTheater.playerOneCardsTotal += this.selectedCard.strength;
+            this.selectedTheater.playerOneCardsTotal += this.selectedCard.deployStrength;
         } else {
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
 
@@ -288,7 +279,7 @@ export default class Battle {
                 this.selectedTheater.playerTwoCards.slice(-2)[0].covered = true;
             }
 
-            this.selectedTheater.playerTwoCardsTotal += this.selectedCard.strength;
+            this.selectedTheater.playerTwoCardsTotal += this.selectedCard.deployStrength;
         }
 
         UI.discard(playerColumnEl, selectedCardEl);
@@ -296,16 +287,14 @@ export default class Battle {
 
     #improvise() {
         const selectedCardEl = document.querySelector(".selected");
-        const playerColumnEl =
-            this.activePlayer instanceof Player
-                ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-one-column`)
-                : document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-two-column`);
+        const playerOneColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-one-column`);
+        const playerTwoColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-two-column`);
 
         if (this.activePlayer instanceof Player) {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
             this.selectedCard.facedown = true;
             this.selectedTheater.playerOneCards.push(this.selectedCard);
-            this.selectedTheater.playerOneCardsTotal += 2;
+            this.selectedTheater.playerOneCardsTotal += this.selectedCard.improviseStrength;
 
             if (this.selectedTheater.playerOneCards.length > 1) {
                 this.selectedTheater.playerOneCards.slice(-2)[0].covered = true;
@@ -314,18 +303,18 @@ export default class Battle {
             UI.flipCard(selectedCardEl);
             UI.disableActions();
             UI.clearDescription();
-            UI.discard(playerColumnEl, selectedCardEl);
+            UI.discard(playerOneColumnEl, selectedCardEl);
         } else {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
             this.selectedCard.facedown = true;
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
-            this.selectedTheater.playerTwoCardsTotal += 2;
+            this.selectedTheater.playerTwoCardsTotal += this.selectedCard.improviseStrength;
 
             if (this.selectedTheater.playerTwoCards.length > 1) {
                 this.selectedTheater.playerTwoCards.slice(-2)[0].covered = true;
             }
 
-            UI.discard(playerColumnEl, selectedCardEl);
+            UI.discard(playerTwoColumnEl, selectedCardEl);
         }
     }
 

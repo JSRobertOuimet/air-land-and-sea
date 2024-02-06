@@ -45,7 +45,7 @@ export default class Log {
     }
 
     static selectedCard(selectedCard) {
-        console.log(`Card: %c🎲 ${selectedCard.strength} ${selectedCard.tacticalAbility}`, this.gameStyles);
+        console.log(`Card: %c🎲 ${selectedCard.deployStrength} ${selectedCard.tacticalAbility}`, this.gameStyles);
     }
 
     static selectedAction(selectedAction) {

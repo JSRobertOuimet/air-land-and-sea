@@ -4,7 +4,8 @@ export default class Card {
     constructor(card) {
         this.id = (Card.id++).toString();
         this.theater = card.theater;
-        this.strength = card.strength;
+        this.deployStrength = card.deployStrength;
+        this.improviseStrength = card.improviseStrength;
         this.tacticalAbility = card.tacticalAbility;
         this.type = card.type;
         this.typeSymbol = card.typeSymbol;

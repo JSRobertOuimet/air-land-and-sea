@@ -97,7 +97,7 @@ export default class UI {
             }
 
             cardFrontEl.classList.add("front");
-            strengthEl.innerHTML = card.strength;
+            strengthEl.innerHTML = card.deployStrength;
             strengthEl.classList.add("strength");
             tacticalAbilityEl.innerHTML = card.tacticalAbility;
             tacticalAbilityEl.classList.add("tactical-ability");
