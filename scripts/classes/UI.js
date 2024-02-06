@@ -127,8 +127,34 @@ export default class UI {
         });
     }
 
+    static flipCard(selectedCardEl) {
+        if (!selectedCardEl.classList.contains("facedown")) {
+            selectedCardEl.classList.add("facedown");
+            selectedCardEl.firstChild.style.display = "none";
+            selectedCardEl.lastChild.style.display = "block";
+        } else {
+            selectedCardEl.classList.remove("facedown");
+            selectedCardEl.firstChild.style.display = "block";
+            selectedCardEl.lastChild.style.display = "none";
+        }
+    }
+
+    static discard(playerColumnEl, selectedCardEl) {
+        playerColumnEl.append(selectedCardEl);
+        selectedCardEl.classList.remove("selected");
+    }
+
     static displayPlayersName(players) {
         UI.playerOneNameEl.innerHTML = players[0].name;
         UI.playerTwoNameEl.innerHTML = players[1].name;
+    }
+
+    static disableActions() {
+        UI.deployButtonEl.disabled = true;
+        UI.improviseButtonEl.disabled = true;
+    }
+
+    static clearDescription() {
+        UI.descriptionEl.innerHTML = "";
     }
 }

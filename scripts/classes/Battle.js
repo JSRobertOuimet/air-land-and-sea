@@ -1,4 +1,5 @@
 import { CONFIG } from "../data/CONFIG.js";
+import Card from "./Card.js";
 import Player from "./Player.js";
 import Log from "./Log.js";
 import UI from "./UI.js";
@@ -94,8 +95,6 @@ export default class Battle {
 
         Log.startingPlayer(this.startingPlayer);
         Log.activePlayer(this.activePlayer);
-
-        console.log(this);
 
         this.#runBattle();
     }
@@ -272,9 +271,8 @@ export default class Battle {
         this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
 
         if (this.activePlayer instanceof Player) {
-            UI.deployButtonEl.disabled = true;
-            UI.improviseButtonEl.disabled = true;
-            UI.descriptionEl.innerHTML = "";
+            UI.disableActions();
+            UI.clearDescription();
 
             this.selectedTheater.playerOneCards.push(this.selectedCard);
 
@@ -293,8 +291,7 @@ export default class Battle {
             this.selectedTheater.playerTwoCardsTotal += this.selectedCard.strength;
         }
 
-        playerColumnEl.append(selectedCardEl);
-        selectedCardEl.classList.remove("selected");
+        UI.discard(playerColumnEl, selectedCardEl);
     }
 
     #improvise() {
@@ -304,37 +301,32 @@ export default class Battle {
                 ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-one-column`)
                 : document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-two-column`);
 
-        this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
-        this.selectedCard.facedown = true;
-
         if (this.activePlayer instanceof Player) {
-            selectedCardEl.classList.add("facedown");
-            selectedCardEl.firstChild.style.display = "none";
-            selectedCardEl.lastChild.style.display = "block";
-
-            UI.deployButtonEl.disabled = true;
-            UI.improviseButtonEl.disabled = true;
-            UI.descriptionEl.innerHTML = "";
-
+            this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
+            this.selectedCard.facedown = true;
             this.selectedTheater.playerOneCards.push(this.selectedCard);
+            this.selectedTheater.playerOneCardsTotal += 2;
 
             if (this.selectedTheater.playerOneCards.length > 1) {
                 this.selectedTheater.playerOneCards.slice(-2)[0].covered = true;
             }
 
-            this.selectedTheater.playerOneCardsTotal += 2;
+            UI.flipCard(selectedCardEl);
+            UI.disableActions();
+            UI.clearDescription();
+            UI.discard(playerColumnEl, selectedCardEl);
         } else {
+            this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
+            this.selectedCard.facedown = true;
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
+            this.selectedTheater.playerTwoCardsTotal += 2;
 
             if (this.selectedTheater.playerTwoCards.length > 1) {
                 this.selectedTheater.playerTwoCards.slice(-2)[0].covered = true;
             }
 
-            this.selectedTheater.playerTwoCardsTotal += 2;
+            UI.discard(playerColumnEl, selectedCardEl);
         }
-
-        playerColumnEl.append(selectedCardEl);
-        selectedCardEl.classList.remove("selected");
     }
 
     #withdraw() {}
