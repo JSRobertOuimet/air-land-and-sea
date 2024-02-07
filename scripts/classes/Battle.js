@@ -1,5 +1,4 @@
 import { CONFIG } from "../data/CONFIG.js";
-import Card from "./Card.js";
 import Player from "./Player.js";
 import Log from "./Log.js";
 import UI from "./UI.js";
@@ -204,18 +203,10 @@ export default class Battle {
     #endBattle() {
         this.battleWinner = this.#determineBattleWinner(this.theaters);
 
-        if (this.players[0].victoryPoints === 3 || this.players[1].victoryPoints === 3) {
-            UI.overlayEl.style.display = "flex";
-            UI.battleWinnerEl.style.display = "none";
-            UI.gameWinnerEl.style.display = "flex";
-            UI.gameWinnerEl.innerHTML = `${this.battleWinner.name} won the game!`;
-            UI.nextGameButtonEl.style.display = "block";
-            UI.nextGameButtonEl.disabled = false;
-            UI.nextBattleButtonEl.remove();
+        if (this.#isGameWon()) {
+            UI.displayGameEndOverlay(this.battleWinner);
         } else {
-            UI.overlayEl.style.display = "flex";
-            UI.battleWinnerEl.innerHTML = `${this.battleWinner.name} won the battle!`;
-            UI.nextBattleButtonEl.disabled = false;
+            UI.displayBattleEndOverlay(this.battleWinner);
         }
     }
 
@@ -246,8 +237,6 @@ export default class Battle {
                 break;
             case "withdraw":
                 this.#withdraw();
-                break;
-            default:
                 break;
         }
     }
@@ -282,7 +271,7 @@ export default class Battle {
             this.selectedTheater.playerTwoCardsTotal += this.selectedCard.deployStrength;
         }
 
-        UI.discard(playerColumnEl, selectedCardEl);
+        UI.discard(selectedCardEl, playerColumnEl);
     }
 
     #improvise() {
@@ -303,7 +292,7 @@ export default class Battle {
             UI.flipCard(selectedCardEl);
             UI.disableActions();
             UI.clearDescription();
-            UI.discard(playerOneColumnEl, selectedCardEl);
+            UI.discard(selectedCardEl, playerOneColumnEl);
         } else {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
             this.selectedCard.facedown = true;
@@ -314,7 +303,7 @@ export default class Battle {
                 this.selectedTheater.playerTwoCards.slice(-2)[0].covered = true;
             }
 
-            UI.discard(playerTwoColumnEl, selectedCardEl);
+            UI.discard(selectedCardEl, playerTwoColumnEl);
         }
     }
 
@@ -359,5 +348,9 @@ export default class Battle {
         }
 
         return battleWinner;
+    }
+
+    #isGameWon() {
+        return this.players[0].victoryPoints === this.game.winningCondition || this.players[1].victoryPoints === this.game.winningCondition;
     }
 }

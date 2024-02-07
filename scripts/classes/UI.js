@@ -139,9 +139,9 @@ export default class UI {
         }
     }
 
-    static discard(playerColumnEl, selectedCardEl) {
-        playerColumnEl.append(selectedCardEl);
+    static discard(selectedCardEl, playerColumnEl) {
         selectedCardEl.classList.remove("selected");
+        playerColumnEl.append(selectedCardEl);
     }
 
     static displayPlayersName(players) {
@@ -156,5 +156,28 @@ export default class UI {
 
     static clearDescription() {
         UI.descriptionEl.innerHTML = "";
+    }
+
+    static displayBattleEndOverlay(battleWinner) {
+        UI.overlayEl.style.display = "flex";
+        UI.battleWinnerEl.innerHTML = `${battleWinner.name} won the battle!`;
+        UI.nextBattleButtonEl.disabled = false;
+    }
+
+    static displayGameEndOverlay(gameWinner) {
+        UI.overlayEl.style.display = "flex";
+        UI.battleWinnerEl.style.display = "none";
+        UI.gameWinnerEl.style.display = "flex";
+        UI.gameWinnerEl.innerHTML = `${gameWinner.name} won the game!`;
+        UI.nextGameButtonEl.style.display = "block";
+        UI.nextGameButtonEl.disabled = false;
+        UI.nextBattleButtonEl.remove();
+    }
+
+    static clearUI() {
+        UI.overlayEl.style.display = "none";
+        UI.mainAreaEl.innerHTML = "";
+        UI.playerOneHandEl.innerHTML = "";
+        UI.playerTwoHandEl.innerHTML = "";
     }
 }

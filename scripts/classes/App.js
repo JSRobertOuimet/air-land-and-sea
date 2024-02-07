@@ -2,8 +2,9 @@ import Game from "./Game.js";
 import UI from "./UI.js";
 
 export default class App {
-    constructor(playerName) {
+    constructor(playerName, gameMode) {
         this.playerName = playerName;
+        this.gameMode = gameMode;
         this.games = [];
 
         this.#initializeApp();
@@ -16,10 +17,7 @@ export default class App {
 
     #addEventListners() {
         UI.nextGameButtonEl.addEventListener("click", () => {
-            UI.overlayEl.style.display = "none";
-            UI.mainAreaEl.innerHTML = "";
-            UI.playerOneHandEl.innerHTML = "";
-            UI.playerTwoHandEl.innerHTML = "";
+            UI.clearUI();
             this.#createGame();
         });
     }

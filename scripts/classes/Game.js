@@ -1,3 +1,4 @@
+import { CONFIG } from "../data/CONFIG.js";
 import { THEATERS } from "../data/THEATERS.js";
 import { CARDS } from "../data/CARDS.js";
 import Player from "./Player.js";
@@ -13,25 +14,40 @@ export default class Game {
     constructor(app) {
         this.id = (Game.id++).toString();
         this.app = app;
+        this.mode = app.gameMode;
         this.players = [];
         this.theaters = [];
         this.cards = [];
         this.battles = [];
+        this.winningCondition = undefined;
 
         this.#initializeGame(app.playerName);
     }
-    
+
     #initializeGame(playerName) {
         this.#createPlayer(playerName);
         this.#createPlayer();
         this.#createTheaters(THEATERS);
         this.#createCards(CARDS);
+        this.#setGameMode();
         this.#addEventListeners();
         this.#createBattle();
     }
 
+    #setGameMode() {
+        switch (this.mode) {
+            case "Beginner":
+                this.winningCondition = 3;
+                UI.withdrawButtonEl.remove();
+                break;
+            case "Normal":
+                this.winningCondition = 12;
+                break;
+        }
+    }
+
     #createPlayer(playerName) {
-        if(playerName != undefined) {
+        if (playerName != undefined) {
             this.players.push(new Player(playerName));
         } else {
             this.players.push(new Bot());
@@ -48,10 +64,7 @@ export default class Game {
 
     #addEventListeners() {
         UI.nextBattleButtonEl.addEventListener("click", () => {
-            UI.overlayEl.style.display = "none";
-            UI.mainAreaEl.innerHTML = "";
-            UI.playerOneHandEl.innerHTML = "";
-            UI.playerTwoHandEl.innerHTML = "";
+            UI.clearUI();
             this.#createBattle();
         });
     }
