@@ -29,30 +29,26 @@ export default class Log {
         return this.botStyles;
     }
 
-    static startingPlayer(startingPlayer) {
-        const symbol = startingPlayer instanceof Player ? "🧑🏻" : "🤖";
-        const styles = startingPlayer instanceof Player ? Log.playerStyles : Log.botStyles;
-    
-        console.clear();
-        console.log(`Starting: %c${symbol} ${startingPlayer.name}`, styles);
+    static startingBattle(id) {
+        console.log(`Battle: %c🎲 #${id}`, this.gameStyles);
     }
 
     static activePlayer(activePlayer) {
         const symbol = activePlayer instanceof Player ? "🧑🏻" : "🤖";
         const styles = activePlayer instanceof Player ? Log.playerStyles : Log.botStyles;
 
-        console.log(`Active: %c${symbol} ${activePlayer.name}`, styles);
+        console.log(`Active player: %c${symbol} ${activePlayer.name}`, styles);
     }
 
     static selectedCard(selectedCard) {
-        console.log(`Card: %c🎲 ${selectedCard.deployStrength} ${selectedCard.tacticalAbility}`, this.gameStyles);
+        console.log(`Selected card: %c🎲 ${selectedCard.deployStrength} ${selectedCard.tacticalAbility}`, this.gameStyles);
     }
 
     static selectedAction(selectedAction) {
-        console.log(`Action: %c🎲 ${selectedAction.charAt(0).toUpperCase()}${selectedAction.slice(1)}`, this.gameStyles);
+        console.log(`Selected action: %c🎲 ${selectedAction.charAt(0).toUpperCase()}${selectedAction.slice(1)}`, this.gameStyles);
     }
 
     static selectedTheater(selectedTheater) {
-        console.log(`Theater: %c🎲 ${selectedTheater.name}`, this.gameStyles);
+        console.log(`Selected theater: %c🎲 ${selectedTheater.name}`, this.gameStyles);
     }
 }
