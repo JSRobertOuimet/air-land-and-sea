@@ -13,45 +13,47 @@ export default class Game {
 
     constructor(app) {
         this.id = (Game.id++).toString();
-        this.app = app;
-        this.mode = app.gameMode;
         this.players = [];
         this.theaters = [];
         this.cards = [];
         this.battles = [];
         this.winningCondition = undefined;
 
-        this.#initializeGame(app.playerName);
+        this.#initializeGame(app);
     }
 
-    #initializeGame(playerName) {
-        this.#createPlayer(playerName);
-        this.#createPlayer();
+    #initializeGame(app) {
+        this.#createPlayer(app.playerName);
+        this.#createBot(app.botName);
         this.#createTheaters(THEATERS);
         this.#createCards(CARDS);
-        this.#setGameMode();
+        this.#setGameMode(app.gameMode);
+        this.#determineStartingPlayer(this.players);
         this.#addEventListeners();
         this.#createBattle();
     }
 
-    #setGameMode() {
-        switch (this.mode) {
-            case "Beginner":
-                this.winningCondition = 3;
-                UI.withdrawButtonEl.remove();
+    #determineStartingPlayer(players) {
+        const randomNumber = Math.floor(Math.random() * 2);
+
+        switch(randomNumber) {
+            case 0:
+                players[0].active = true;
+                players[1].active = false;
                 break;
-            case "Normal":
-                this.winningCondition = 12;
+            case 1:
+                players[0].active = false;
+                players[1].active = true;
                 break;
         }
     }
 
     #createPlayer(playerName) {
-        if (playerName != undefined) {
-            this.players.push(new Player(playerName));
-        } else {
-            this.players.push(new Bot());
-        }
+        this.players.push(new Player(playerName));
+    }
+    
+    #createBot(botName) {
+        this.players.push(new Bot(botName));
     }
 
     #createTheaters(theaters) {
@@ -60,6 +62,18 @@ export default class Game {
 
     #createCards(cards) {
         cards.forEach(card => this.cards.push(new Card(card)));
+    }
+
+    #setGameMode(gameMode) {
+        switch (gameMode) {
+            case "Beginner":
+                this.winningCondition = 3;
+                UI.withdrawButtonEl.remove();
+                break;
+            case "Normal":
+                this.winningCondition = 12;
+                break;
+        }
     }
 
     #addEventListeners() {

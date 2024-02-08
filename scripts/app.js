@@ -1,4 +1,9 @@
 import App from "./classes/App.js";
 
-const playerName = "Franklin D. Roosevelt";
-const app = new App(playerName, "Beginner");
+const options = {
+    playerName: "Franklin D. Roosevelt",
+    botName: "Donald J. Trump",
+    gameMode: "Beginner"
+};
+
+const app = new App(options);

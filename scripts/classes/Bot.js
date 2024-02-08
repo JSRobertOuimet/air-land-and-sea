@@ -2,10 +2,10 @@ import Log from "./Log.js";
 import UI from "./UI.js";
 
 export default class Bot {
-    constructor() {
+    constructor(name) {
         this.id = "2"
-        this.name = "Bot";
-        this.active = false;
+        this.name = name;
+        this.active = undefined;
         this.hand = [];
         this.victoryPoints = 0;
     }
@@ -19,19 +19,15 @@ export default class Bot {
             }
         });
 
-        Log.selectedCard(selectedCard);
-
         return selectedCard;
     }
 
     selectAction() {
-        Log.selectedAction("Improvise");
         return "improvise";
     }
 
     selectTheater(theaters) {
         const selectedTheater = theaters[Math.floor(Math.random() * theaters.length)];
-        Log.selectedTheater(selectedTheater);
 
         return selectedTheater;
     }

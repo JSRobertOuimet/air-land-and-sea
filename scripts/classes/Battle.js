@@ -20,7 +20,7 @@ export default class Battle {
         this._selectedCard = null;
         this._selectedAction = "";
         this._selectedTheater = null;
-        this.startingPlayer = this.#getStartingPlayer();
+        this.startingPlayer = this.#getActivePlayer();
         this.activePlayer = this.startingPlayer;
         this.turns = CONFIG.cardsDealt;
 
@@ -91,9 +91,6 @@ export default class Battle {
         UI.displayTheaters(this.theaters);
         UI.displayCards(this.cards);
         UI.displayPlayersName(this.players);
-
-        Log.startingPlayer(this.startingPlayer);
-        Log.activePlayer(this.activePlayer);
 
         this.#runBattle();
     }
@@ -210,10 +207,6 @@ export default class Battle {
         }
     }
 
-    #getStartingPlayer() {
-        return this.game.battles.length % 2 !== 0 ? this.players[1] : this.players[0];
-    }
-
     #getActivePlayer() {
         return this.players.find(player => player.active);
     }
@@ -224,7 +217,6 @@ export default class Battle {
         });
 
         this.activePlayer = this.#getActivePlayer();
-        Log.activePlayer(this.activePlayer);
     }
 
     #performAction(selectedAction) {
@@ -281,7 +273,7 @@ export default class Battle {
 
         if (this.activePlayer instanceof Player) {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
-            this.selectedCard.facedown = true;
+            this.selectedCard.flipCard();
             this.selectedTheater.playerOneCards.push(this.selectedCard);
             this.selectedTheater.playerOneCardsTotal += this.selectedCard.improviseStrength;
 
@@ -295,7 +287,7 @@ export default class Battle {
             UI.discard(selectedCardEl, playerOneColumnEl);
         } else {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
-            this.selectedCard.facedown = true;
+            this.selectedCard.flipCard();
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
             this.selectedTheater.playerTwoCardsTotal += this.selectedCard.improviseStrength;
 
