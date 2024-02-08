@@ -1,4 +1,3 @@
-import Log from "./Log.js";
 import UI from "./UI.js";
 
 export default class Bot {

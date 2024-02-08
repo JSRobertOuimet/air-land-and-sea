@@ -1,4 +1,3 @@
-import { CONFIG } from "../data/CONFIG.js";
 import { THEATERS } from "../data/THEATERS.js";
 import { CARDS } from "../data/CARDS.js";
 import Player from "./Player.js";
