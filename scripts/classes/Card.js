@@ -10,7 +10,27 @@ export default class Card {
         this.type = card.type;
         this.typeSymbol = card.typeSymbol;
         this.description = card.description;
-        this.facedown = false;
-        this.covered = false;
+        this._facedown = false;
+        this._covered = false;
+    }
+
+    get facedown() {
+        return this._facedown;
+    }
+
+    set facedown(value) {
+        this._facedown = value;
+    }
+
+    get covered() {
+        return this._covered;
+    }
+
+    set covered(value) {
+        this._covered = value;
+    }
+
+    flipCard() {
+        this.facedown === false ? this.facedown = true : false;
     }
 }
