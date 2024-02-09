@@ -1,4 +1,3 @@
-import { CONFIG } from "../data/CONFIG.js";
 import { THEATERS } from "../data/THEATERS.js";
 import { CARDS } from "../data/CARDS.js";
 import Player from "./Player.js";
@@ -24,7 +23,7 @@ export default class Game {
 
     #initializeGame(app) {
         this.#createPlayer(app.playerName);
-        this.#createBot(app.botName);
+        this.#createBot("Bot");
         this.#createTheaters(THEATERS);
         this.#createCards(CARDS);
         this.#setGameMode(app.gameMode);

@@ -4,7 +4,6 @@ import UI from "./UI.js";
 export default class App {
     constructor(options) {
         this.playerName = options.playerName;
-        this.botName = options.botName;
         this.gameMode = options.gameMode;
         this.games = [];
 
