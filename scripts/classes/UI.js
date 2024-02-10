@@ -67,11 +67,11 @@ export default class UI {
     }
 
     static displayCards(cards) {
-        const discardedCardsEl = document.createElement("div");
+        const discardPileEl = document.createElement("div");
 
-        discardedCardsEl.setAttribute("id", "discarded-cards");
-        discardedCardsEl.classList.add("depot");
-        UI.mainAreaEl.append(discardedCardsEl);
+        discardPileEl.setAttribute("id", "discard-pile");
+        discardPileEl.classList.add("depot");
+        UI.mainAreaEl.append(discardPileEl);
 
         cards.forEach((card, index) => {
             const cardContainerEl = document.createElement("div");
@@ -120,7 +120,7 @@ export default class UI {
                     cardContainerEl.firstChild.style.display = "none";
                 }
             } else {
-                discardedCardsEl.append(cardContainerEl);
+                discardPileEl.append(cardContainerEl);
                 cardContainerEl.classList.add("facedown", "discarded");
                 cardContainerEl.firstChild.style.display = "none";
             }
