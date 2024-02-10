@@ -88,6 +88,7 @@ export default class Battle {
         this.#shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
 
+        UI.displayScore(this.id, this.players);
         UI.displayTheaters(this.theaters);
         UI.displayCards(this.cards);
         UI.displayPlayersName(this.players);

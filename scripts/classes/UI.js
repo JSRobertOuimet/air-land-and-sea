@@ -1,6 +1,8 @@
 import { CONFIG } from "../data/CONFIG.js";
 
 export default class UI {
+    static containerEl = document.querySelector("#container");
+    static scoreEl = document.querySelector("#score");
     static mainAreaEl = document.querySelector("#main-area");
     static columnEls = document.querySelectorAll(".column");
     static playerOneHandEl = document.querySelector("#player-one .hand");
@@ -18,6 +20,31 @@ export default class UI {
     static nextGameButtonEl = document.querySelector("#next-game");
 
     constructor() {}
+
+    static displayScore(battleID, players) {
+        const battleNumberEl = document.createElement("div");
+        const playerScoreContainerEl = document.createElement("div");
+        const playerNameEl = document.createElement("div");
+        const playerScoreEl = document.createElement("div");
+        const botScoreContainerEl = document.createElement("div");
+        const botNameEl = document.createElement("div");
+        const botScoreEl = document.createElement("div");
+
+        battleNumberEl.setAttribute("id", "battle-number");
+        battleNumberEl.innerHTML = `Battle #${battleID}`;
+
+        playerScoreContainerEl.setAttribute("id", "player-score");
+        playerNameEl.innerHTML = `${players[0].name} (You)`
+        playerScoreEl.innerHTML = `${players[0].victoryPoints}`;
+        playerScoreContainerEl.append(playerNameEl, playerScoreEl);
+
+        botScoreContainerEl.setAttribute("id", "bot-score");
+        botNameEl.innerHTML = `${players[1].name}`
+        botScoreEl.innerHTML = `${players[1].victoryPoints}`;
+        botScoreContainerEl.append(botNameEl, botScoreEl);
+
+        UI.scoreEl.append(battleNumberEl, playerScoreContainerEl, botScoreContainerEl);
+    }
 
     static displayTheaters(shuffledTheaters) {
         shuffledTheaters.forEach(theater => {
@@ -145,7 +172,7 @@ export default class UI {
     }
 
     static displayPlayersName(players) {
-        UI.playerOneNameEl.innerHTML = players[0].name;
+        UI.playerOneNameEl.innerHTML = `${players[0].name} (You)`;
         UI.playerTwoNameEl.innerHTML = players[1].name;
     }
 
@@ -176,6 +203,7 @@ export default class UI {
 
     static clearUI() {
         UI.overlayEl.style.display = "none";
+        UI.scoreEl.innerHTML = "";
         UI.mainAreaEl.innerHTML = "";
         UI.playerOneHandEl.innerHTML = "";
         UI.playerTwoHandEl.innerHTML = "";
