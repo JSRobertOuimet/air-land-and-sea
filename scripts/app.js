@@ -1,7 +1,7 @@
 import App from "./classes/App.js";
 
 const options = {
-    playerName: "Franklin D. Roosevelt",
+    playerName: "Antares86",
     gameMode: "Beginner"
 };
 
