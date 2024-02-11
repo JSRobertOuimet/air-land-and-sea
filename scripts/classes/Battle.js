@@ -160,10 +160,8 @@ export default class Battle {
         if (e.currentTarget.classList.contains("card")) {
             const selectedCard = this.activePlayer.hand.find(card => card.id === e.currentTarget.id);
 
-            Array.from(UI.playerOneHandEl.childNodes).forEach(cardEl => {
-                if (cardEl.classList.contains("selected")) {
-                    cardEl.classList.remove("selected");
-                }
+            document.querySelectorAll("#player-one .card").forEach(playerOneCardEl => {
+                if (playerOneCardEl.classList.contains("selected")) playerOneCardEl.classList.remove("selected");
             });
 
             selectedCard.deployStrength === 6 ? (UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility}`) : (UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility} ${selectedCard.typeSymbol} – ${selectedCard.description}`);

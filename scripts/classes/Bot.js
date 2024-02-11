@@ -13,7 +13,7 @@ export default class Bot {
     selectCard() {
         const selectedCard = this.hand[Math.floor(Math.random() * this.hand.length)];
 
-        Array.from(UI.playerTwoHandEl.childNodes).forEach(cardEl => {
+        document.querySelectorAll("#player-two .card").forEach(cardEl => {
             if(cardEl.id === selectedCard.id) {
                 cardEl.classList.add("selected");
             }
