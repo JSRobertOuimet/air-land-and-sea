@@ -188,13 +188,15 @@ export default class Battle {
 
     #makingTheaterSelection() {
         return new Promise(resolve => {
-            UI.mainAreaEl.addEventListener("click", e => resolve(this.#handleTheaterSelection(e)));
+            document.querySelectorAll(".theater").forEach(theaterEl => {
+                theaterEl.addEventListener("click", e => resolve(this.#handleTheaterSelection(e)));
+            });
         });
     }
 
     #handleTheaterSelection(e) {
-        if (e.target.classList.contains("theater")) {
-            return this.theaters.find(theater => theater.id === e.target.id);
+        if (e.currentTarget.classList.contains("theater")) {
+            return this.theaters.find(theater => theater.id === e.currentTarget.id);
         }
     }
 
