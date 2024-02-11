@@ -29,6 +29,14 @@ export default class Log {
         return this.botStyles;
     }
 
+    get gameStyles() {
+        return this.gameStyles;
+    }
+
+    set gameStyles(value) {
+        return this.gameStyles;
+    }
+
     static startingBattle(id) {
         console.log(`Battle: %c🎲 #${id}`, this.gameStyles);
     }
