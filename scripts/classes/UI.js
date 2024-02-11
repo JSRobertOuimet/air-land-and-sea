@@ -201,7 +201,7 @@ export default class UI {
         UI.nextBattleButtonEl.remove();
     }
 
-    static clearUI() {
+    static clearForNextBattle() {
         UI.overlayEl.style.display = "none";
         UI.scoreEl.innerHTML = "";
         UI.mainAreaEl.innerHTML = "";

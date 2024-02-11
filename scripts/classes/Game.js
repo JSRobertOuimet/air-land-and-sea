@@ -93,7 +93,7 @@ export default class Game {
 
     #addEventListeners() {
         UI.nextBattleButtonEl.addEventListener("click", () => {
-            UI.clearUI();
+            UI.clearForNextBattle();
             this.#createBattle();
         });
     }

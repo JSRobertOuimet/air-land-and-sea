@@ -17,7 +17,7 @@ export default class App {
 
     #addEventListners() {
         UI.nextGameButtonEl.addEventListener("click", () => {
-            UI.clearUI();
+            UI.clearForNextBattle();
             this.#createGame();
         });
     }
