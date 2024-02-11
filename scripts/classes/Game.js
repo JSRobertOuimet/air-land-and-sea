@@ -10,6 +10,8 @@ import UI from "./UI.js";
 export default class Game {
     static id = 1;
 
+    #botNames = ["Franklin D. Roosevelt", "Winston Churchill", "Charles de Gaulle", "Theodore Roosevelt", "Harry S. Truman", "Dwight D. Eisenhower", "John F. Kennedy", "George V", "George VI"];
+
     constructor(app) {
         this.id = (Game.id++).toString();
         this.players = [];
@@ -21,9 +23,17 @@ export default class Game {
         this.#initializeGame(app);
     }
 
+    get botNames() {
+        return this.#botNames;
+    }
+
+    set botNames(value) {
+        this.#botNames = value;
+    }
+
     #initializeGame(app) {
         this.#createPlayer(app.playerName);
-        this.#createBot("Bot");
+        this.#createBot(this.#getBotName());
         this.#createTheaters(THEATERS);
         this.#createCards(CARDS);
         this.#setGameMode(app.gameMode);
@@ -32,10 +42,16 @@ export default class Game {
         this.#createBattle();
     }
 
+    #getBotName() {
+        const randomIndex = Math.floor(Math.random() * this.botNames.length);
+
+        return this.botNames[randomIndex];
+    }
+
     #determineStartingPlayer(players) {
         const randomNumber = Math.floor(Math.random() * 2);
 
-        switch(randomNumber) {
+        switch (randomNumber) {
             case 0:
                 players[0].active = true;
                 players[1].active = false;
@@ -50,7 +66,7 @@ export default class Game {
     #createPlayer(playerName) {
         this.players.push(new Player(playerName));
     }
-    
+
     #createBot(botName) {
         this.players.push(new Bot(botName));
     }
