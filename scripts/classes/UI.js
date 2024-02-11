@@ -1,10 +1,8 @@
 import { CONFIG } from "../data/CONFIG.js";
 
 export default class UI {
-    static containerEl = document.querySelector("#container");
     static scoreEl = document.querySelector("#score");
     static mainAreaEl = document.querySelector("#main-area");
-    static columnEls = document.querySelectorAll(".column");
     static playerOneHandEl = document.querySelector("#player-one .hand");
     static playerTwoHandEl = document.querySelector("#player-two .hand");
     static deployButtonEl = document.querySelector("#deploy");
