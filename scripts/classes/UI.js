@@ -2,6 +2,9 @@ import { CONFIG } from "../data/CONFIG.js";
 
 export default class UI {
     static scoreEl = document.querySelector("#score");
+    static battleNumberEl = document.querySelector("#battle-number");
+    static playerScoreContainerEl = document.querySelector("#player-score");
+    static botScoreContainerEl = document.querySelector("#bot-score");
     static mainAreaEl = document.querySelector("#main-area");
     static playerOneHandEl = document.querySelector("#player-one .hand");
     static playerTwoHandEl = document.querySelector("#player-two .hand");
@@ -20,28 +23,22 @@ export default class UI {
     constructor() {}
 
     static displayScore(battleID, players) {
-        const battleNumberEl = document.createElement("div");
-        const playerScoreContainerEl = document.createElement("div");
         const playerNameEl = document.createElement("div");
         const playerScoreEl = document.createElement("div");
-        const botScoreContainerEl = document.createElement("div");
         const botNameEl = document.createElement("div");
         const botScoreEl = document.createElement("div");
 
-        battleNumberEl.setAttribute("id", "battle-number");
-        battleNumberEl.innerHTML = `Battle #${battleID}`;
+        UI.battleNumberEl.innerHTML = `Battle #${battleID}`;
 
-        playerScoreContainerEl.setAttribute("id", "player-score");
         playerNameEl.innerHTML = `${players[0].name} (You)`
         playerScoreEl.innerHTML = `${players[0].victoryPoints}`;
-        playerScoreContainerEl.append(playerNameEl, playerScoreEl);
+        UI.playerScoreContainerEl.append(playerNameEl, playerScoreEl);
 
-        botScoreContainerEl.setAttribute("id", "bot-score");
         botNameEl.innerHTML = `${players[1].name}`
         botScoreEl.innerHTML = `${players[1].victoryPoints}`;
-        botScoreContainerEl.append(botNameEl, botScoreEl);
+        UI.botScoreContainerEl.append(botNameEl, botScoreEl);
 
-        UI.scoreEl.append(battleNumberEl, playerScoreContainerEl, botScoreContainerEl);
+        UI.scoreEl.append(UI.battleNumberEl, UI.playerScoreContainerEl, UI.botScoreContainerEl);
     }
 
     static displayTheaters(shuffledTheaters) {
