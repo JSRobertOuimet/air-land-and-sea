@@ -1,1 +1,1 @@
-export const THEATERS = ["Air", "Land", "Sea"];
+export const THEATERS = ["air", "land", "sea"];

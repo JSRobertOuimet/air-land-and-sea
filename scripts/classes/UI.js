@@ -8,6 +8,7 @@ export default class UI {
     static mainAreaEl = document.querySelector("#main-area");
     static playerOneHandEl = document.querySelector("#player-one .hand");
     static playerTwoHandEl = document.querySelector("#player-two .hand");
+    static actionButtonEls = document.querySelectorAll("#action-bar button");
     static deployButtonEl = document.querySelector("#deploy");
     static improviseButtonEl = document.querySelector("#improvise");
     static withdrawButtonEl = document.querySelector("#withdraw");
@@ -30,11 +31,11 @@ export default class UI {
 
         UI.battleNumberEl.innerHTML = `Battle #${battleID}`;
 
-        playerNameEl.innerHTML = `${players[0].name} (You)`
+        playerNameEl.innerHTML = `${players[0].name} (You)`;
         playerScoreEl.innerHTML = `${players[0].victoryPoints}`;
         UI.playerScoreContainerEl.append(playerNameEl, playerScoreEl);
 
-        botNameEl.innerHTML = `${players[1].name}`
+        botNameEl.innerHTML = `${players[1].name}`;
         botScoreEl.innerHTML = `${players[1].victoryPoints}`;
         UI.botScoreContainerEl.append(botNameEl, botScoreEl);
 
@@ -50,24 +51,24 @@ export default class UI {
             const playerOneColumnEl = document.createElement("div");
             const playerTwoColumnEl = document.createElement("div");
 
-            depotEl.setAttribute("id", `${theater.name.toLowerCase()}-depot`);
+            depotEl.setAttribute("id", `${theater.name}-depot`);
             depotEl.classList.add("depot");
 
             theaterContainerEl.classList.add("theater-container");
             theaterEl.setAttribute("id", theater.id);
             theaterEl.classList.add("theater");
 
-            nameEl.innerHTML = `&ndash;${theater.name}&ndash;`;
+            nameEl.innerHTML = `&ndash;${this.#capitalizeFirstLetter(theater.name)}&ndash;`;
             nameEl.classList.add("name");
 
             switch (theater.name) {
-                case "Air":
+                case "air":
                     theaterEl.classList.add("air");
                     break;
-                case "Land":
+                case "land":
                     theaterEl.classList.add("land");
                     break;
-                case "Sea":
+                case "sea":
                     theaterEl.classList.add("sea");
                     break;
             }
@@ -107,13 +108,13 @@ export default class UI {
             cardContainerEl.classList.add("card");
 
             switch (card.theater) {
-                case "Air":
+                case "air":
                     cardContainerEl.classList.add("air");
                     break;
-                case "Land":
+                case "land":
                     cardContainerEl.classList.add("land");
                     break;
-                case "Sea":
+                case "sea":
                     cardContainerEl.classList.add("sea");
                     break;
             }
@@ -150,14 +151,14 @@ export default class UI {
     }
 
     static flipCard(selectedCardEl) {
-        if (!selectedCardEl.classList.contains("facedown")) {
-            selectedCardEl.classList.add("facedown");
-            selectedCardEl.firstChild.style.display = "none";
-            selectedCardEl.lastChild.style.display = "block";
-        } else {
+        if (selectedCardEl.classList.contains("facedown")) {
             selectedCardEl.classList.remove("facedown");
             selectedCardEl.firstChild.style.display = "block";
             selectedCardEl.lastChild.style.display = "none";
+        } else {
+            selectedCardEl.classList.add("facedown");
+            selectedCardEl.firstChild.style.display = "none";
+            selectedCardEl.lastChild.style.display = "block";
         }
     }
 
@@ -169,6 +170,11 @@ export default class UI {
     static displayPlayersName(players) {
         UI.playerOneNameEl.innerHTML = `${players[0].name} (You)`;
         UI.playerTwoNameEl.innerHTML = players[1].name;
+    }
+
+    static enableActions() {
+        UI.deployButtonEl.disabled = false;
+        UI.improviseButtonEl.disabled = false;
     }
 
     static disableActions() {
@@ -202,5 +208,9 @@ export default class UI {
         UI.mainAreaEl.innerHTML = "";
         UI.playerOneHandEl.innerHTML = "";
         UI.playerTwoHandEl.innerHTML = "";
+    }
+
+    static #capitalizeFirstLetter(word) {
+        return `${word.charAt(0).toUpperCase()}${word.slice(1)}`;
     }
 }
