@@ -3,7 +3,7 @@
     height: calc(var(--theater-width) * var(--theater-factor));
     border-radius: 0.5rem;
     padding: 0.5rem;
-    color: #EFEFEF;
+    color: #efefef;
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
     user-select: none;
 }
@@ -14,13 +14,13 @@
     height: calc(var(--card-width) * var(--card-factor));
     border-radius: 0.5rem;
     padding: 0.5rem;
-    color: #EFEFEF;
+    color: #efefef;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
     user-select: none;
 }
 
 .air {
-    background-color: #6E665B;
+    background-color: #6e665b;
 }
 
 .land {
@@ -28,7 +28,7 @@
 }
 
 .sea {
-    background-color: #3D778E;
+    background-color: #3d778e;
 }
 
 .facedown {

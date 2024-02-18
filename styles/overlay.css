@@ -1,0 +1,27 @@
+#overlay {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+}
+
+#battle-winner {
+    margin-bottom: 4rem;
+    font-size: 2rem;
+    color: #FFFFFF;
+}
+
+#game-winner {
+    display: none;
+    margin-bottom: 4rem;
+    font-size: 2rem;
+    color: #FFFFFF;
+}
+
+#next-game {
+    display: none;
+}
