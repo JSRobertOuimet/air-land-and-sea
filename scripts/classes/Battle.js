@@ -178,8 +178,6 @@ export default class Battle {
         return new Promise(resolve => {
             UI.actionButtonEls.forEach(actionButtonEl => {
                 actionButtonEl.addEventListener("click", e => resolve(this.#handleActionSelection(e)));
-                this.interactiveEls.push(actionButtonEl);
-                console.log(this.interactiveEls);
             });
         });
     }
