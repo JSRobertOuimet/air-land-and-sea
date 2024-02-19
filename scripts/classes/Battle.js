@@ -142,7 +142,6 @@ export default class Battle {
                 this.selectedTheater = this.activePlayer.selectTheater(this.theaters);
             }
             this.#performAction(this.selectedAction);
-            this.log.push(new Log(this.activePlayer.name, this.selectedCard, `${this.selectedAction.charAt(0).toUpperCase()}${this.selectedAction.slice(1)}`, this.selectedTheater));
             this.#endTurn();
             this.#runBattle();
         }
@@ -164,10 +163,12 @@ export default class Battle {
                 if (playerOneCardEl.classList.contains("selected")) playerOneCardEl.classList.remove("selected");
             });
 
-            selectedCard.deployStrength === 6 ? (UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility}`) : (UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility} ${selectedCard.typeSymbol} – ${selectedCard.description}`);
             e.currentTarget.classList.add("selected");
-            UI.deployButtonEl.disabled = false;
-            UI.improviseButtonEl.disabled = false;
+            selectedCard.deployStrength === 6
+                ? (UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility}`)
+                : (UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility} ${selectedCard.typeSymbol} – ${selectedCard.description}`);
+
+            UI.enableActions();
 
             return selectedCard;
         }
@@ -232,6 +233,15 @@ export default class Battle {
                 this.#withdraw();
                 break;
         }
+
+        this.log.push(
+            new Log(
+                this.activePlayer.name,
+                this.selectedCard,
+                `${UI.capitalizeFirstLetter(this.selectedAction)}`,
+                this.selectedTheater
+            )
+        );
     }
 
     #deploy() {
@@ -269,8 +279,12 @@ export default class Battle {
 
     #improvise() {
         const selectedCardEl = document.querySelector(".selected");
-        const playerOneColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-one-column`);
-        const playerTwoColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-two-column`);
+        const playerOneColumnEl = document.querySelector(
+            `#${this.selectedTheater.name.toLowerCase()}-depot #player-one-column`
+        );
+        const playerTwoColumnEl = document.querySelector(
+            `#${this.selectedTheater.name.toLowerCase()}-depot #player-two-column`
+        );
 
         if (this.activePlayer instanceof Player) {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
@@ -344,6 +358,9 @@ export default class Battle {
     }
 
     #isGameWon() {
-        return this.players[0].victoryPoints === this.game.winningCondition || this.players[1].victoryPoints === this.game.winningCondition;
+        return (
+            this.players[0].victoryPoints === this.game.winningCondition ||
+            this.players[1].victoryPoints === this.game.winningCondition
+        );
     }
 }
