@@ -250,14 +250,7 @@ export default class Battle {
                 break;
         }
 
-        this.log.push(
-            new Log(
-                this.activePlayer.name,
-                this.selectedCard,
-                `${UI.capitalizeFirstLetter(this.selectedAction)}`,
-                this.selectedTheater
-            )
-        );
+        this.log.push(new Log(this.activePlayer.name, this.selectedCard, this.selectedAction, this.selectedTheater));
     }
 
     #deploy() {
@@ -333,6 +326,7 @@ export default class Battle {
     #withdraw() {}
 
     #endTurn() {
+        console.log(this);
         this.selectedCard = null;
         this.selectedAction = "";
         this.selectedTheater = null;
