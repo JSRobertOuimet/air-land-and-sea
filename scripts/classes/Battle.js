@@ -139,7 +139,7 @@ export default class Battle {
             } else {
                 this.selectedCard = this.activePlayer.selectCard();
                 this.selectedAction = this.activePlayer.selectAction();
-                this.selectedTheater = this.activePlayer.selectTheater(this.theaters);
+                this.selectedTheater = this.activePlayer.selectTheater(this.selectedCard, this.selectedAction, this.theaters);
             }
             this.#performAction(this.selectedAction);
             this.#endTurn();
@@ -263,9 +263,6 @@ export default class Battle {
         this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
 
         if (this.activePlayer instanceof Player) {
-            UI.disableActions();
-            UI.clearDescription();
-
             this.selectedTheater.playerOneCards.push(this.selectedCard);
 
             if (this.selectedTheater.playerOneCards.length > 1) {
@@ -273,7 +270,11 @@ export default class Battle {
             }
 
             this.selectedTheater.playerOneCardsTotal += this.selectedCard.deployStrength;
+
+            UI.disableActions();
+            UI.clearDescription();
         } else {
+            this.selectedCard.flipCard();
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
 
             if (this.selectedTheater.playerTwoCards.length > 1) {
@@ -281,6 +282,8 @@ export default class Battle {
             }
 
             this.selectedTheater.playerTwoCardsTotal += this.selectedCard.deployStrength;
+
+            UI.flipCard(selectedCardEl);
         }
 
         UI.discard(selectedCardEl, playerColumnEl);
@@ -326,7 +329,6 @@ export default class Battle {
     #withdraw() {}
 
     #endTurn() {
-        console.log(this);
         this.selectedCard = null;
         this.selectedAction = "";
         this.selectedTheater = null;
