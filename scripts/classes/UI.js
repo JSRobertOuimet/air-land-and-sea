@@ -1,10 +1,12 @@
 import { CONFIG } from "../data/CONFIG.js";
 
 export default class UI {
+    static scoreEl = document.querySelector("#score");
+    static battleNumberEl = document.querySelector("#battle-number");
     static mainAreaEl = document.querySelector("#main-area");
-    static columnEls = document.querySelectorAll(".column");
     static playerOneHandEl = document.querySelector("#player-one .hand");
     static playerTwoHandEl = document.querySelector("#player-two .hand");
+    static actionButtonEls = document.querySelectorAll("#action-bar button");
     static deployButtonEl = document.querySelector("#deploy");
     static improviseButtonEl = document.querySelector("#improvise");
     static withdrawButtonEl = document.querySelector("#withdraw");
@@ -19,6 +21,31 @@ export default class UI {
 
     constructor() {}
 
+    static displayScore(battleID, players) {
+        const battleNumberEl = document.createElement("div");
+        const playerScoreContainerEl = document.createElement("div");
+        const playerNameEl = document.createElement("div");
+        const playerScoreEl = document.createElement("div");
+        const botScoreContainerEl = document.createElement("div");
+        const botNameEl = document.createElement("div");
+        const botScoreEl = document.createElement("div");
+
+        battleNumberEl.setAttribute("id", "battle-number");
+        battleNumberEl.innerHTML = `Battle #${battleID}`;
+
+        playerScoreContainerEl.setAttribute("id", "player-score");
+        playerNameEl.innerHTML = `${players[0].name} (You)`
+        playerScoreEl.innerHTML = `${players[0].victoryPoints}`;
+        playerScoreContainerEl.append(playerNameEl, playerScoreEl);
+
+        botScoreContainerEl.setAttribute("id", "bot-score");
+        botNameEl.innerHTML = `${players[1].name}`
+        botScoreEl.innerHTML = `${players[1].victoryPoints}`;
+        botScoreContainerEl.append(botNameEl, botScoreEl);
+
+        UI.scoreEl.append(battleNumberEl, playerScoreContainerEl, botScoreContainerEl);
+    }
+
     static displayTheaters(shuffledTheaters) {
         shuffledTheaters.forEach(theater => {
             const depotEl = document.createElement("div");
@@ -28,24 +55,24 @@ export default class UI {
             const playerOneColumnEl = document.createElement("div");
             const playerTwoColumnEl = document.createElement("div");
 
-            depotEl.setAttribute("id", `${theater.name.toLowerCase()}-depot`);
+            depotEl.setAttribute("id", `${theater.name}-depot`);
             depotEl.classList.add("depot");
 
             theaterContainerEl.classList.add("theater-container");
             theaterEl.setAttribute("id", theater.id);
             theaterEl.classList.add("theater");
 
-            nameEl.innerHTML = `&ndash;${theater.name}&ndash;`;
+            nameEl.innerHTML = `&ndash;${this.capitalizeFirstLetter(theater.name)}&ndash;`;
             nameEl.classList.add("name");
 
             switch (theater.name) {
-                case "Air":
+                case "air":
                     theaterEl.classList.add("air");
                     break;
-                case "Land":
+                case "land":
                     theaterEl.classList.add("land");
                     break;
-                case "Sea":
+                case "sea":
                     theaterEl.classList.add("sea");
                     break;
             }
@@ -67,11 +94,11 @@ export default class UI {
     }
 
     static displayCards(cards) {
-        const discardedCardsEl = document.createElement("div");
+        const discardPileEl = document.createElement("div");
 
-        discardedCardsEl.setAttribute("id", "discarded-cards");
-        discardedCardsEl.classList.add("depot");
-        UI.mainAreaEl.append(discardedCardsEl);
+        discardPileEl.setAttribute("id", "discard-pile");
+        discardPileEl.classList.add("depot");
+        UI.mainAreaEl.append(discardPileEl);
 
         cards.forEach((card, index) => {
             const cardContainerEl = document.createElement("div");
@@ -85,13 +112,13 @@ export default class UI {
             cardContainerEl.classList.add("card");
 
             switch (card.theater) {
-                case "Air":
+                case "air":
                     cardContainerEl.classList.add("air");
                     break;
-                case "Land":
+                case "land":
                     cardContainerEl.classList.add("land");
                     break;
-                case "Sea":
+                case "sea":
                     cardContainerEl.classList.add("sea");
                     break;
             }
@@ -120,7 +147,7 @@ export default class UI {
                     cardContainerEl.firstChild.style.display = "none";
                 }
             } else {
-                discardedCardsEl.append(cardContainerEl);
+                discardPileEl.append(cardContainerEl);
                 cardContainerEl.classList.add("facedown", "discarded");
                 cardContainerEl.firstChild.style.display = "none";
             }
@@ -128,14 +155,14 @@ export default class UI {
     }
 
     static flipCard(selectedCardEl) {
-        if (!selectedCardEl.classList.contains("facedown")) {
-            selectedCardEl.classList.add("facedown");
-            selectedCardEl.firstChild.style.display = "none";
-            selectedCardEl.lastChild.style.display = "block";
-        } else {
+        if (selectedCardEl.classList.contains("facedown")) {
             selectedCardEl.classList.remove("facedown");
             selectedCardEl.firstChild.style.display = "block";
             selectedCardEl.lastChild.style.display = "none";
+        } else {
+            selectedCardEl.classList.add("facedown");
+            selectedCardEl.firstChild.style.display = "none";
+            selectedCardEl.lastChild.style.display = "block";
         }
     }
 
@@ -145,8 +172,13 @@ export default class UI {
     }
 
     static displayPlayersName(players) {
-        UI.playerOneNameEl.innerHTML = players[0].name;
+        UI.playerOneNameEl.innerHTML = `${players[0].name} (You)`;
         UI.playerTwoNameEl.innerHTML = players[1].name;
+    }
+
+    static enableActions() {
+        UI.deployButtonEl.disabled = false;
+        UI.improviseButtonEl.disabled = false;
     }
 
     static disableActions() {
@@ -174,10 +206,15 @@ export default class UI {
         UI.nextBattleButtonEl.remove();
     }
 
-    static clearUI() {
+    static clearForNextBattle() {
         UI.overlayEl.style.display = "none";
+        UI.scoreEl.innerHTML = "";
         UI.mainAreaEl.innerHTML = "";
         UI.playerOneHandEl.innerHTML = "";
         UI.playerTwoHandEl.innerHTML = "";
+    }
+
+    static capitalizeFirstLetter(word) {
+        return `${word.charAt(0).toUpperCase()}${word.slice(1)}`;
     }
 }

@@ -1,0 +1,51 @@
+#main-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 800px;
+    transform: perspective(50px) rotateX(1deg);
+}
+
+.depot {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.column {
+    justify-content: flex-start;
+    height: 100%;
+}
+
+#player-one-column, #player-two-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#player-one-column {
+    margin-top: 1rem;
+    min-height: calc(var(--card-width) * var(--card-factor));
+}
+
+#player-two-column {
+    margin-bottom: 1rem;
+    min-height: calc(var(--card-width) * var(--card-factor));
+    transform: rotate(180deg);
+}
+
+#player-one-column .card:not(:first-of-type), #player-two-column .card:not(:first-of-type) {
+    margin-top: -5rem;
+}
+
+.theater-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.discarded {
+    top: calc(var(--card-width) / 2 * var(--card-factor));
+    margin-top: calc(var(--card-width) * var(--card-factor) * -1);
+}
