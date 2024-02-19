@@ -1,3 +1,5 @@
+import Log from "./Log.js";
+
 export class Debugger {
     static playerStyles = "padding: 2px; color: white; background-color: red;";
     static botStyles = "padding: 2px; color: white; background-color: blue;";
