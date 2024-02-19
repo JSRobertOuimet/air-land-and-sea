@@ -62,7 +62,7 @@ export default class UI {
             theaterEl.setAttribute("id", theater.id);
             theaterEl.classList.add("theater");
 
-            nameEl.innerHTML = `&ndash;${this.#capitalizeFirstLetter(theater.name)}&ndash;`;
+            nameEl.innerHTML = `&ndash;${this.capitalizeFirstLetter(theater.name)}&ndash;`;
             nameEl.classList.add("name");
 
             switch (theater.name) {
@@ -214,7 +214,7 @@ export default class UI {
         UI.playerTwoHandEl.innerHTML = "";
     }
 
-    static #capitalizeFirstLetter(word) {
+    static capitalizeFirstLetter(word) {
         return `${word.charAt(0).toUpperCase()}${word.slice(1)}`;
     }
 }
