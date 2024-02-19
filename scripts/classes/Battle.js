@@ -176,8 +176,11 @@ export default class Battle {
 
     #makingActionSelection() {
         return new Promise(resolve => {
-            UI.improviseButtonEl.addEventListener("click", e => resolve(this.#handleActionSelection(e)));
-            UI.deployButtonEl.addEventListener("click", e => resolve(this.#handleActionSelection(e)));
+            UI.actionButtonEls.forEach(actionButtonEl => {
+                actionButtonEl.addEventListener("click", e => resolve(this.#handleActionSelection(e)));
+                this.interactiveEls.push(actionButtonEl);
+                console.log(this.interactiveEls);
+            });
         });
     }
 
@@ -187,9 +190,24 @@ export default class Battle {
 
     #makingTheaterSelection() {
         return new Promise(resolve => {
-            document.querySelectorAll(".theater").forEach(theaterEl => {
-                theaterEl.addEventListener("click", e => resolve(this.#handleTheaterSelection(e)));
-            });
+            switch (this.selectedAction) {
+                case "deploy":
+                    let matchingTheaterEl;
+
+                    document.querySelectorAll(".theater").forEach(theaterEl => {
+                        if (theaterEl.classList[1] === this.selectedCard.theater) {
+                            matchingTheaterEl = theaterEl;
+                        }
+                    });
+
+                    matchingTheaterEl.addEventListener("click", e => resolve(this.#handleTheaterSelection(e)));
+                    break;
+                case "improvise":
+                    document.querySelectorAll(".theater").forEach(theaterEl => {
+                        theaterEl.addEventListener("click", e => resolve(this.#handleTheaterSelection(e)));
+                    });
+                    break;
+            }
         });
     }
 
