@@ -84,7 +84,12 @@ export default class Battle {
     }
 
     #initializeBattle() {
-        this.id === "1" ? this.#shuffleCards(this.theaters) : this.#rotateTheaters(this.theaters);
+        if (this.id === "1") {
+            this.#shuffleCards(this.theaters);
+        } else {
+            this.#rotateTheaters(this.theaters);
+        }
+
         this.#shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
 
@@ -291,12 +296,8 @@ export default class Battle {
 
     #improvise() {
         const selectedCardEl = document.querySelector(".selected");
-        const playerOneColumnEl = document.querySelector(
-            `#${this.selectedTheater.name.toLowerCase()}-depot #player-one-column`
-        );
-        const playerTwoColumnEl = document.querySelector(
-            `#${this.selectedTheater.name.toLowerCase()}-depot #player-two-column`
-        );
+        const playerOneColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-one-column`);
+        const playerTwoColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-two-column`);
 
         if (this.activePlayer instanceof Player) {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
@@ -370,9 +371,6 @@ export default class Battle {
     }
 
     #isGameWon() {
-        return (
-            this.players[0].victoryPoints === this.game.winningCondition ||
-            this.players[1].victoryPoints === this.game.winningCondition
-        );
+        return this.players[0].victoryPoints === this.game.winningCondition || this.players[1].victoryPoints === this.game.winningCondition;
     }
 }
