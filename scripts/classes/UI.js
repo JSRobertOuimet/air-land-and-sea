@@ -196,7 +196,6 @@ export default class UI {
     }
 
     static markActivePlayer(activePlayer) {
-        debugger;
         if(activePlayer instanceof Player) {
             UI.playerOneNameEl.classList.add("active");
             UI.playerTwoNameEl.classList.remove("active");
