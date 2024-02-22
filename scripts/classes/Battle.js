@@ -90,11 +90,13 @@ export default class Battle {
             this.#rotateTheaters(this.theaters);
         }
 
+        this.#resetTheatersScores(this.theaters);
         this.#shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
 
         UI.displayScore(this.id, this.players);
         UI.displayTheaters(this.theaters);
+        UI.displayTheatersScores(this.theaters);
         UI.displayCards(this.cards);
         UI.displayPlayersName(this.players);
 
@@ -116,6 +118,13 @@ export default class Battle {
 
     #rotateTheaters(theaters) {
         this.theaters.unshift(theaters.pop());
+    }
+
+    #resetTheatersScores(theaters) {
+        theaters.forEach(theater => {
+            theater.playerOneCardsTotal = 0;
+            theater.playerTwoCardsTotal = 0;
+        });
     }
 
     #dealCards(players, shuffledCards) {
@@ -278,6 +287,7 @@ export default class Battle {
 
             UI.disableActions();
             UI.clearDescription();
+            UI.displayTheatersScores(this.theaters);
         } else {
             this.selectedCard.flipCard();
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
@@ -289,6 +299,7 @@ export default class Battle {
             this.selectedTheater.playerTwoCardsTotal += this.selectedCard.deployStrength;
 
             UI.flipCard(selectedCardEl);
+            UI.displayTheatersScores(this.theaters);
         }
 
         UI.discard(selectedCardEl, playerColumnEl);
@@ -313,6 +324,7 @@ export default class Battle {
             UI.disableActions();
             UI.clearDescription();
             UI.discard(selectedCardEl, playerOneColumnEl);
+            UI.displayTheatersScores(this.theaters);
         } else {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
             this.selectedCard.flipCard();
@@ -324,6 +336,7 @@ export default class Battle {
             }
 
             UI.discard(selectedCardEl, playerTwoColumnEl);
+            UI.displayTheatersScores(this.theaters);
         }
     }
 

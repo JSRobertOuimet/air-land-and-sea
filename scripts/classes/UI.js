@@ -54,6 +54,8 @@ export default class UI {
             const nameEl = document.createElement("div");
             const playerOneColumnEl = document.createElement("div");
             const playerTwoColumnEl = document.createElement("div");
+            const playerOneScoreEl = document.createElement("div");
+            const playerTwoScoreEl = document.createElement("div");
 
             depotEl.setAttribute("id", `${theater.name}-depot`);
             depotEl.classList.add("depot");
@@ -79,18 +81,34 @@ export default class UI {
 
             playerOneColumnEl.setAttribute("id", "player-one-column");
             playerOneColumnEl.classList.add("column");
+            playerOneScoreEl.classList.add("player-one-score");
             playerTwoColumnEl.setAttribute("id", "player-two-column");
             playerTwoColumnEl.classList.add("column");
+            playerTwoScoreEl.classList.add("player-two-score");
 
             theaterEl.append(nameEl);
             theaterContainerEl.append(theaterEl);
 
             depotEl.append(playerTwoColumnEl);
+            depotEl.append(playerTwoScoreEl);
             depotEl.append(theaterContainerEl);
+            depotEl.append(playerOneScoreEl);
             depotEl.append(playerOneColumnEl);
 
             UI.mainAreaEl.append(depotEl);
         });
+    }
+
+    static displayTheatersScores(theaters) {
+        theaters.forEach(theater => {
+            const theaterName = theater.name;
+            const playerOneScoreEl = document.querySelector(`#${theaterName}-depot .player-one-score`);
+            const playerTwoScoreEl = document.querySelector(`#${theaterName}-depot .player-two-score`);
+
+            playerOneScoreEl.innerHTML = theater.playerOneCardsTotal;
+            playerTwoScoreEl.innerHTML = theater.playerTwoCardsTotal;
+        });
+
     }
 
     static displayCards(cards) {

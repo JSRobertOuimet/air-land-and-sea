@@ -25,13 +25,16 @@
     align-items: center;
 }
 
+.player-one-score, .player-two-score {
+    margin-block: 1rem;
+    text-align: center;
+}
+
 #player-one-column {
-    margin-top: 1rem;
     min-height: calc(var(--card-width) * var(--card-factor));
 }
 
 #player-two-column {
-    margin-bottom: 1rem;
     min-height: calc(var(--card-width) * var(--card-factor));
     transform: rotate(180deg);
 }
