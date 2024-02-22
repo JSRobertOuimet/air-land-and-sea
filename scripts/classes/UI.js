@@ -1,4 +1,5 @@
 import { CONFIG } from "../data/CONFIG.js";
+import Player from "./Player.js";
 
 export default class UI {
     static scoreEl = document.querySelector("#score");
@@ -192,6 +193,17 @@ export default class UI {
     static displayPlayersName(players) {
         UI.playerOneNameEl.innerHTML = `${players[0].name} (You)`;
         UI.playerTwoNameEl.innerHTML = players[1].name;
+    }
+
+    static markActivePlayer(activePlayer) {
+        debugger;
+        if(activePlayer instanceof Player) {
+            UI.playerOneNameEl.classList.add("active");
+            UI.playerTwoNameEl.classList.remove("active");
+        } else {
+            UI.playerOneNameEl.classList.remove("active");
+            UI.playerTwoNameEl.classList.add("active");
+        }
     }
 
     static enableActions() {

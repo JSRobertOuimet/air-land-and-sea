@@ -40,3 +40,9 @@
 #player-two-name {
     margin-bottom: 1rem;
 }
+
+.active::before {
+    content: "→";
+    display: inline-block;
+    margin-right: 0.25rem;
+}
