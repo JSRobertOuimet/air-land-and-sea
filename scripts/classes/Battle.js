@@ -20,7 +20,7 @@ export default class Battle {
         this._selectedCard = null;
         this._selectedAction = "";
         this._selectedTheater = null;
-        this.startingPlayer = this.#getActivePlayer();
+        this.startingPlayer = this.game.getActivePlayer();
         this.activePlayer = this.startingPlayer;
         this.turns = CONFIG.cardsDealt;
 
@@ -84,12 +84,7 @@ export default class Battle {
     }
 
     #initializeBattle() {
-        if (this.id === "1") {
-            this.#shuffleCards(this.theaters);
-        } else {
-            this.#rotateTheaters(this.theaters);
-        }
-
+        this.id === "1" ? this.#shuffleCards(this.theaters) : this.#rotateTheaters(this.theaters);
         this.#resetTheatersScores(this.theaters);
         this.#shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
@@ -173,16 +168,12 @@ export default class Battle {
         }
     }
 
-    #getActivePlayer() {
-        return this.players.find(player => player.active);
-    }
-
     #switchActivePlayer() {
         this.players.forEach(player => {
             player.active = player.active === true ? false : true;
         });
 
-        this.activePlayer = this.#getActivePlayer();
+        this.activePlayer = this.game.getActivePlayer();
     }
 
     #performAction(selectedAction) {
@@ -199,6 +190,47 @@ export default class Battle {
         }
 
         this.log.push(new Log(this.activePlayer.name, this.selectedCard, this.selectedAction, this.selectedTheater));
+    }
+
+    #endTurn() {
+        this.selectedCard = null;
+        this.selectedAction = "";
+        this.selectedTheater = null;
+        this.turns--;
+
+        if (this.turns > 0) {
+            this.#switchActivePlayer();
+        }
+    }
+
+    #determineBattleWinner(theaters) {
+        let theatersControlledByPlayerOne = 0;
+        let theatersControlledByPlayerTwo = 0;
+        let battleWinner;
+
+        theaters.forEach(theater => {
+            if (theater.playerOneCardsTotal === theater.playerTwoCardsTotal) {
+                if (this.startingPlayer === this.players[0]) {
+                    theatersControlledByPlayerOne++;
+                } else {
+                    theatersControlledByPlayerTwo++;
+                }
+            } else if (theater.playerOneCardsTotal > theater.playerTwoCardsTotal) {
+                theatersControlledByPlayerOne++;
+            } else {
+                theatersControlledByPlayerTwo++;
+            }
+        });
+
+        if (theatersControlledByPlayerOne > theatersControlledByPlayerTwo) {
+            battleWinner = this.players[0];
+            this.players[0].victoryPoints++;
+        } else {
+            battleWinner = this.players[1];
+            this.players[1].victoryPoints++;
+        }
+
+        return battleWinner;
     }
 
     #deploy() {
@@ -274,45 +306,4 @@ export default class Battle {
     }
 
     #withdraw() {}
-
-    #endTurn() {
-        this.selectedCard = null;
-        this.selectedAction = "";
-        this.selectedTheater = null;
-        this.turns--;
-
-        if (this.turns > 0) {
-            this.#switchActivePlayer();
-        }
-    }
-
-    #determineBattleWinner(theaters) {
-        let theatersControlledByPlayerOne = 0;
-        let theatersControlledByPlayerTwo = 0;
-        let battleWinner;
-
-        theaters.forEach(theater => {
-            if (theater.playerOneCardsTotal === theater.playerTwoCardsTotal) {
-                if (this.startingPlayer === this.players[0]) {
-                    theatersControlledByPlayerOne++;
-                } else {
-                    theatersControlledByPlayerTwo++;
-                }
-            } else if (theater.playerOneCardsTotal > theater.playerTwoCardsTotal) {
-                theatersControlledByPlayerOne++;
-            } else {
-                theatersControlledByPlayerTwo++;
-            }
-        });
-
-        if (theatersControlledByPlayerOne > theatersControlledByPlayerTwo) {
-            battleWinner = this.players[0];
-            this.players[0].victoryPoints++;
-        } else {
-            battleWinner = this.players[1];
-            this.players[1].victoryPoints++;
-        }
-
-        return battleWinner;
-    }
 }

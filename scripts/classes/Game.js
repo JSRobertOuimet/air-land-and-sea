@@ -52,33 +52,18 @@ export default class Game {
         this.#createBattle();
     }
 
-    #getBotName() {
-        const randomIndex = Math.floor(Math.random() * this.botNames.length);
-
-        return this.botNames[randomIndex];
-    }
-
-    #determineStartingPlayer(players) {
-        const randomNumber = Math.floor(Math.random() * 2);
-
-        switch (randomNumber) {
-            case 0:
-                players[0].active = true;
-                players[1].active = false;
-                break;
-            case 1:
-                players[0].active = false;
-                players[1].active = true;
-                break;
-        }
-    }
-
     #createPlayer(playerName) {
         this.players.push(new Player(playerName));
     }
 
     #createBot(botName) {
         this.players.push(new Bot(botName));
+    }
+
+    #getBotName() {
+        const randomIndex = Math.floor(Math.random() * this.botNames.length);
+
+        return this.botNames[randomIndex];
     }
 
     #createTheaters(theaters) {
@@ -101,6 +86,21 @@ export default class Game {
         }
     }
 
+    #determineStartingPlayer(players) {
+        const randomNumber = Math.floor(Math.random() * 2);
+
+        switch (randomNumber) {
+            case 0:
+                players[0].active = true;
+                players[1].active = false;
+                break;
+            case 1:
+                players[0].active = false;
+                players[1].active = true;
+                break;
+        }
+    }
+
     #addEventListeners() {
         UI.nextBattleButtonEl.addEventListener("click", () => {
             UI.clearForNextBattle();
@@ -111,6 +111,10 @@ export default class Game {
     #createBattle() {
         this.battles.push(new Battle(this));
         UI.nextBattleButtonEl.disabled = true;
+    }
+
+    getActivePlayer() {
+        return this.players.find(player => player.active);
     }
 
     isGameWon() {
