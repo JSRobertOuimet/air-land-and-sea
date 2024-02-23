@@ -1,9 +1,79 @@
-export default class Player {   
+import UI from "./UI.js";
+
+export default class Player {
     constructor(name) {
         this.id = "1";
         this.name = name;
         this.active = undefined;
         this.hand = [];
         this.victoryPoints = 0;
+    }
+
+    makingCardSelection() {
+        return new Promise(resolve => {
+            document.querySelectorAll("#player-one .card").forEach(playerOneCardEl => {
+                playerOneCardEl.addEventListener("click", e => resolve(this.handleCardSelection(e)));
+            });
+        });
+    }
+
+    handleCardSelection(e) {
+        if (e.currentTarget.classList.contains("card")) {
+            const selectedCard = this.hand.find(card => card.id === e.currentTarget.id);
+
+            document.querySelectorAll("#player-one .card").forEach(playerOneCardEl => {
+                if (playerOneCardEl.classList.contains("selected")) playerOneCardEl.classList.remove("selected");
+            });
+
+            e.currentTarget.classList.add("selected");
+            selectedCard.deployStrength === 6
+                ? (UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility}`)
+                : (UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility} ${selectedCard.typeSymbol} – ${selectedCard.description}`);
+
+            UI.enableActions();
+
+            return selectedCard;
+        }
+    }
+
+    makingActionSelection() {
+        return new Promise(resolve => {
+            UI.actionButtonEls.forEach(actionButtonEl => {
+                actionButtonEl.addEventListener("click", e => resolve(this.handleActionSelection(e)));
+            });
+        });
+    }
+
+    handleActionSelection(e) {
+        return e.target.id;
+    }
+
+    makingTheaterSelection(selectedCard, selectedAction, theaters) {
+        return new Promise(resolve => {
+            switch (selectedAction) {
+                case "deploy":
+                    let matchingTheaterEl;
+
+                    document.querySelectorAll(".theater").forEach(theaterEl => {
+                        if (theaterEl.classList[1] === selectedCard.theater) {
+                            matchingTheaterEl = theaterEl;
+                        }
+                    });
+
+                    matchingTheaterEl.addEventListener("click", e => resolve(this.handleTheaterSelection(e, theaters)));
+                    break;
+                case "improvise":
+                    document.querySelectorAll(".theater").forEach(theaterEl => {
+                        theaterEl.addEventListener("click", e => resolve(this.handleTheaterSelection(e, theaters)));
+                    });
+                    break;
+            }
+        });
+    }
+
+    handleTheaterSelection(e, theaters) {
+        if (e.currentTarget.classList.contains("theater")) {
+            return theaters.find(theater => theater.id === e.currentTarget.id);
+        }
     }
 }

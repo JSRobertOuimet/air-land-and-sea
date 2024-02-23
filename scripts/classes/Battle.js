@@ -148,9 +148,9 @@ export default class Battle {
         } else {
             if (this.activePlayer instanceof Player) {
                 UI.markActivePlayer(this.activePlayer);
-                this.selectedCard = await this.#makingCardSelection();
-                this.selectedAction = await this.#makingActionSelection();
-                this.selectedTheater = await this.#makingTheaterSelection();
+                this.selectedCard = await this.activePlayer.makingCardSelection();
+                this.selectedAction = await this.activePlayer.makingActionSelection();
+                this.selectedTheater = await this.activePlayer.makingTheaterSelection(this.selectedCard, this.selectedAction, this.theaters);
             } else {
                 UI.markActivePlayer(this.activePlayer);
                 this.selectedCard = this.activePlayer.selectCard();
@@ -160,74 +160,6 @@ export default class Battle {
             this.#performAction(this.selectedAction);
             this.#endTurn();
             this.#runBattle();
-        }
-    }
-
-    #makingCardSelection() {
-        return new Promise(resolve => {
-            document.querySelectorAll("#player-one .card").forEach(playerOneCardEl => {
-                playerOneCardEl.addEventListener("click", e => resolve(this.#handleCardSelection(e)));
-            });
-        });
-    }
-
-    #handleCardSelection(e) {
-        if (e.currentTarget.classList.contains("card")) {
-            const selectedCard = this.activePlayer.hand.find(card => card.id === e.currentTarget.id);
-
-            document.querySelectorAll("#player-one .card").forEach(playerOneCardEl => {
-                if (playerOneCardEl.classList.contains("selected")) playerOneCardEl.classList.remove("selected");
-            });
-
-            e.currentTarget.classList.add("selected");
-            selectedCard.deployStrength === 6
-                ? (UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility}`)
-                : (UI.descriptionEl.innerHTML = `${selectedCard.tacticalAbility} ${selectedCard.typeSymbol} – ${selectedCard.description}`);
-
-            UI.enableActions();
-
-            return selectedCard;
-        }
-    }
-
-    #makingActionSelection() {
-        return new Promise(resolve => {
-            UI.actionButtonEls.forEach(actionButtonEl => {
-                actionButtonEl.addEventListener("click", e => resolve(this.#handleActionSelection(e)));
-            });
-        });
-    }
-
-    #handleActionSelection(e) {
-        return e.target.id;
-    }
-
-    #makingTheaterSelection() {
-        return new Promise(resolve => {
-            switch (this.selectedAction) {
-                case "deploy":
-                    let matchingTheaterEl;
-
-                    document.querySelectorAll(".theater").forEach(theaterEl => {
-                        if (theaterEl.classList[1] === this.selectedCard.theater) {
-                            matchingTheaterEl = theaterEl;
-                        }
-                    });
-
-                    matchingTheaterEl.addEventListener("click", e => resolve(this.#handleTheaterSelection(e)));
-                    break;
-                case "improvise":
-                    document.querySelectorAll(".theater").forEach(theaterEl => {
-                        theaterEl.addEventListener("click", e => resolve(this.#handleTheaterSelection(e)));
-                    });
-                    break;
-            }
-        });
-    }
-
-    #handleTheaterSelection(e) {
-        if (e.currentTarget.classList.contains("theater")) {
-            return this.theaters.find(theater => theater.id === e.currentTarget.id);
         }
     }
 
