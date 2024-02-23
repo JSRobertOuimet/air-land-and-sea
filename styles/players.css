@@ -33,11 +33,11 @@
     margin-left: calc(var(--card-offset) * -1);
 }
 
-#player-one-name {
+#player-one .name {
     margin-top: 1rem;
 }
 
-#player-two-name {
+#player-two .name {
     margin-bottom: 1rem;
 }
 

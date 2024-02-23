@@ -12,8 +12,8 @@ export default class UI {
     static improviseButtonEl = document.querySelector("#improvise");
     static withdrawButtonEl = document.querySelector("#withdraw");
     static descriptionEl = document.querySelector("#description");
-    static playerOneNameEl = document.querySelector("#player-one-name");
-    static playerTwoNameEl = document.querySelector("#player-two-name");
+    static playerOneNameEl = document.querySelector("#player-one .name");
+    static playerTwoNameEl = document.querySelector("#player-two .name");
     static overlayEl = document.querySelector("#overlay");
     static battleWinnerEl = document.querySelector("#battle-winner");
     static gameWinnerEl = document.querySelector("#game-winner");
