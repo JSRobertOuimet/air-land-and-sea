@@ -146,7 +146,7 @@ export default class UI {
             tacticalAbilityEl.classList.add("tactical-ability");
 
             cardBackEl.classList.add("back");
-            defaultValueEl.innerHTML = "2";
+            defaultValueEl.innerHTML = card.improviseStrength;
             defaultValueEl.classList.add("defaut-value");
 
             cardFrontEl.append(strengthEl);
