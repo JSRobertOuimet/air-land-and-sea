@@ -273,8 +273,8 @@ export default class Battle {
         const selectedCardEl = document.querySelector(".selected");
         const playerColumnEl =
             this.activePlayer instanceof Player
-                ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-one-column`)
-                : document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-two-column`);
+                ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-one-column`)
+                : document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-two-column`);
 
         this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
 
@@ -291,7 +291,6 @@ export default class Battle {
             UI.clearDescription();
             UI.displayTheatersScores(this.theaters);
         } else {
-            this.selectedCard.flipCard();
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
 
             if (this.selectedTheater.playerTwoCards.length > 1) {
@@ -309,8 +308,8 @@ export default class Battle {
 
     #improvise() {
         const selectedCardEl = document.querySelector(".selected");
-        const playerOneColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-one-column`);
-        const playerTwoColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot #player-two-column`);
+        const playerOneColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-one-column`);
+        const playerTwoColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-two-column`);
 
         if (this.activePlayer instanceof Player) {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);

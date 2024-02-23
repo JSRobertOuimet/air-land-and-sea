@@ -35,12 +35,12 @@ export default class UI {
         battleNumberEl.innerHTML = `Battle #${battleID}`;
 
         playerScoreContainerEl.setAttribute("id", "player-score");
-        playerNameEl.innerHTML = `${players[0].name} (You)`
+        playerNameEl.innerHTML = `${players[0].name} (You)`;
         playerScoreEl.innerHTML = `${players[0].victoryPoints}`;
         playerScoreContainerEl.append(playerNameEl, playerScoreEl);
 
         botScoreContainerEl.setAttribute("id", "bot-score");
-        botNameEl.innerHTML = `${players[1].name}`
+        botNameEl.innerHTML = `${players[1].name}`;
         botScoreEl.innerHTML = `${players[1].victoryPoints}`;
         botScoreContainerEl.append(botNameEl, botScoreEl);
 
@@ -80,11 +80,9 @@ export default class UI {
                     break;
             }
 
-            playerOneColumnEl.setAttribute("id", "player-one-column");
-            playerOneColumnEl.classList.add("column");
+            playerOneColumnEl.classList.add("column", "player-one-column");
             playerOneScoreEl.classList.add("player-one-score");
-            playerTwoColumnEl.setAttribute("id", "player-two-column");
-            playerTwoColumnEl.classList.add("column");
+            playerTwoColumnEl.classList.add("column", "player-two-column");
             playerTwoScoreEl.classList.add("player-two-score");
 
             theaterEl.append(nameEl);
@@ -109,7 +107,6 @@ export default class UI {
             playerOneScoreEl.innerHTML = theater.playerOneCardsTotal;
             playerTwoScoreEl.innerHTML = theater.playerTwoCardsTotal;
         });
-
     }
 
     static displayCards(cards) {
@@ -196,7 +193,7 @@ export default class UI {
     }
 
     static markActivePlayer(activePlayer) {
-        if(activePlayer instanceof Player) {
+        if (activePlayer instanceof Player) {
             UI.playerOneNameEl.classList.add("active");
             UI.playerTwoNameEl.classList.remove("active");
         } else {

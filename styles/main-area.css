@@ -19,27 +19,30 @@
     height: 100%;
 }
 
-#player-one-column, #player-two-column {
+.player-one-column,
+.player-two-column {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.player-one-score, .player-two-score {
+.player-one-score,
+.player-two-score {
     margin-block: 1rem;
     text-align: center;
 }
 
-#player-one-column {
+.player-one-column {
     min-height: calc(var(--card-width) * var(--card-factor));
 }
 
-#player-two-column {
+.player-two-column {
     min-height: calc(var(--card-width) * var(--card-factor));
     transform: rotate(180deg);
 }
 
-#player-one-column .card:not(:first-of-type), #player-two-column .card:not(:first-of-type) {
+.player-one-column .card:not(:first-of-type),
+.player-two-column .card:not(:first-of-type) {
     margin-top: -5rem;
 }
 
