@@ -317,6 +317,6 @@ export default class Battle {
     }
 
     #isGameWon() {
-        return this.players[0].victoryPoints === this.game.winningCondition || this.players[1].victoryPoints === this.game.winningCondition;
+        return this.players[0].victoryPoints === this.game.winningScore || this.players[1].victoryPoints === this.game.winningScore;
     }
 }

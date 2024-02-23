@@ -10,7 +10,17 @@ import UI from "./UI.js";
 export default class Game {
     static id = 1;
 
-    #botNames = ["Franklin D. Roosevelt", "Winston Churchill", "Charles de Gaulle", "Theodore Roosevelt", "Harry S. Truman", "Dwight D. Eisenhower", "John F. Kennedy", "George V", "George VI"];
+    #botNames = [
+        "Franklin D. Roosevelt",
+        "Winston Churchill",
+        "Charles de Gaulle",
+        "Theodore Roosevelt",
+        "Harry S. Truman",
+        "Dwight D. Eisenhower",
+        "John F. Kennedy",
+        "George V",
+        "George VI",
+    ];
 
     constructor(app) {
         this.id = (Game.id++).toString();
@@ -18,7 +28,7 @@ export default class Game {
         this.theaters = [];
         this.cards = [];
         this.battles = [];
-        this.winningCondition = undefined;
+        this.winningScore = undefined;
 
         this.#initializeGame(app);
     }
@@ -82,11 +92,11 @@ export default class Game {
     #setGameMode(gameMode) {
         switch (gameMode) {
             case "Beginner":
-                this.winningCondition = 3;
+                this.winningScore = 3;
                 UI.withdrawButtonEl.remove();
                 break;
             case "Normal":
-                this.winningCondition = 12;
+                this.winningScore = 12;
                 break;
         }
     }
