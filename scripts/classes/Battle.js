@@ -166,7 +166,7 @@ export default class Battle {
     #endBattle() {
         this.battleWinner = this.#determineBattleWinner(this.theaters);
 
-        if (this.#isGameWon()) {
+        if (this.game.isGameWon()) {
             UI.displayGameEndOverlay(this.battleWinner);
         } else {
             UI.displayBattleEndOverlay(this.battleWinner);
@@ -314,9 +314,5 @@ export default class Battle {
         }
 
         return battleWinner;
-    }
-
-    #isGameWon() {
-        return this.players[0].victoryPoints === this.game.winningScore || this.players[1].victoryPoints === this.game.winningScore;
     }
 }

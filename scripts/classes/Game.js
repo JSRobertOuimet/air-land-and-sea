@@ -112,4 +112,8 @@ export default class Game {
         this.battles.push(new Battle(this));
         UI.nextBattleButtonEl.disabled = true;
     }
+
+    isGameWon() {
+        return this.players[0].victoryPoints === this.winningScore || this.players[1].victoryPoints === this.winningScore;
+    }
 }
