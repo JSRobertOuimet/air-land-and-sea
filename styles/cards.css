@@ -45,14 +45,14 @@
 
 @keyframes glow {
     0% {
-        box-shadow: 0 0 8px darkorange;
+        box-shadow: 0 0 8px goldenrod;
     }
 
     50% {
-        box-shadow: 0 0 24px darkorange;
+        box-shadow: 0 0 24px goldenrod;
     }
 
     100% {
-        box-shadow: 0 0 8px darkorange;
+        box-shadow: 0 0 8px goldenrod;
     }
 }
