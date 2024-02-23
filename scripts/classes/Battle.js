@@ -235,6 +235,7 @@ export default class Battle {
 
     #deploy() {
         const selectedCardEl = document.querySelector(".selected");
+        const highlightedTheaterEl = document.querySelector(".highlighted");
         const playerColumnEl =
             this.activePlayer instanceof Player
                 ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-one-column`)
@@ -251,6 +252,7 @@ export default class Battle {
 
             this.selectedTheater.playerOneCardsTotal += this.selectedCard.deployStrength;
 
+            highlightedTheaterEl.classList.remove("highlighted");
             UI.disableActions();
             UI.clearDescription();
             UI.displayTheatersScores(this.theaters);
@@ -272,6 +274,7 @@ export default class Battle {
 
     #improvise() {
         const selectedCardEl = document.querySelector(".selected");
+        const highlightedTheaterEls = document.querySelectorAll(".highlighted");
         const playerOneColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-one-column`);
         const playerTwoColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-two-column`);
 
@@ -284,6 +287,10 @@ export default class Battle {
             if (this.selectedTheater.playerOneCards.length > 1) {
                 this.selectedTheater.playerOneCards.slice(-2)[0].covered = true;
             }
+
+            highlightedTheaterEls.forEach(highlightedTheaterEl => {
+                highlightedTheaterEl.classList.remove("highlighted");
+            });
 
             UI.flipCard(selectedCardEl);
             UI.disableActions();

@@ -38,3 +38,21 @@
 .selected {
     top: -5px;
 }
+
+.highlighted {
+    animation: 3s linear infinite glow;
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 8px darkorange;
+    }
+
+    50% {
+        box-shadow: 0 0 24px darkorange;
+    }
+
+    100% {
+        box-shadow: 0 0 8px darkorange;
+    }
+}

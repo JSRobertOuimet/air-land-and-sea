@@ -57,6 +57,7 @@ export default class Player {
                     document.querySelectorAll(".theater").forEach(theaterEl => {
                         if (theaterEl.classList[1] === selectedCard.theater) {
                             matchingTheaterEl = theaterEl;
+                            matchingTheaterEl.classList.add("highlighted");
                         }
                     });
 
@@ -64,6 +65,7 @@ export default class Player {
                     break;
                 case "improvise":
                     document.querySelectorAll(".theater").forEach(theaterEl => {
+                        theaterEl.classList.add("highlighted");
                         theaterEl.addEventListener("click", e => resolve(this.handleTheaterSelection(e, theaters)));
                     });
                     break;
