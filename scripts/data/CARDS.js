@@ -7,7 +7,7 @@ export const CARDS = [
     {"theater": "air", "deployStrength": 6, "improviseStrength": 2, "tacticalAbility": "Heavy Bombers", "type": "N/A", "typeSymbol": "N/A", "description": "N/A"},
     {"theater": "land", "deployStrength": 1, "improviseStrength": 2, "tacticalAbility": "Reinforce", "type": "Instant", "typeSymbol": "💥", "description": "Draw 1 card and play it facedown to an adjacent theater."},
     {"theater": "land", "deployStrength": 2, "improviseStrength": 2, "tacticalAbility": "Ambush", "type": "Instant", "typeSymbol": "💥", "description": "Flip any uncovered card."},
-    {"theater": "land", "deployStrength": 3, "improviseStrength": 2, "tacticalAbility": "Maneuver", "type": "Instant", "typeSymbol": "💥", "description": "Flip and uncovered card in an adjacent theater."},
+    {"theater": "land", "deployStrength": 3, "improviseStrength": 2, "tacticalAbility": "Maneuver", "type": "Instant", "typeSymbol": "💥", "description": "Flip an uncovered card in an adjacent theater."},
     {"theater": "land", "deployStrength": 4, "improviseStrength": 2, "tacticalAbility": "Cover Fire", "type": "Ongoing", "typeSymbol": "🔄", "description": "All cards covered by this card are now strength 4."},
     {"theater": "land", "deployStrength": 5, "improviseStrength": 2, "tacticalAbility": "Disrupt", "type": "Instant", "typeSymbol": "💥", "description": "Starting with you, both players choose and flip 1 of their uncovered cards."},
     {"theater": "land", "deployStrength": 6, "improviseStrength": 2, "tacticalAbility": "Heavy Tanks", "type": "N/A", "typeSymbol": "N/A", "description": "N/A"},
