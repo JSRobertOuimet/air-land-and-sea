@@ -98,7 +98,7 @@ export default class UI {
         });
     }
 
-    static displayTheatersScores(theaters) {
+    static updateScoreForTheaters(theaters) {
         theaters.forEach(theater => {
             const theaterName = theater.name;
             const playerOneScoreEl = document.querySelector(`#${theaterName}-depot .player-one-score`);
@@ -167,7 +167,7 @@ export default class UI {
         });
     }
 
-    static displayCardDescription(selectedCardEl, card) {
+    static enableTooltip(selectedCardEl, card) {
         selectedCardEl.addEventListener("mouseenter", this.showTooltip.bind(null, card));
         selectedCardEl.addEventListener("mouseleave", this.hideTooltip);
     }

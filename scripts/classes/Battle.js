@@ -91,7 +91,7 @@ export default class Battle {
 
         UI.displayScore(this.id, this.players);
         UI.displayTheaters(this.theaters);
-        UI.displayTheatersScores(this.theaters);
+        UI.updateScoreForTheaters(this.theaters);
         UI.displayCards(this.cards);
         UI.displayPlayersName(this.players);
 
@@ -255,8 +255,8 @@ export default class Battle {
             highlightedTheaterEl.classList.remove("highlighted");
             UI.disableActions();
             UI.clearDescription();
-            UI.displayTheatersScores(this.theaters);
-            UI.displayCardDescription(selectedCardEl, this.selectedCard);
+            UI.updateScoreForTheaters(this.theaters);
+            UI.enableTooltip(selectedCardEl, this.selectedCard);
         } else {
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
 
@@ -267,8 +267,8 @@ export default class Battle {
             this.selectedTheater.playerTwoCardsTotal += this.selectedCard.deployStrength;
 
             UI.flipCard(selectedCardEl);
-            UI.displayTheatersScores(this.theaters);
-            UI.displayCardDescription(selectedCardEl, this.selectedCard);
+            UI.updateScoreForTheaters(this.theaters);
+            UI.enableTooltip(selectedCardEl, this.selectedCard);
         }
 
         UI.discard(selectedCardEl, playerColumnEl);
@@ -298,7 +298,7 @@ export default class Battle {
             UI.disableActions();
             UI.clearDescription();
             UI.discard(selectedCardEl, playerOneColumnEl);
-            UI.displayTheatersScores(this.theaters);
+            UI.updateScoreForTheaters(this.theaters);
         } else {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
             this.selectedCard.flipCard();
@@ -310,7 +310,7 @@ export default class Battle {
             }
 
             UI.discard(selectedCardEl, playerTwoColumnEl);
-            UI.displayTheatersScores(this.theaters);
+            UI.updateScoreForTheaters(this.theaters);
         }
     }
 
