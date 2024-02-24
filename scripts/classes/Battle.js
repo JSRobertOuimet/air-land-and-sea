@@ -256,6 +256,7 @@ export default class Battle {
             UI.disableActions();
             UI.clearDescription();
             UI.displayTheatersScores(this.theaters);
+            UI.displayCardDescription(selectedCardEl, this.selectedCard);
         } else {
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
 
@@ -267,6 +268,7 @@ export default class Battle {
 
             UI.flipCard(selectedCardEl);
             UI.displayTheatersScores(this.theaters);
+            UI.displayCardDescription(selectedCardEl, this.selectedCard);
         }
 
         UI.discard(selectedCardEl, playerColumnEl);

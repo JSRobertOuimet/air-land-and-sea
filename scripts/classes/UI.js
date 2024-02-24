@@ -121,7 +121,6 @@ export default class UI {
             const cardFrontEl = document.createElement("div");
             const cardBackEl = document.createElement("div");
             const strengthEl = document.createElement("div");
-            const tacticalAbilityEl = document.createElement("div");
             const defaultValueEl = document.createElement("div");
 
             cardContainerEl.setAttribute("id", card.id);
@@ -142,8 +141,6 @@ export default class UI {
             cardFrontEl.classList.add("front");
             strengthEl.innerHTML = card.deployStrength;
             strengthEl.classList.add("strength");
-            tacticalAbilityEl.innerHTML = card.tacticalAbility;
-            tacticalAbilityEl.classList.add("tactical-ability");
 
             cardBackEl.classList.add("back");
             defaultValueEl.innerHTML = card.improviseStrength;
@@ -168,6 +165,28 @@ export default class UI {
                 cardContainerEl.firstChild.style.display = "none";
             }
         });
+    }
+
+    static displayCardDescription(selectedCardEl, card) {
+        selectedCardEl.addEventListener("mouseenter", this.showTooltip.bind(null, card));
+        selectedCardEl.addEventListener("mouseleave", this.hideTooltip);
+    }
+
+    static showTooltip(card, e) {
+        const tooltipEl = document.createElement("div");
+
+        tooltipEl.style.top = `${e.clientY}px`;
+        tooltipEl.style.left = `${e.clientX}px`;
+        tooltipEl.classList.add("tooltip");
+        tooltipEl.innerHTML = `${card.tacticalAbility} – ${card.description}`;
+
+        document.body.append(tooltipEl);
+    }
+
+    static hideTooltip() {
+        const tooltipEl = document.querySelector(".tooltip");
+
+        tooltipEl.remove();
     }
 
     static flipCard(selectedCardEl) {
