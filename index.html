@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/app.css">
-    <title>Air, Land, & Sea</title>
-</head>
-<body>
-    <div id="container">
-        <div id="score"></div>
-        <div id="player-two">
-            <div class="name"></div>
-            <div class="hand"></div>
-        </div>
-        <div id="main-area"></div>
-        <div id="player-one">
-            <div id="action-bar">
-                <button id="deploy" class="button" disabled="true">Deploy</button>
-                <button id="improvise" class="button" disabled="true">Improvise</button>
-                <button id="withdraw" class="button">Withdraw</button>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="msapplication-TileColor" content="#da532c" />
+        <meta name="msapplication-config" content="assets/browserconfig.xml" />
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png" />
+        <link rel="manifest" href="assets/site.webmanifest" />
+        <link rel="mask-icon" href="assets/safari-pinned-tab.svg" color="#5bbad5" />
+        <link rel="shortcut icon" href="assets/favicon.ico" />
+        <link rel="stylesheet" href="styles/app.css" />
+        <title>Air, Land, & Sea</title>
+    </head>
+    <body>
+        <div id="container">
+            <div id="score"></div>
+            <div id="player-two">
+                <div class="name"></div>
+                <div class="hand"></div>
             </div>
-            <div id="description"></div>
-            <div class="hand"></div>
-            <div class="name"></div>
+            <div id="main-area"></div>
+            <div id="player-one">
+                <div id="action-bar">
+                    <button id="deploy" class="button" disabled="true">Deploy</button>
+                    <button id="improvise" class="button" disabled="true">Improvise</button>
+                    <button id="withdraw" class="button">Withdraw</button>
+                </div>
+                <div id="description"></div>
+                <div class="hand"></div>
+                <div class="name"></div>
+            </div>
         </div>
-    </div>
-    <div id="overlay">
-        <div id="battle-winner"></div>
-        <div id="game-winner"></div>
-        <button id="next-battle" class="button" disabled="true">Next Battle</button>
-        <button id="next-game" class="button" disabled="true">Next Game</button>
-    </div>
-    <script src="scripts/app.js" type="module"></script>
-</body>
+        <div id="overlay">
+            <div id="battle-winner"></div>
+            <div id="game-winner"></div>
+            <button id="next-battle" class="button" disabled="true">Next Battle</button>
+            <button id="next-game" class="button" disabled="true">Next Game</button>
+        </div>
+        <script src="scripts/app.js" type="module"></script>
+    </body>
 </html>
