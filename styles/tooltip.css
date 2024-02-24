@@ -1,7 +1,20 @@
 .tooltip {
     position: absolute;
+    z-index: 300;
     width: 200px;
-    padding: 1rem;
-    color: var(--color-white);
-    background-color: var(--color-overlay-bg);
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid var(--color-black);
+    background-color: var(--color-white);
+    animation: 0.2s linear show;
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }

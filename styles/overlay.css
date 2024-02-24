@@ -6,7 +6,7 @@
     position: absolute;
     inset: 0;
     background-color: var(--color-overlay-bg);
-    z-index: 999;
+    z-index: 900;
 }
 
 #battle-winner {

@@ -168,15 +168,15 @@ export default class UI {
     }
 
     static enableTooltip(selectedCardEl, card) {
-        selectedCardEl.addEventListener("mouseenter", this.showTooltip.bind(null, card));
+        selectedCardEl.addEventListener("mouseenter", this.showTooltip.bind(null, selectedCardEl, card));
         selectedCardEl.addEventListener("mouseleave", this.hideTooltip);
     }
 
-    static showTooltip(card, e) {
+    static showTooltip(selectedCardEl, card, e) {
         const tooltipEl = document.createElement("div");
 
-        tooltipEl.style.top = `${e.clientY}px`;
-        tooltipEl.style.left = `${e.clientX}px`;
+        tooltipEl.style.top = `${selectedCardEl.getBoundingClientRect().bottom}px`;
+        tooltipEl.style.left = `${selectedCardEl.getBoundingClientRect().right}px`;
         tooltipEl.classList.add("tooltip");
         tooltipEl.innerHTML = `${card.tacticalAbility} – ${card.description}`;
 
