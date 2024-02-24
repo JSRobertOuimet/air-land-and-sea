@@ -1,6 +1,6 @@
 export const CARDS = [
     {"theater": "air", "deployStrength": 1, "improviseStrength": 2, "tacticalAbility": "Support", "type": "Ongoing", "typeSymbol": "🔄", "description": "You gain +3 strength in each adjacent theater."},
-    {"theater": "air", "deployStrength": 2, "improviseStrength": 2, "tacticalAbility": "air Drop", "type": "Instant", "typeSymbol": "💥", "description": "The next time you play a card, you may play it to a non-matching theater."},
+    {"theater": "air", "deployStrength": 2, "improviseStrength": 2, "tacticalAbility": "Air Drop", "type": "Instant", "typeSymbol": "💥", "description": "The next time you play a card, you may play it to a non-matching theater."},
     {"theater": "air", "deployStrength": 3, "improviseStrength": 2, "tacticalAbility": "Maneuver", "type": "Instant", "typeSymbol": "💥", "description": "Flip an uncovered card in an adjacent theater."},
     {"theater": "air", "deployStrength": 4, "improviseStrength": 2, "tacticalAbility": "Aerodrome", "type": "Ongoing", "typeSymbol": "🔄", "description": "You may play cards of strength 3 or less to non-matching theaters."},
     {"theater": "air", "deployStrength": 5, "improviseStrength": 2, "tacticalAbility": "Containment", "type": "Ongoing", "typeSymbol": "🔄", "description": "If any player plays a facedown card, destroy that card."},
