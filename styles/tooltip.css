@@ -3,6 +3,5 @@
     width: 200px;
     padding: 1rem;
     color: var(--color-white);
-    background-color: var(--color-black);
-    opacity: 0.8;
+    background-color: var(--color-overlay-bg);
 }
