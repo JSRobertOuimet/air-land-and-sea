@@ -3,8 +3,8 @@
     height: calc(var(--theater-width) * var(--theater-factor));
     border-radius: 0.5rem;
     padding: 0.5rem;
-    color: #efefef;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+    color: var(--color-off-white);
+    box-shadow: 0 1px 8px var(--color-shadow);
     user-select: none;
 }
 
@@ -14,25 +14,25 @@
     height: calc(var(--card-width) * var(--card-factor));
     border-radius: 0.5rem;
     padding: 0.5rem;
-    color: #efefef;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    color: var(--color-off-white);
+    box-shadow: 0 0 4px var(--color-shadow);
     user-select: none;
 }
 
 .air {
-    background-color: #6e665b;
+    background-color: var(--color-air);
 }
 
 .land {
-    background-color: #648139;
+    background-color: var(--color-land);
 }
 
 .sea {
-    background-color: #3d778e;
+    background-color: var(--color-sea);
 }
 
 .facedown {
-    background-color: #37342f;
+    background-color: var(--color-facedown);
 }
 
 .selected {
@@ -40,19 +40,19 @@
 }
 
 .highlighted {
-    animation: 3s linear infinite glow;
+    animation: 2s linear infinite glow;
 }
 
 @keyframes glow {
     0% {
-        box-shadow: 0 0 8px goldenrod;
+        box-shadow: 0 0 8px var(--color-glow);
     }
 
     50% {
-        box-shadow: 0 0 24px goldenrod;
+        box-shadow: 0 0 24px var(--color-glow);
     }
 
     100% {
-        box-shadow: 0 0 8px goldenrod;
+        box-shadow: 0 0 8px var(--color-glow);
     }
 }
