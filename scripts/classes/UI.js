@@ -178,7 +178,9 @@ export default class UI {
         tooltipEl.style.top = `${selectedCardEl.getBoundingClientRect().bottom}px`;
         tooltipEl.style.left = `${selectedCardEl.getBoundingClientRect().right}px`;
         tooltipEl.classList.add("tooltip");
-        tooltipEl.innerHTML = `${card.tacticalAbility} – ${card.description}`;
+        card.deployStrength === 6
+                ? (tooltipEl.innerHTML = `${card.tacticalAbility}`)
+                : (tooltipEl.innerHTML = `${card.tacticalAbility} ${card.typeSymbol} – ${card.description}`);
 
         document.body.append(tooltipEl);
     }
