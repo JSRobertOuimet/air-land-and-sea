@@ -30,6 +30,7 @@
 .player-two-score {
     margin-block: 1rem;
     text-align: center;
+    user-select: none;
 }
 
 .player-one-column {
