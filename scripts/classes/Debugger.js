@@ -43,17 +43,11 @@ export class Debugger {
     }
 
     static selectedCard(selectedCard) {
-        console.log(
-            `Selected card: %c🎲 ${selectedCard.deployStrength} ${selectedCard.tacticalAbility}`,
-            this.gameStyles
-        );
+        console.log(`Selected card: %c🎲 ${selectedCard.deployStrength} ${selectedCard.tacticalAbility}`, this.gameStyles);
     }
 
     static selectedAction(selectedAction) {
-        console.log(
-            `Selected action: %c🎲 ${selectedAction.charAt(0).toUpperCase()}${selectedAction.slice(1)}`,
-            this.gameStyles
-        );
+        console.log(`Selected action: %c🎲 ${selectedAction.charAt(0).toUpperCase()}${selectedAction.slice(1)}`, this.gameStyles);
     }
 
     static selectedTheater(selectedTheater) {

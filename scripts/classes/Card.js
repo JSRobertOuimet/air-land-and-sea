@@ -31,6 +31,6 @@ export default class Card {
     }
 
     flipCard() {
-        this.facedown === true ? this.facedown = false : this.facedown = true;
+        this.facedown === true ? (this.facedown = false) : (this.facedown = true);
     }
 }

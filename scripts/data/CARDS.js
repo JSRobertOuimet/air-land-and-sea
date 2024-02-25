@@ -141,8 +141,7 @@ export const CARDS = [
         tacticalAbility: "Redeploy",
         type: "Instant",
         typeSymbol: "💥",
-        description:
-            "You may return 1 of your facedown cards to your hand. If you do, play a card.",
+        description: "You may return 1 of your facedown cards to your hand. If you do, play a card.",
     },
     {
         theater: "Sea",
@@ -151,8 +150,7 @@ export const CARDS = [
         tacticalAbility: "Blockade",
         type: "Ongoing",
         typeSymbol: "🔄",
-        description:
-            "If any player plays a card to an adjacent theater occupied by at least 3 other cards, destroy that card.",
+        description: "If any player plays a card to an adjacent theater occupied by at least 3 other cards, destroy that card.",
     },
     {
         theater: "Sea",
