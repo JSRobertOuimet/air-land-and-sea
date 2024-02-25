@@ -98,7 +98,7 @@ export default class UI {
         });
     }
 
-    static updateScoreForTheaters(theaters) {
+    static displayTheatersScore(theaters) {
         theaters.forEach(theater => {
             const theaterName = theater.name;
             const playerOneScoreEl = document.querySelector(`#${theaterName.toLowerCase()}-depot .player-one-score`);
@@ -108,7 +108,7 @@ export default class UI {
                 (accumulator, current) => accumulator + current,
                 theater.playerOnePoints
             );
-            playerTwoScoreEl.innerHTML = theater.playerOneAdditionalPoints.reduce(
+            playerTwoScoreEl.innerHTML = theater.playerTwoAdditionalPoints.reduce(
                 (accumulator, current) => accumulator + current,
                 theater.playerTwoPoints
             );

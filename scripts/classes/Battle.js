@@ -85,13 +85,13 @@ export default class Battle {
 
     #initializeBattle() {
         this.id === "1" ? this.#shuffleCards(this.theaters) : this.#rotateTheaters(this.theaters);
-        this.#resetTheatersScores(this.theaters);
+        this.#resetTheatersScore(this.theaters);
         this.#shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
 
         UI.displayScore(this.id, this.players);
         UI.displayTheaters(this.theaters);
-        UI.updateScoreForTheaters(this.theaters);
+        UI.displayTheatersScore(this.theaters);
         UI.displayCards(this.cards);
         UI.displayPlayersName(this.players);
 
@@ -115,10 +115,12 @@ export default class Battle {
         this.theaters.unshift(theaters.pop());
     }
 
-    #resetTheatersScores(theaters) {
+    #resetTheatersScore(theaters) {
         theaters.forEach(theater => {
             theater.playerOnePoints = 0;
+            theater.playerOneAdditionalPoints = [];
             theater.playerTwoPoints = 0;
+            theater.playerTwoAdditionalPoints = [];
         });
     }
 
@@ -256,7 +258,7 @@ export default class Battle {
             highlightedTheaterEl.classList.remove("highlighted");
             UI.disableActions();
             UI.clearDescription();
-            UI.updateScoreForTheaters(this.theaters);
+            UI.displayTheatersScore(this.theaters);
             UI.enableTooltip(selectedCardEl, this.selectedCard);
         } else {
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
@@ -268,7 +270,7 @@ export default class Battle {
             this.selectedTheater.playerTwoPoints += this.selectedCard.deployStrength;
 
             UI.flipCard(selectedCardEl);
-            UI.updateScoreForTheaters(this.theaters);
+            UI.displayTheatersScore(this.theaters);
             UI.enableTooltip(selectedCardEl, this.selectedCard);
         }
 
@@ -287,6 +289,9 @@ export default class Battle {
                         adjacentTheater.playerTwoAdditionalPoints.push(3);
                     }
                 });
+
+                UI.displayTheatersScore(this.theaters);
+                break;
         }
     }
 
@@ -314,7 +319,7 @@ export default class Battle {
             UI.disableActions();
             UI.clearDescription();
             UI.discard(selectedCardEl, playerOneColumnEl);
-            UI.updateScoreForTheaters(this.theaters);
+            UI.displayTheatersScore(this.theaters);
         } else {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
             this.selectedCard.flipCard();
@@ -326,7 +331,7 @@ export default class Battle {
             }
 
             UI.discard(selectedCardEl, playerTwoColumnEl);
-            UI.updateScoreForTheaters(this.theaters);
+            UI.displayTheatersScore(this.theaters);
         }
     }
 
