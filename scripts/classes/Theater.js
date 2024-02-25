@@ -5,8 +5,10 @@ export default class Theater {
         this.id = (Theater.id++).toString();
         this.name = name;
         this.playerOneCards = [];
-        this.playerOneCardsTotal = 0;
+        this.playerOnePoints = 0;
+        this.playerOneAdditionalPoints = [];
         this.playerTwoCards = [];
-        this.playerTwoCardsTotal = 0;
+        this.playerTwoPoints = 0;
+        this.playerTwoAdditionalPoints = [];
     }
 }

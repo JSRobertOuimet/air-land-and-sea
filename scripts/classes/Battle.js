@@ -117,8 +117,8 @@ export default class Battle {
 
     #resetTheatersScores(theaters) {
         theaters.forEach(theater => {
-            theater.playerOneCardsTotal = 0;
-            theater.playerTwoCardsTotal = 0;
+            theater.playerOnePoints = 0;
+            theater.playerTwoPoints = 0;
         });
     }
 
@@ -180,6 +180,7 @@ export default class Battle {
         switch (selectedAction) {
             case "deploy":
                 this.#deploy();
+                this.#resolveTacticalAbility();
                 break;
             case "improvise":
                 this.#improvise();
@@ -209,13 +210,13 @@ export default class Battle {
         let battleWinner;
 
         theaters.forEach(theater => {
-            if (theater.playerOneCardsTotal === theater.playerTwoCardsTotal) {
+            if (theater.playerOnePoints === theater.playerTwoPoints) {
                 if (this.startingPlayer === this.players[0]) {
                     theatersControlledByPlayerOne++;
                 } else {
                     theatersControlledByPlayerTwo++;
                 }
-            } else if (theater.playerOneCardsTotal > theater.playerTwoCardsTotal) {
+            } else if (theater.playerOnePoints > theater.playerTwoPoints) {
                 theatersControlledByPlayerOne++;
             } else {
                 theatersControlledByPlayerTwo++;
@@ -250,7 +251,7 @@ export default class Battle {
                 this.selectedTheater.playerOneCards.slice(-2)[0].covered = true;
             }
 
-            this.selectedTheater.playerOneCardsTotal += this.selectedCard.deployStrength;
+            this.selectedTheater.playerOnePoints += this.selectedCard.deployStrength;
 
             highlightedTheaterEl.classList.remove("highlighted");
             UI.disableActions();
@@ -264,7 +265,7 @@ export default class Battle {
                 this.selectedTheater.playerTwoCards.slice(-2)[0].covered = true;
             }
 
-            this.selectedTheater.playerTwoCardsTotal += this.selectedCard.deployStrength;
+            this.selectedTheater.playerTwoPoints += this.selectedCard.deployStrength;
 
             UI.flipCard(selectedCardEl);
             UI.updateScoreForTheaters(this.theaters);
@@ -272,6 +273,21 @@ export default class Battle {
         }
 
         UI.discard(selectedCardEl, playerColumnEl);
+    }
+
+    #resolveTacticalAbility() {
+        switch (this.selectedCard.id) {
+            case "1":
+                const adjacentTheaters = this.#getAdjacentTheaters(this.theaters);
+
+                adjacentTheaters.forEach(adjacentTheater => {
+                    if (this.activePlayer instanceof Player) {
+                        adjacentTheater.playerOneAdditionalPoints.push(3);
+                    } else {
+                        adjacentTheater.playerTwoAdditionalPoints.push(3);
+                    }
+                });
+        }
     }
 
     #improvise() {
@@ -284,7 +300,7 @@ export default class Battle {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
             this.selectedCard.flipCard();
             this.selectedTheater.playerOneCards.push(this.selectedCard);
-            this.selectedTheater.playerOneCardsTotal += this.selectedCard.improviseStrength;
+            this.selectedTheater.playerOnePoints += this.selectedCard.improviseStrength;
 
             if (this.selectedTheater.playerOneCards.length > 1) {
                 this.selectedTheater.playerOneCards.slice(-2)[0].covered = true;
@@ -303,7 +319,7 @@ export default class Battle {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
             this.selectedCard.flipCard();
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
-            this.selectedTheater.playerTwoCardsTotal += this.selectedCard.improviseStrength;
+            this.selectedTheater.playerTwoPoints += this.selectedCard.improviseStrength;
 
             if (this.selectedTheater.playerTwoCards.length > 1) {
                 this.selectedTheater.playerTwoCards.slice(-2)[0].covered = true;
@@ -315,4 +331,22 @@ export default class Battle {
     }
 
     #withdraw() {}
+
+    #getAdjacentTheaters(theaters) {
+        let theaterPosition;
+
+        theaters.forEach((theater, index) => {
+            if (theater.name === this.selectedTheater.name) {
+                theaterPosition = index;
+            }
+        });
+
+        switch (theaterPosition) {
+            case 0:
+            case 2:
+                return [theaters[1]];
+            case 1:
+                return [theaters[0], theaters[2]];
+        }
+    }
 }
