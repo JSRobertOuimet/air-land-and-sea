@@ -55,7 +55,7 @@ export default class Player {
                     let matchingTheaterEl;
 
                     document.querySelectorAll(".theater").forEach(theaterEl => {
-                        if (theaterEl.classList[1] === selectedCard.theater) {
+                        if (theaterEl.classList[1] === selectedCard.theater.toLowerCase()) {
                             matchingTheaterEl = theaterEl;
                             matchingTheaterEl.classList.add("highlighted");
                         }

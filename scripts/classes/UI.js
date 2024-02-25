@@ -58,24 +58,24 @@ export default class UI {
             const playerOneScoreEl = document.createElement("div");
             const playerTwoScoreEl = document.createElement("div");
 
-            depotEl.setAttribute("id", `${theater.name}-depot`);
+            depotEl.setAttribute("id", `${theater.name.toLowerCase()}-depot`);
             depotEl.classList.add("depot");
 
             theaterContainerEl.classList.add("theater-container");
             theaterEl.setAttribute("id", theater.id);
             theaterEl.classList.add("theater");
 
-            nameEl.innerHTML = `&ndash;${this.capitalizeFirstLetter(theater.name)}&ndash;`;
+            nameEl.innerHTML = `&ndash;${theater.name}&ndash;`;
             nameEl.classList.add("name");
 
             switch (theater.name) {
-                case "air":
+                case "Air":
                     theaterEl.classList.add("air");
                     break;
-                case "land":
+                case "Land":
                     theaterEl.classList.add("land");
                     break;
-                case "sea":
+                case "Sea":
                     theaterEl.classList.add("sea");
                     break;
             }
@@ -101,8 +101,8 @@ export default class UI {
     static updateScoreForTheaters(theaters) {
         theaters.forEach(theater => {
             const theaterName = theater.name;
-            const playerOneScoreEl = document.querySelector(`#${theaterName}-depot .player-one-score`);
-            const playerTwoScoreEl = document.querySelector(`#${theaterName}-depot .player-two-score`);
+            const playerOneScoreEl = document.querySelector(`#${theaterName.toLowerCase()}-depot .player-one-score`);
+            const playerTwoScoreEl = document.querySelector(`#${theaterName.toLowerCase()}-depot .player-two-score`);
 
             playerOneScoreEl.innerHTML = theater.playerOneCardsTotal;
             playerTwoScoreEl.innerHTML = theater.playerTwoCardsTotal;
@@ -127,13 +127,13 @@ export default class UI {
             cardContainerEl.classList.add("card");
 
             switch (card.theater) {
-                case "air":
+                case "Air":
                     cardContainerEl.classList.add("air");
                     break;
-                case "land":
+                case "Land":
                     cardContainerEl.classList.add("land");
                     break;
-                case "sea":
+                case "Sea":
                     cardContainerEl.classList.add("sea");
                     break;
             }
@@ -179,8 +179,8 @@ export default class UI {
         tooltipEl.style.left = `${selectedCardEl.getBoundingClientRect().right}px`;
         tooltipEl.classList.add("tooltip");
         card.deployStrength === 6
-                ? (tooltipEl.innerHTML = `${card.tacticalAbility}`)
-                : (tooltipEl.innerHTML = `${card.tacticalAbility} ${card.typeSymbol} – ${card.description}`);
+            ? (tooltipEl.innerHTML = `${card.tacticalAbility}`)
+            : (tooltipEl.innerHTML = `${card.tacticalAbility} ${card.typeSymbol} – ${card.description}`);
 
         document.body.append(tooltipEl);
     }
@@ -259,9 +259,5 @@ export default class UI {
         UI.mainAreaEl.innerHTML = "";
         UI.playerOneHandEl.innerHTML = "";
         UI.playerTwoHandEl.innerHTML = "";
-    }
-
-    static capitalizeFirstLetter(word) {
-        return `${word.charAt(0).toUpperCase()}${word.slice(1)}`;
     }
 }

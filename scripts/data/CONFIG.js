@@ -1,3 +1,3 @@
 export const CONFIG = {
-    cardsDealt: 12
+    cardsDealt: 12,
 };
