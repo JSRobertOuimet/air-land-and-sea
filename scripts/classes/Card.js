@@ -3,15 +3,71 @@ export default class Card {
 
     constructor(card) {
         this.id = (Card.id++).toString();
-        this.theater = card.theater;
-        this.deployStrength = card.deployStrength;
-        this.improviseStrength = card.improviseStrength;
-        this.tacticalAbility = card.tacticalAbility;
-        this.type = card.type;
-        this.typeSymbol = card.typeSymbol;
-        this.description = card.description;
+        this._theater = card.theater;
+        this._deployStrength = card.deployStrength;
+        this._improviseStrength = card.improviseStrength;
+        this._tacticalAbility = card.tacticalAbility;
+        this._type = card.type;
+        this._typeSymbol = card.typeSymbol;
+        this._description = card.description;
         this._facedown = false;
         this._covered = false;
+    }
+
+    get theater() {
+        return this._theater;
+    }
+
+    set theater(value) {
+        this._theater = value;
+    }
+
+    get deployStrength() {
+        return this._deployStrength;
+    }
+
+    set deployStrength(value) {
+        this._deployStrength = value;
+    }
+
+    get improviseStrength() {
+        return this._improviseStrength;
+    }
+
+    set improviseStrength(value) {
+        this._improviseStrength = value;
+    }
+
+    get tacticalAbility() {
+        return this._tacticalAbility;
+    }
+
+    set tacticalAbility(value) {
+        this._tacticalAbility = value;
+    }
+
+    get type() {
+        return this._type;
+    }
+
+    set type(value) {
+        this._type = value;
+    }
+
+    get typeSymbol() {
+        return this._typeSymbol;
+    }
+
+    set typeSymbol(value) {
+        this._typeSymbol = value;
+    }
+
+    get description() {
+        return this._description;
+    }
+
+    set description(value) {
+        this._description = value;
     }
 
     get facedown() {
