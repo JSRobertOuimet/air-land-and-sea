@@ -11,4 +11,13 @@ export default class Theater {
         this.playerTwoPoints = 0;
         this.playerTwoAdditionalPoints = [];
     }
+
+    getTheaterScore(player) {
+        switch (player) {
+            case "playerOne":
+                return this.playerOneAdditionalPoints.reduce((accumulator, current) => accumulator + current, this.playerOnePoints);
+            case "playerTwo":
+                return this.playerTwoAdditionalPoints.reduce((accumulator, current) => accumulator + current, this.playerTwoPoints);
+        }
+    }
 }

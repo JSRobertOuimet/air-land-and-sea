@@ -192,7 +192,7 @@ export default class Battle {
                 break;
         }
 
-        this.log.push(new Log(this.activePlayer.name, this.selectedCard, this.selectedAction, this.selectedTheater));
+        this.log.push(new Log(this.activePlayer.name, this.selectedCard, this.selectedAction, this.selectedTheater, this.players, this.theaters));
     }
 
     #endTurn() {
@@ -248,33 +248,30 @@ export default class Battle {
 
         if (this.activePlayer instanceof Player) {
             this.selectedTheater.playerOneCards.push(this.selectedCard);
+            this.selectedTheater.playerOnePoints += this.selectedCard.deployStrength;
 
             if (this.selectedTheater.playerOneCards.length > 1) {
-                this.selectedTheater.playerOneCards.slice(-2)[0].covered = true;
+                this.selectedTheater.playerOneCards.at(-2).covered = true;
             }
-
-            this.selectedTheater.playerOnePoints += this.selectedCard.deployStrength;
 
             highlightedTheaterEl.classList.remove("highlighted");
             UI.disableActions();
             UI.clearDescription();
-            UI.displayTheatersScore(this.theaters);
-            UI.enableTooltip(selectedCardEl, this.selectedCard);
         } else {
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
+            this.selectedTheater.playerTwoPoints += this.selectedCard.deployStrength;
 
             if (this.selectedTheater.playerTwoCards.length > 1) {
-                this.selectedTheater.playerTwoCards.slice(-2)[0].covered = true;
+                this.selectedTheater.playerTwoCards.at(-2).covered = true;
             }
-
-            this.selectedTheater.playerTwoPoints += this.selectedCard.deployStrength;
 
             UI.flipCard(selectedCardEl);
             UI.displayTheatersScore(this.theaters);
-            UI.enableTooltip(selectedCardEl, this.selectedCard);
         }
 
         UI.discard(selectedCardEl, playerColumnEl);
+        UI.enableTooltip(selectedCardEl, this.selectedCard);
+        UI.displayTheatersScore(this.theaters);
     }
 
     #resolveTacticalAbility() {
@@ -292,14 +289,24 @@ export default class Battle {
 
                 UI.displayTheatersScore(this.theaters);
                 break;
+            case "10":
+                const coveredCards = this.#getCoveredCards(this.activePlayer, this.selectedTheater);
+
+                coveredCards.forEach(coveredCard => {
+                    coveredCard.deployStrength = 4;
+                    coveredCard.improviseStrength = 4;
+                });
+                UI.displayTheatersScore(this.theaters);
         }
     }
 
     #improvise() {
         const selectedCardEl = document.querySelector(".selected");
         const highlightedTheaterEls = document.querySelectorAll(".highlighted");
-        const playerOneColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-one-column`);
-        const playerTwoColumnEl = document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-two-column`);
+        const playerColumnEl =
+            this.activePlayer instanceof Player
+                ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-one-column`)
+                : document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-two-column`);
 
         if (this.activePlayer instanceof Player) {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
@@ -308,7 +315,7 @@ export default class Battle {
             this.selectedTheater.playerOnePoints += this.selectedCard.improviseStrength;
 
             if (this.selectedTheater.playerOneCards.length > 1) {
-                this.selectedTheater.playerOneCards.slice(-2)[0].covered = true;
+                this.selectedTheater.playerOneCards.at(-2).covered = true;
             }
 
             highlightedTheaterEls.forEach(highlightedTheaterEl => {
@@ -318,8 +325,6 @@ export default class Battle {
             UI.flipCard(selectedCardEl);
             UI.disableActions();
             UI.clearDescription();
-            UI.discard(selectedCardEl, playerOneColumnEl);
-            UI.displayTheatersScore(this.theaters);
         } else {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
             this.selectedCard.flipCard();
@@ -327,31 +332,37 @@ export default class Battle {
             this.selectedTheater.playerTwoPoints += this.selectedCard.improviseStrength;
 
             if (this.selectedTheater.playerTwoCards.length > 1) {
-                this.selectedTheater.playerTwoCards.slice(-2)[0].covered = true;
+                this.selectedTheater.playerTwoCards.at(-2).covered = true;
             }
-
-            UI.discard(selectedCardEl, playerTwoColumnEl);
-            UI.displayTheatersScore(this.theaters);
         }
+
+        UI.discard(selectedCardEl, playerColumnEl);
+        UI.displayTheatersScore(this.theaters);
     }
 
     #withdraw() {}
 
     #getAdjacentTheaters(theaters) {
-        let theaterPosition;
+        const adjacentTheaters = [];
+        const theaterIndex = theaters.findIndex(theater => theater.name === this.selectedTheater.name);
 
-        theaters.forEach((theater, index) => {
-            if (theater.name === this.selectedTheater.name) {
-                theaterPosition = index;
-            }
-        });
-
-        switch (theaterPosition) {
+        switch (theaterIndex) {
             case 0:
             case 2:
-                return [theaters[1]];
+                adjacentTheaters.push(theaters[1]);
+                break;
             case 1:
-                return [theaters[0], theaters[2]];
+                adjacentTheaters.push(theaters[0]);
+                adjacentTheaters.push(theaters[2]);
+                break;
         }
+
+        return adjacentTheaters;
+    }
+
+    #getCoveredCards(activePlayer, theater) {
+        const playerCards = activePlayer instanceof Player ? theater.playerOneCards : theater.playerTwoCards;
+
+        return playerCards.filter(card => card.covered);
     }
 }
