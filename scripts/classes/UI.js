@@ -5,14 +5,14 @@ export default class UI {
     static scoreEl = document.querySelector("#score");
     static battleNumberEl = document.querySelector("#battle-number");
     static mainAreaEl = document.querySelector("#main-area");
-    static playerOneHandEl = document.querySelector("#player-one .hand");
-    static playerTwoHandEl = document.querySelector("#player-two .hand");
     static actionButtonEls = document.querySelectorAll("#action-bar button");
     static deployButtonEl = document.querySelector("#deploy");
     static improviseButtonEl = document.querySelector("#improvise");
     static withdrawButtonEl = document.querySelector("#withdraw");
     static descriptionEl = document.querySelector("#description");
+    static playerOneHandEl = document.querySelector("#player-one .hand");
     static playerOneNameEl = document.querySelector("#player-one .name");
+    static playerTwoHandEl = document.querySelector("#player-two .hand");
     static playerTwoNameEl = document.querySelector("#player-two .name");
     static overlayEl = document.querySelector("#overlay");
     static battleWinnerEl = document.querySelector("#battle-winner");
@@ -178,7 +178,7 @@ export default class UI {
         selectedCardEl.addEventListener("mouseleave", this.hideTooltip);
     }
 
-    static showTooltip(selectedCardEl, card, e) {
+    static showTooltip(selectedCardEl, card) {
         const tooltipEl = document.createElement("div");
 
         tooltipEl.style.top = `${selectedCardEl.getBoundingClientRect().bottom}px`;
@@ -264,6 +264,8 @@ export default class UI {
         UI.scoreEl.innerHTML = "";
         UI.mainAreaEl.innerHTML = "";
         UI.playerOneHandEl.innerHTML = "";
+        UI.playerOneTacticalAbilitiesEl.innerHTML = "";
         UI.playerTwoHandEl.innerHTML = "";
+        UI.playerTwoTacticalAbilitiesEl.innerHTML = "";
     }
 }
