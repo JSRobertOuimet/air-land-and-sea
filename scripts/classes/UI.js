@@ -264,8 +264,6 @@ export default class UI {
         UI.scoreEl.innerHTML = "";
         UI.mainAreaEl.innerHTML = "";
         UI.playerOneHandEl.innerHTML = "";
-        UI.playerOneTacticalAbilitiesEl.innerHTML = "";
         UI.playerTwoHandEl.innerHTML = "";
-        UI.playerTwoTacticalAbilitiesEl.innerHTML = "";
     }
 }
