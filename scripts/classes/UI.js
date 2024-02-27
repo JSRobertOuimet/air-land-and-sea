@@ -104,8 +104,8 @@ export default class UI {
             const playerOneScoreEl = document.querySelector(`#${theaterName.toLowerCase()}-depot .player-one-score`);
             const playerTwoScoreEl = document.querySelector(`#${theaterName.toLowerCase()}-depot .player-two-score`);
 
-            playerOneScoreEl.innerHTML = theater.getTheaterScore("playerOne");
-            playerTwoScoreEl.innerHTML = theater.getTheaterScore("playerTwo");
+            playerOneScoreEl.innerHTML = theater.calculatePlayerScore("playerOne");
+            playerTwoScoreEl.innerHTML = theater.calculatePlayerScore("playerTwo");
         });
     }
 

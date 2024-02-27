@@ -95,6 +95,8 @@ export default class Battle {
         UI.displayCards(this.cards);
         UI.displayPlayersName(this.players);
 
+        console.log(this);
+
         this.#runBattle();
     }
 
@@ -117,10 +119,12 @@ export default class Battle {
 
     #resetTheatersScore(theaters) {
         theaters.forEach(theater => {
-            theater.playerOnePoints = 0;
+            theater.playerOneCards = [];
             theater.playerOneAdditionalPoints = [];
-            theater.playerTwoPoints = 0;
+            theater.playerOnePoints = theater.calculatePlayerScore("playerOne");
+            theater.playerTwoCards = [];
             theater.playerTwoAdditionalPoints = [];
+            theater.playerTwoPoints = theater.calculatePlayerScore("playerTwo");
         });
     }
 
@@ -296,7 +300,9 @@ export default class Battle {
                     coveredCard.deployStrength = 4;
                     coveredCard.improviseStrength = 4;
                 });
+
                 UI.displayTheatersScore(this.theaters);
+                break;
         }
     }
 

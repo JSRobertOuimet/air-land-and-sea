@@ -1,3 +1,5 @@
+import Player from "./Player.js";
+
 export default class Theater {
     static id = 1;
 
@@ -12,12 +14,44 @@ export default class Theater {
         this.playerTwoAdditionalPoints = [];
     }
 
-    getTheaterScore(player) {
+    calculatePlayerScore(player) {
+        debugger;
+        let points = [];
+        let subtotal = 0;
+
         switch (player) {
             case "playerOne":
-                return this.playerOneAdditionalPoints.reduce((accumulator, current) => accumulator + current, this.playerOnePoints);
+                if (this.playerOneCards.length === 0) return 0;
+
+                this.playerOneCards.forEach(playerOneCard => {
+                    if (playerOneCard.facedown) {
+                        points.push(playerOneCard.improviseStrength);
+                    } else {
+                        points.push(playerOneCard.deployStrength);
+                    }
+                });
+
+                subtotal = this.#calculateSubtotal(points);
+
+                return this.playerOneAdditionalPoints.reduce((accumulator, current) => accumulator + current, subtotal);
             case "playerTwo":
-                return this.playerTwoAdditionalPoints.reduce((accumulator, current) => accumulator + current, this.playerTwoPoints);
+                if (this.playerTwoCards.length === 0) return 0;
+
+                this.playerTwoCards.forEach(playerTwoCard => {
+                    if (playerTwoCard.facedown) {
+                        points.push(playerTwoCard.improviseStrength);
+                    } else {
+                        points.push(playerTwoCard.deployStrength);
+                    }
+                });
+
+                subtotal = this.#calculateSubtotal(points);
+
+                return this.playerTwoAdditionalPoints.reduce((accumulator, current) => accumulator + current, subtotal);
         }
+    }
+
+    #calculateSubtotal(points) {
+        return points.reduce((accumulator, current) => accumulator + current, 0);
     }
 }
