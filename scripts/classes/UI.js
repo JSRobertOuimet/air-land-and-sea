@@ -100,12 +100,14 @@ export default class UI {
 
     static displayTheatersScore(theaters) {
         theaters.forEach(theater => {
-            const theaterName = theater.name;
-            const playerOneScoreEl = document.querySelector(`#${theaterName.toLowerCase()}-depot .player-one-score`);
-            const playerTwoScoreEl = document.querySelector(`#${theaterName.toLowerCase()}-depot .player-two-score`);
+            const playerOneScoreEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-one-score`);
+            const playerTwoScoreEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-two-score`);
 
-            playerOneScoreEl.innerHTML = theater.calculatePlayerScore("playerOne");
-            playerTwoScoreEl.innerHTML = theater.calculatePlayerScore("playerTwo");
+            playerOneScoreEl.innerHTML = theater.calculatePlayerScore("1");
+            playerTwoScoreEl.innerHTML = theater.calculatePlayerScore("2");
+
+            playerOneScoreEl.style.fontWeight = theater.playerOneBonus.length > 0 ? "bold" : "normal";
+            playerTwoScoreEl.style.fontWeight = theater.playerTwoBonus.length > 0 ? "bold" : "normal";
         });
     }
 
