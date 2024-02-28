@@ -85,7 +85,8 @@ export default class Battle {
 
     #initializeBattle() {
         this.id === "1" ? this.#shuffleCards(this.theaters) : this.#rotateTheaters(this.theaters);
-        this.#resetTheatersScore(this.theaters);
+        this.#resetStateForTheaters(this.theaters);
+        this.#resetStateForCards(this.cards);
         this.#shuffleCards(this.cards);
         this.#dealCards(this.players, this.cards);
 
@@ -94,8 +95,6 @@ export default class Battle {
         UI.displayTheatersScore(this.theaters);
         UI.displayCards(this.cards);
         UI.displayPlayersName(this.players);
-
-        console.log(this);
 
         this.#runBattle();
     }
@@ -117,14 +116,21 @@ export default class Battle {
         this.theaters.unshift(theaters.pop());
     }
 
-    #resetTheatersScore(theaters) {
+    #resetStateForTheaters(theaters) {
         theaters.forEach(theater => {
             theater.playerOneCards = [];
-            theater.playerOneAdditionalPoints = [];
-            theater.playerOnePoints = theater.calculatePlayerScore("playerOne");
+            theater.playerOneBonus = [];
+            theater.playerOneScore = 0;
             theater.playerTwoCards = [];
-            theater.playerTwoAdditionalPoints = [];
-            theater.playerTwoPoints = theater.calculatePlayerScore("playerTwo");
+            theater.playerTwoBonus = [];
+            theater.playerTwoScore = 0;
+        });
+    }
+
+    #resetStateForCards(cards) {
+        cards.forEach(card => {
+            card.facedown = false;
+            card.covered = false;
         });
     }
 
@@ -216,13 +222,13 @@ export default class Battle {
         let battleWinner;
 
         theaters.forEach(theater => {
-            if (theater.playerOnePoints === theater.playerTwoPoints) {
+            if (theater.playerOneScore === theater.playerTwoScore) {
                 if (this.startingPlayer === this.players[0]) {
                     theatersControlledByPlayerOne++;
                 } else {
                     theatersControlledByPlayerTwo++;
                 }
-            } else if (theater.playerOnePoints > theater.playerTwoPoints) {
+            } else if (theater.playerOneScore > theater.playerTwoScore) {
                 theatersControlledByPlayerOne++;
             } else {
                 theatersControlledByPlayerTwo++;
@@ -252,7 +258,7 @@ export default class Battle {
 
         if (this.activePlayer instanceof Player) {
             this.selectedTheater.playerOneCards.push(this.selectedCard);
-            this.selectedTheater.playerOnePoints += this.selectedCard.deployStrength;
+            this.selectedTheater.calculatePlayerScore("1");
 
             if (this.selectedTheater.playerOneCards.length > 1) {
                 this.selectedTheater.playerOneCards.at(-2).covered = true;
@@ -263,7 +269,7 @@ export default class Battle {
             UI.clearDescription();
         } else {
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
-            this.selectedTheater.playerTwoPoints += this.selectedCard.deployStrength;
+            this.selectedTheater.calculatePlayerScore("2");
 
             if (this.selectedTheater.playerTwoCards.length > 1) {
                 this.selectedTheater.playerTwoCards.at(-2).covered = true;
@@ -285,23 +291,23 @@ export default class Battle {
 
                 adjacentTheaters.forEach(adjacentTheater => {
                     if (this.activePlayer instanceof Player) {
-                        adjacentTheater.playerOneAdditionalPoints.push(3);
+                        adjacentTheater.playerOneBonus.push(3);
                     } else {
-                        adjacentTheater.playerTwoAdditionalPoints.push(3);
+                        adjacentTheater.playerTwoBonus.push(3);
                     }
                 });
 
                 UI.displayTheatersScore(this.theaters);
                 break;
             case "10":
-                const coveredCards = this.#getCoveredCards(this.activePlayer, this.selectedTheater);
+                // const coveredCards = this.#getCoveredCards(this.activePlayer, this.selectedTheater);
 
-                coveredCards.forEach(coveredCard => {
-                    coveredCard.deployStrength = 4;
-                    coveredCard.improviseStrength = 4;
-                });
+                // coveredCards.forEach(coveredCard => {
+                //     coveredCard.deployStrength = 4;
+                //     coveredCard.improviseStrength = 4;
+                // });
 
-                UI.displayTheatersScore(this.theaters);
+                // UI.displayTheatersScore(this.theaters);
                 break;
         }
     }
@@ -318,11 +324,12 @@ export default class Battle {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
             this.selectedCard.flipCard();
             this.selectedTheater.playerOneCards.push(this.selectedCard);
-            this.selectedTheater.playerOnePoints += this.selectedCard.improviseStrength;
 
             if (this.selectedTheater.playerOneCards.length > 1) {
                 this.selectedTheater.playerOneCards.at(-2).covered = true;
             }
+
+            this.selectedTheater.calculatePlayerScore("1");
 
             highlightedTheaterEls.forEach(highlightedTheaterEl => {
                 highlightedTheaterEl.classList.remove("highlighted");
@@ -335,11 +342,12 @@ export default class Battle {
             this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
             this.selectedCard.flipCard();
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
-            this.selectedTheater.playerTwoPoints += this.selectedCard.improviseStrength;
 
             if (this.selectedTheater.playerTwoCards.length > 1) {
                 this.selectedTheater.playerTwoCards.at(-2).covered = true;
             }
+
+            this.selectedTheater.calculatePlayerScore("2");
         }
 
         UI.discard(selectedCardEl, playerColumnEl);
