@@ -129,6 +129,7 @@ export default class Battle {
 
     #resetStateForCards(cards) {
         cards.forEach(card => {
+            card.overwrittenStrength = false;
             card.facedown = false;
             card.covered = false;
         });
@@ -300,14 +301,13 @@ export default class Battle {
                 UI.displayTheatersScore(this.theaters);
                 break;
             case "10":
-                // const coveredCards = this.#getCoveredCards(this.activePlayer, this.selectedTheater);
+                const coveredCards = this.#getCoveredCards(this.activePlayer, this.selectedTheater);
 
-                // coveredCards.forEach(coveredCard => {
-                //     coveredCard.deployStrength = 4;
-                //     coveredCard.improviseStrength = 4;
-                // });
+                coveredCards.forEach(coveredCard => {
+                    coveredCard.overwrittenStrength = true;
+                });
 
-                // UI.displayTheatersScore(this.theaters);
+                UI.displayTheatersScore(this.theaters);
                 break;
         }
     }
