@@ -32,16 +32,16 @@ export default class UI {
         const botScoreEl = document.createElement("div");
 
         battleNumberEl.setAttribute("id", "battle-number");
-        battleNumberEl.innerHTML = `Battle #${battleID}`;
+        battleNumberEl.textContent = `Battle #${battleID}`;
 
         playerScoreContainerEl.setAttribute("id", "player-score");
-        playerNameEl.innerHTML = `${players[0].name} (You)`;
-        playerScoreEl.innerHTML = `${players[0].victoryPoints}`;
+        playerNameEl.textContent = `${players[0].name} (You)`;
+        playerScoreEl.textContent = `${players[0].victoryPoints}`;
         playerScoreContainerEl.append(playerNameEl, playerScoreEl);
 
         botScoreContainerEl.setAttribute("id", "bot-score");
-        botNameEl.innerHTML = `${players[1].name}`;
-        botScoreEl.innerHTML = `${players[1].victoryPoints}`;
+        botNameEl.textContent = `${players[1].name}`;
+        botScoreEl.textContent = `${players[1].victoryPoints}`;
         botScoreContainerEl.append(botNameEl, botScoreEl);
 
         UI.scoreEl.append(battleNumberEl, playerScoreContainerEl, botScoreContainerEl);
@@ -65,7 +65,7 @@ export default class UI {
             theaterEl.setAttribute("id", theater.id);
             theaterEl.classList.add("theater");
 
-            nameEl.innerHTML = `&ndash;${theater.name}&ndash;`;
+            nameEl.textContent = `–${theater.name}–`;
             nameEl.classList.add("name");
 
             switch (theater.name) {
@@ -103,8 +103,8 @@ export default class UI {
             const playerOneScoreEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-one-score`);
             const playerTwoScoreEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-two-score`);
 
-            playerOneScoreEl.innerHTML = theater.calculatePlayerScore("1");
-            playerTwoScoreEl.innerHTML = theater.calculatePlayerScore("2");
+            playerOneScoreEl.textContent = theater.calculatePlayerScore("1");
+            playerTwoScoreEl.textContent = theater.calculatePlayerScore("2");
 
             playerOneScoreEl.style.fontWeight = theater.playerOneBonus.length > 0 ? "bold" : "normal";
             playerTwoScoreEl.style.fontWeight = theater.playerTwoBonus.length > 0 ? "bold" : "normal";
@@ -122,8 +122,6 @@ export default class UI {
             const cardContainerEl = document.createElement("div");
             const cardFrontEl = document.createElement("div");
             const cardBackEl = document.createElement("div");
-            const strengthEl = document.createElement("div");
-            const defaultValueEl = document.createElement("div");
 
             cardContainerEl.setAttribute("id", card.id);
             cardContainerEl.classList.add("card");
@@ -141,15 +139,9 @@ export default class UI {
             }
 
             cardFrontEl.classList.add("front");
-            strengthEl.innerHTML = card.deployStrength;
-            strengthEl.classList.add("strength");
-
+            cardFrontEl.textContent = card.deployStrength;
             cardBackEl.classList.add("back");
-            defaultValueEl.innerHTML = card.improviseStrength;
-            defaultValueEl.classList.add("defaut-value");
-
-            cardFrontEl.append(strengthEl);
-            cardBackEl.append(defaultValueEl);
+            cardBackEl.textContent = card.improviseStrength;
             cardContainerEl.append(cardFrontEl, cardBackEl);
 
             if (index < CONFIG.cardsDealt) {
@@ -181,8 +173,8 @@ export default class UI {
         tooltipEl.style.left = `${selectedCardEl.getBoundingClientRect().right}px`;
         tooltipEl.classList.add("tooltip");
         card.deployStrength === 6
-            ? (tooltipEl.innerHTML = `${card.tacticalAbility}`)
-            : (tooltipEl.innerHTML = `${card.tacticalAbility} ${card.typeSymbol} – ${card.description}`);
+            ? (tooltipEl.textContent = `${card.tacticalAbility}`)
+            : (tooltipEl.textContent = `${card.tacticalAbility} ${card.typeSymbol} – ${card.description}`);
 
         document.body.append(tooltipEl);
     }
@@ -211,8 +203,8 @@ export default class UI {
     }
 
     static displayPlayersName(players) {
-        UI.playerOneNameEl.innerHTML = `${players[0].name} (You)`;
-        UI.playerTwoNameEl.innerHTML = players[1].name;
+        UI.playerOneNameEl.textContent = `${players[0].name} (You)`;
+        UI.playerTwoNameEl.textContent = players[1].name;
     }
 
     static markActivePlayer(activePlayer) {
@@ -236,12 +228,12 @@ export default class UI {
     }
 
     static clearDescription() {
-        UI.descriptionEl.innerHTML = "";
+        UI.descriptionEl.textContent = "";
     }
 
     static displayBattleEndOverlay(battleWinner) {
         UI.overlayEl.style.display = "flex";
-        UI.battleWinnerEl.innerHTML = `${battleWinner.name} won the battle!`;
+        UI.battleWinnerEl.textContent = `${battleWinner.name} won the battle!`;
         UI.nextBattleButtonEl.disabled = false;
     }
 
@@ -249,7 +241,7 @@ export default class UI {
         UI.overlayEl.style.display = "flex";
         UI.battleWinnerEl.style.display = "none";
         UI.gameWinnerEl.style.display = "flex";
-        UI.gameWinnerEl.innerHTML = `${gameWinner.name} won the game!`;
+        UI.gameWinnerEl.textContent = `${gameWinner.name} won the game!`;
         UI.nextGameButtonEl.style.display = "block";
         UI.nextGameButtonEl.disabled = false;
         UI.nextBattleButtonEl.remove();
@@ -257,9 +249,9 @@ export default class UI {
 
     static clearForNextBattle() {
         UI.overlayEl.style.display = "none";
-        UI.scoreEl.innerHTML = "";
-        UI.mainAreaEl.innerHTML = "";
-        UI.playerOneHandEl.innerHTML = "";
-        UI.playerTwoHandEl.innerHTML = "";
+        UI.scoreEl.textContent = "";
+        UI.mainAreaEl.textContent = "";
+        UI.playerOneHandEl.textContent = "";
+        UI.playerTwoHandEl.textContent = "";
     }
 }
