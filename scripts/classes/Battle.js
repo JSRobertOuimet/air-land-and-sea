@@ -259,7 +259,7 @@ export default class Battle {
 
         if (this.activePlayer instanceof Player) {
             this.selectedTheater.playerOneCards.push(this.selectedCard);
-            this.selectedTheater.calculatePlayerScore("1");
+            this.selectedTheater.calculatePlayerTotal("1");
 
             if (this.selectedTheater.playerOneCards.length > 1) {
                 this.selectedTheater.playerOneCards.at(-2).covered = true;
@@ -270,7 +270,7 @@ export default class Battle {
             UI.clearDescription();
         } else {
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
-            this.selectedTheater.calculatePlayerScore("2");
+            this.selectedTheater.calculatePlayerTotal("2");
 
             if (this.selectedTheater.playerTwoCards.length > 1) {
                 this.selectedTheater.playerTwoCards.at(-2).covered = true;
@@ -329,7 +329,7 @@ export default class Battle {
                 this.selectedTheater.playerOneCards.at(-2).covered = true;
             }
 
-            this.selectedTheater.calculatePlayerScore("1");
+            this.selectedTheater.calculatePlayerTotal("1");
 
             highlightedTheaterEls.forEach(highlightedTheaterEl => {
                 highlightedTheaterEl.classList.remove("highlighted");
@@ -347,7 +347,7 @@ export default class Battle {
                 this.selectedTheater.playerTwoCards.at(-2).covered = true;
             }
 
-            this.selectedTheater.calculatePlayerScore("2");
+            this.selectedTheater.calculatePlayerTotal("2");
         }
 
         UI.discard(selectedCardEl, playerColumnEl);

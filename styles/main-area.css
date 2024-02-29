@@ -26,13 +26,6 @@
     align-items: center;
 }
 
-.player-one-score,
-.player-two-score {
-    margin-block: 1rem;
-    text-align: center;
-    user-select: none;
-}
-
 .player-one-column {
     min-height: calc(var(--card-width) * var(--card-factor));
 }
@@ -55,4 +48,12 @@
 .discarded {
     top: calc(var(--card-width) / 2 * var(--card-factor));
     margin-top: calc(var(--card-width) * var(--card-factor) * -1);
+}
+
+.player-one-total,
+.player-two-total {
+    display: flex;
+    justify-content: center;
+    margin-block: 1rem;
+    user-select: none;
 }

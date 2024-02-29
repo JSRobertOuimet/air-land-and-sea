@@ -55,8 +55,12 @@ export default class UI {
             const nameEl = document.createElement("div");
             const playerOneColumnEl = document.createElement("div");
             const playerTwoColumnEl = document.createElement("div");
-            const playerOneScoreEl = document.createElement("div");
-            const playerTwoScoreEl = document.createElement("div");
+            const playerOneSubtotalEl = document.createElement("div");
+            const playerOneBonusEl = document.createElement("div");
+            const playerOneTotalEl = document.createElement("div");
+            const playerTwoSubtotalEl = document.createElement("div");
+            const playerTwoBonusEl = document.createElement("div");
+            const playerTwoTotalEl = document.createElement("div");
 
             depotEl.setAttribute("id", `${theater.name.toLowerCase()}-depot`);
             depotEl.classList.add("depot");
@@ -81,17 +85,24 @@ export default class UI {
             }
 
             playerOneColumnEl.classList.add("column", "player-one-column");
-            playerOneScoreEl.classList.add("player-one-score");
+            playerOneSubtotalEl.classList.add("subtotal");
+            playerOneBonusEl.classList.add("bonus");
+            playerOneTotalEl.classList.add("player-one-total");
             playerTwoColumnEl.classList.add("column", "player-two-column");
-            playerTwoScoreEl.classList.add("player-two-score");
+            playerTwoSubtotalEl.classList.add("subtotal");
+            playerTwoBonusEl.classList.add("bonus");
+            playerTwoTotalEl.classList.add("player-two-total");
 
             theaterEl.append(nameEl);
             theaterContainerEl.append(theaterEl);
 
+            playerOneTotalEl.append(playerOneSubtotalEl, playerOneBonusEl);
+            playerTwoTotalEl.append(playerTwoSubtotalEl, playerTwoBonusEl);
+
             depotEl.append(playerTwoColumnEl);
-            depotEl.append(playerTwoScoreEl);
+            depotEl.append(playerTwoTotalEl);
             depotEl.append(theaterContainerEl);
-            depotEl.append(playerOneScoreEl);
+            depotEl.append(playerOneTotalEl);
             depotEl.append(playerOneColumnEl);
 
             UI.mainAreaEl.append(depotEl);
@@ -100,14 +111,15 @@ export default class UI {
 
     static displayTheatersScore(theaters) {
         theaters.forEach(theater => {
-            const playerOneScoreEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-one-score`);
-            const playerTwoScoreEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-two-score`);
+            const playerOneSubtotalEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-one-total .subtotal`);
+            const playerOneBonusEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-one-total .bonus`);
+            const playerTwoSubtotalEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-two-total .subtotal`);
+            const playerTwoBonusEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-two-total .bonus`);
 
-            playerOneScoreEl.textContent = theater.calculatePlayerScore("1");
-            playerTwoScoreEl.textContent = theater.calculatePlayerScore("2");
-
-            playerOneScoreEl.style.fontWeight = theater.playerOneBonus.length > 0 ? "bold" : "normal";
-            playerTwoScoreEl.style.fontWeight = theater.playerTwoBonus.length > 0 ? "bold" : "normal";
+            playerOneSubtotalEl.textContent = theater.calculatePlayerSubtotal("1");
+            playerOneBonusEl.textContent = theater.playerOneBonus.length > 0 ? `(+${theater.calculatePlayerBonus("1")})` : "";
+            playerTwoSubtotalEl.textContent = theater.calculatePlayerSubtotal("2");
+            playerTwoBonusEl.textContent = theater.playerTwoBonus.length > 0 ? `(+${theater.calculatePlayerBonus("2")})` : "";
         });
     }
 
