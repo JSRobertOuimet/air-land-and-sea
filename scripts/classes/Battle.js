@@ -92,7 +92,7 @@ export default class Battle {
 
         UI.displayScore(this.id, this.players);
         UI.displayTheaters(this.theaters);
-        UI.displayTheatersScore(this.theaters);
+        UI.displayPlayerTotal(this.theaters);
         UI.displayCards(this.cards);
         UI.displayPlayersName(this.players);
 
@@ -207,9 +207,6 @@ export default class Battle {
     }
 
     #endTurn() {
-        console.clear();
-        console.log(this.log);
-
         this.selectedCard = null;
         this.selectedAction = "";
         this.selectedTheater = null;
@@ -280,12 +277,12 @@ export default class Battle {
             }
 
             UI.flipCard(selectedCardEl);
-            UI.displayTheatersScore(this.theaters);
+            UI.displayPlayerTotal(this.theaters);
         }
 
         UI.discard(selectedCardEl, playerColumnEl);
         UI.enableTooltip(selectedCardEl, this.selectedCard);
-        UI.displayTheatersScore(this.theaters);
+        UI.displayPlayerTotal(this.theaters);
     }
 
     #resolveTacticalAbility() {
@@ -301,16 +298,17 @@ export default class Battle {
                     }
                 });
 
-                UI.displayTheatersScore(this.theaters);
+                UI.displayPlayerTotal(this.theaters);
                 break;
             case "10":
                 const coveredCards = this.#getCoveredCards(this.activePlayer, this.selectedTheater);
 
                 coveredCards.forEach(coveredCard => {
                     coveredCard.overwrittenStrength = true;
+                    UI.displayOverwrittenStrength(this.selectedTheater, this.activePlayer, coveredCard);
                 });
 
-                UI.displayTheatersScore(this.theaters);
+                UI.displayPlayerTotal(this.theaters);
                 break;
         }
     }
@@ -354,7 +352,7 @@ export default class Battle {
         }
 
         UI.discard(selectedCardEl, playerColumnEl);
-        UI.displayTheatersScore(this.theaters);
+        UI.displayPlayerTotal(this.theaters);
     }
 
     #withdraw() {}

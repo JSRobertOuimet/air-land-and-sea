@@ -109,7 +109,7 @@ export default class UI {
         });
     }
 
-    static displayTheatersScore(theaters) {
+    static displayPlayerTotal(theaters) {
         theaters.forEach(theater => {
             const playerOneSubtotalEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-one-total .subtotal`);
             const playerOneBonusEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-one-total .bonus`);
@@ -169,6 +169,19 @@ export default class UI {
                 discardPileEl.append(cardContainerEl);
                 cardContainerEl.classList.add("facedown", "discarded");
                 cardContainerEl.firstChild.style.display = "none";
+            }
+        });
+    }
+
+    static displayOverwrittenStrength(selectedTheater, activePlayer, coveredCard) {
+        const theaterName = selectedTheater.name.toLowerCase();
+        const playerNumber = activePlayer.id === "1" ? "one" : "two";
+        const cardEls = document.querySelectorAll(`#${theaterName}-depot .player-${playerNumber}-column .card`);
+
+        cardEls.forEach(cardEl => {
+            if (cardEl.id === coveredCard.id) {
+                cardEl.children[0].textContent = coveredCard.deployStrength;
+                cardEl.children[1].textContent = coveredCard.improviseStrength;
             }
         });
     }
