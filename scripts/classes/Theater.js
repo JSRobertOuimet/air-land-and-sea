@@ -44,11 +44,11 @@ export default class Theater {
         this._playerTwoCards = value;
     }
 
-    get playerTwoScore() {
+    get playerTwoTotal() {
         return this._playerTwoTotal;
     }
 
-    set playerTwoScore(value) {
+    set playerTwoTotal(value) {
         this._playerTwoTotal = value;
     }
 
@@ -61,16 +61,9 @@ export default class Theater {
     }
 
     calculatePlayerTotal(playerID) {
-        const cardStrength = card => (card.facedown ? card.improviseStrength : card.deployStrength);
-        const cardPoints = this.#getCardsForPlayer(playerID).map(cardStrength);
-        const subtotal = cardPoints.reduce((sum, point) => sum + point, 0);
-        const additionalPoints = this.#getAdditionalPointsForPlayer(playerID);
-        const total =
-            playerID === "1"
-                ? (this.playerOneTotal = subtotal + additionalPoints.reduce((sum, point) => sum + point, 0))
-                : (this.playerTwoScore = subtotal + additionalPoints.reduce((sum, point) => sum + point, 0));
-
-        return total;
+        playerID === "1"
+            ? (this.playerOneTotal = this.calculatePlayerSubtotal("1") + this.calculatePlayerBonus("1"))
+            : (this.playerTwoTotal = this.calculatePlayerSubtotal("2") + this.calculatePlayerBonus("2"));
     }
 
     calculatePlayerSubtotal(playerID) {
@@ -88,9 +81,5 @@ export default class Theater {
 
     #getCardsForPlayer(playerID) {
         return playerID === "1" ? this.playerOneCards : this.playerTwoCards;
-    }
-
-    #getAdditionalPointsForPlayer(playerID) {
-        return playerID === "1" ? this.playerOneBonus : this.playerTwoBonus;
     }
 }

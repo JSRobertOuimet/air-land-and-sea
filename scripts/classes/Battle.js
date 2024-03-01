@@ -120,10 +120,10 @@ export default class Battle {
         theaters.forEach(theater => {
             theater.playerOneCards = [];
             theater.playerOneBonus = [];
-            theater.playerOneScore = 0;
+            theater.playerOneTotal = 0;
             theater.playerTwoCards = [];
             theater.playerTwoBonus = [];
-            theater.playerTwoScore = 0;
+            theater.playerTwoTotal = 0;
         });
     }
 
@@ -207,6 +207,9 @@ export default class Battle {
     }
 
     #endTurn() {
+        console.clear();
+        console.log(this.log);
+
         this.selectedCard = null;
         this.selectedAction = "";
         this.selectedTheater = null;
@@ -223,13 +226,13 @@ export default class Battle {
         let battleWinner;
 
         theaters.forEach(theater => {
-            if (theater.playerOneScore === theater.playerTwoScore) {
+            if (theater.playerOneTotal === theater.playerTwoTotal) {
                 if (this.startingPlayer === this.players[0]) {
                     theatersControlledByPlayerOne++;
                 } else {
                     theatersControlledByPlayerTwo++;
                 }
-            } else if (theater.playerOneScore > theater.playerTwoScore) {
+            } else if (theater.playerOneTotal > theater.playerTwoTotal) {
                 theatersControlledByPlayerOne++;
             } else {
                 theatersControlledByPlayerTwo++;
