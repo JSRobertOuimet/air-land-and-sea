@@ -210,7 +210,7 @@ export default class Battle {
     #endTurn() {
         console.clear();
         console.log(this.log);
-        
+
         this.selectedCard = null;
         this.selectedAction = "";
         this.selectedTheater = null;
@@ -292,15 +292,21 @@ export default class Battle {
     }
 
     #resolveTacticalAbility() {
+        const parameters = {
+            activePlayer: this.activePlayer,
+            theaters: this.theaters,
+            selectedTheater: this.selectedTheater,
+        };
+
         switch (this.selectedCard.id) {
             case "1":
-                TacticalAbility.support(this.activePlayer, this.theaters, this.selectedTheater);
+                TacticalAbility.support(parameters);
                 break;
             case "10":
-                TacticalAbility.coverFire(this.activePlayer, this.theaters, this.selectedTheater);
+                TacticalAbility.coverFire(parameters);
                 break;
             case "14":
-                TacticalAbility.airDrop(this.activePlayer, this.theaters);
+                TacticalAbility.airDrop(parameters);
                 break;
         }
     }

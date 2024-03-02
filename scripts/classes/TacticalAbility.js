@@ -4,7 +4,8 @@ import UI from "./UI.js";
 export default class TacticalAbility {
     constructor() {}
 
-    static support(activePlayer, theaters, selectedTheater) {
+    static support(parameters) {
+        const { activePlayer, theaters, selectedTheater } = parameters;
         const adjacentTheaters = this.getAdjacentTheaters(theaters, selectedTheater);
 
         adjacentTheaters.forEach(adjacentTheater => {
@@ -18,7 +19,8 @@ export default class TacticalAbility {
         UI.displayPlayerTotal(theaters);
     }
 
-    static coverFire(activePlayer, theaters, selectedTheater) {
+    static coverFire(parameters) {
+        const { activePlayer, theaters, selectedTheater } = parameters;
         const coveredCards = this.getCoveredCards(activePlayer, selectedTheater);
 
         coveredCards.forEach(coveredCard => {
@@ -29,7 +31,8 @@ export default class TacticalAbility {
         UI.displayPlayerTotal(theaters);
     }
 
-    static airDrop(activePlayer, theaters) {
+    static airDrop(parameters) {
+        const { activePlayer, theaters } = parameters;
         const facedownCards = this.getFacedownCards(activePlayer, theaters);
 
         facedownCards.forEach(facedownCard => {
