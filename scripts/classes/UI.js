@@ -138,6 +138,16 @@ export default class UI {
             cardContainerEl.setAttribute("id", card.id);
             cardContainerEl.classList.add("card");
 
+            switch (card.id) {
+                case "1":
+                case "10":
+                case "14":
+                    cardContainerEl.classList.add("testing");
+                    break;
+                default:
+                    break;
+            }
+
             switch (card.theater) {
                 case "Air":
                     cardContainerEl.classList.add("air");
@@ -173,15 +183,11 @@ export default class UI {
         });
     }
 
-    static displayOverwrittenStrength(selectedTheater, activePlayer, coveredCard) {
-        const theaterName = selectedTheater.name.toLowerCase();
-        const playerNumber = activePlayer.id === "1" ? "one" : "two";
-        const cardEls = document.querySelectorAll(`#${theaterName}-depot .player-${playerNumber}-column .card`);
-
-        cardEls.forEach(cardEl => {
-            if (cardEl.id === coveredCard.id) {
-                cardEl.children[0].textContent = coveredCard.deployStrength;
-                cardEl.children[1].textContent = coveredCard.improviseStrength;
+    static displayCardOverwrittenStrength(card) {
+        document.querySelectorAll(".card").forEach(cardEl => {
+            if (cardEl.id === card.id) {
+                cardEl.children[0].textContent = card.deployStrength;
+                cardEl.children[1].textContent = card.improviseStrength;
             }
         });
     }
