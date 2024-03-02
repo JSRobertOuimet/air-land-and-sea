@@ -1,5 +1,6 @@
 import { CONFIG } from "../data/CONFIG.js";
 import Player from "./Player.js";
+import TacticalAbility from "./TacticalAbility.js";
 import Log from "./Log.js";
 import UI from "./UI.js";
 
@@ -207,6 +208,9 @@ export default class Battle {
     }
 
     #endTurn() {
+        console.clear();
+        console.log(this.log);
+        
         this.selectedCard = null;
         this.selectedAction = "";
         this.selectedTheater = null;
@@ -259,23 +263,23 @@ export default class Battle {
 
         if (this.activePlayer instanceof Player) {
             this.selectedTheater.playerOneCards.push(this.selectedCard);
-            
+
             if (this.selectedTheater.playerOneCards.length > 1) {
                 this.selectedTheater.playerOneCards.at(-2).covered = true;
             }
 
             this.selectedTheater.calculatePlayerTotal("1");
-            
+
             UI.removeHighlights(highlightedTheaterEls);
             UI.disableActions();
             UI.clearDescription();
         } else {
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
-            
+
             if (this.selectedTheater.playerTwoCards.length > 1) {
                 this.selectedTheater.playerTwoCards.at(-2).covered = true;
             }
-            
+
             this.selectedTheater.calculatePlayerTotal("2");
 
             UI.flipCard(selectedCardEl);
@@ -290,37 +294,14 @@ export default class Battle {
     #resolveTacticalAbility() {
         switch (this.selectedCard.id) {
             case "1":
-                const adjacentTheaters = this.#getAdjacentTheaters(this.theaters);
-
-                adjacentTheaters.forEach(adjacentTheater => {
-                    if (this.activePlayer instanceof Player) {
-                        adjacentTheater.playerOneBonus.push(3);
-                    } else {
-                        adjacentTheater.playerTwoBonus.push(3);
-                    }
-                });
-
-                UI.displayPlayerTotal(this.theaters);
+                TacticalAbility.support(this.activePlayer, this.theaters, this.selectedTheater);
                 break;
             case "10":
-                const coveredCards = this.#getCoveredCards(this.activePlayer, this.selectedTheater);
-
-                coveredCards.forEach(coveredCard => {
-                    coveredCard.overwrittenStrength = true;
-                    UI.displayCardOverwrittenStrength(coveredCard);
-                });
-
-                UI.displayPlayerTotal(this.theaters);
+                TacticalAbility.coverFire(this.activePlayer, this.theaters, this.selectedTheater);
                 break;
             case "14":
-                const facedownCards = this.#getFacedownCards(this.activePlayer);
-
-                facedownCards.forEach(facedownCard => {
-                    facedownCard.overwrittenStrength = true;
-                    UI.displayCardOverwrittenStrength(facedownCard);
-                });
-
-                UI.displayPlayerTotal(this.theaters);
+                TacticalAbility.airDrop(this.activePlayer, this.theaters);
+                break;
         }
     }
 
@@ -364,39 +345,4 @@ export default class Battle {
     }
 
     #withdraw() {}
-
-    #getAdjacentTheaters(theaters) {
-        const adjacentTheaters = [];
-        const theaterIndex = theaters.findIndex(theater => theater.name === this.selectedTheater.name);
-
-        switch (theaterIndex) {
-            case 0:
-            case 2:
-                adjacentTheaters.push(theaters[1]);
-                break;
-            case 1:
-                adjacentTheaters.push(theaters[0]);
-                adjacentTheaters.push(theaters[2]);
-                break;
-        }
-
-        return adjacentTheaters;
-    }
-
-    #getCoveredCards(activePlayer, theater) {
-        const playerCards = activePlayer instanceof Player ? theater.playerOneCards : theater.playerTwoCards;
-
-        return playerCards.filter(card => card.covered);
-    }
-
-    #getFacedownCards(activePlayer) {
-        const playerCards = activePlayer instanceof Player ? "playerOneCards" : "playerTwoCards";
-        let facedownCards = [];
-
-        this.theaters.forEach(theater => {
-            facedownCards.push(...theater[playerCards].filter(playerCard => playerCard.facedown));
-        });
-
-        return facedownCards;
-    }
 }
