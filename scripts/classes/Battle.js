@@ -183,7 +183,7 @@ export default class Battle {
 
     #switchActivePlayer() {
         this.players.forEach(player => {
-            player.active = player.active === true ? false : true;
+            player.active = !player.active;
         });
 
         this.activePlayer = this.game.getActivePlayer();
@@ -249,7 +249,7 @@ export default class Battle {
 
     #deploy() {
         const selectedCardEl = document.querySelector(".selected");
-        const highlightedTheaterEl = document.querySelector(".highlighted");
+        const highlightedTheaterEls = document.querySelectorAll(".highlighted");
         const playerColumnEl =
             this.activePlayer instanceof Player
                 ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-one-column`)
@@ -259,22 +259,24 @@ export default class Battle {
 
         if (this.activePlayer instanceof Player) {
             this.selectedTheater.playerOneCards.push(this.selectedCard);
-            this.selectedTheater.calculatePlayerTotal("1");
-
+            
             if (this.selectedTheater.playerOneCards.length > 1) {
                 this.selectedTheater.playerOneCards.at(-2).covered = true;
             }
 
-            highlightedTheaterEl.classList.remove("highlighted");
+            this.selectedTheater.calculatePlayerTotal("1");
+            
+            UI.removeHighlights(highlightedTheaterEls);
             UI.disableActions();
             UI.clearDescription();
         } else {
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
-            this.selectedTheater.calculatePlayerTotal("2");
-
+            
             if (this.selectedTheater.playerTwoCards.length > 1) {
                 this.selectedTheater.playerTwoCards.at(-2).covered = true;
             }
+            
+            this.selectedTheater.calculatePlayerTotal("2");
 
             UI.flipCard(selectedCardEl);
             UI.displayPlayerTotal(this.theaters);
@@ -341,10 +343,7 @@ export default class Battle {
 
             this.selectedTheater.calculatePlayerTotal("1");
 
-            highlightedTheaterEls.forEach(highlightedTheaterEl => {
-                highlightedTheaterEl.classList.remove("highlighted");
-            });
-
+            UI.removeHighlights(highlightedTheaterEls);
             UI.flipCard(selectedCardEl);
             UI.disableActions();
             UI.clearDescription();

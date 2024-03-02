@@ -123,6 +123,12 @@ export default class UI {
         });
     }
 
+    static removeHighlights(highlightedTheaterEls) {
+        highlightedTheaterEls.forEach(highlightedTheaterEl => {
+            highlightedTheaterEl.classList.remove("highlighted");
+        });
+    }
+
     static displayCards(cards) {
         const discardPileEl = document.createElement("div");
 
