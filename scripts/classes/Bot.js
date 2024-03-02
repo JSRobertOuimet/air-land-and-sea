@@ -19,8 +19,18 @@ export default class Bot {
         return selectedCard;
     }
 
-    selectAction() {
-        const randomNumber = Math.floor(Math.random() * 2);
+    selectAction(selectedCard) {
+        let randomNumber;
+
+        switch (selectedCard.id) {
+            case "1":
+            case "10":
+            case "14":
+                randomNumber = 0;
+                break;
+            default:
+                randomNumber = Math.floor(Math.random() * 2);
+        }
 
         switch (randomNumber) {
             case 0:

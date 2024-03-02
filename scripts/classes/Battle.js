@@ -162,7 +162,7 @@ export default class Battle {
             } else {
                 UI.markActivePlayer(this.activePlayer);
                 this.selectedCard = this.activePlayer.selectCard();
-                this.selectedAction = this.activePlayer.selectAction();
+                this.selectedAction = this.activePlayer.selectAction(this.selectedCard);
                 this.selectedTheater = this.activePlayer.selectTheater(this.selectedCard, this.selectedAction, this.theaters);
             }
             this.#performAction(this.selectedAction);
@@ -305,11 +305,20 @@ export default class Battle {
 
                 coveredCards.forEach(coveredCard => {
                     coveredCard.overwrittenStrength = true;
-                    UI.displayOverwrittenStrength(this.selectedTheater, this.activePlayer, coveredCard);
+                    UI.displayCardOverwrittenStrength(coveredCard);
                 });
 
                 UI.displayPlayerTotal(this.theaters);
                 break;
+            case "14":
+                const facedownCards = this.#getFacedownCards(this.activePlayer);
+
+                facedownCards.forEach(facedownCard => {
+                    facedownCard.overwrittenStrength = true;
+                    UI.displayCardOverwrittenStrength(facedownCard);
+                });
+
+                UI.displayPlayerTotal(this.theaters);
         }
     }
 
@@ -379,5 +388,16 @@ export default class Battle {
         const playerCards = activePlayer instanceof Player ? theater.playerOneCards : theater.playerTwoCards;
 
         return playerCards.filter(card => card.covered);
+    }
+
+    #getFacedownCards(activePlayer) {
+        const playerCards = activePlayer instanceof Player ? "playerOneCards" : "playerTwoCards";
+        let facedownCards = [];
+
+        this.theaters.forEach(theater => {
+            facedownCards.push(...theater[playerCards].filter(playerCard => playerCard.facedown));
+        });
+
+        return facedownCards;
     }
 }
