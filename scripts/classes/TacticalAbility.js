@@ -31,7 +31,7 @@ export default class TacticalAbility {
         UI.displayPlayerTotal(theaters);
     }
 
-    static airDrop(parameters) {
+    static escalation(parameters) {
         const { activePlayer, theaters } = parameters;
         const facedownCards = this.getFacedownCards(activePlayer, theaters);
 

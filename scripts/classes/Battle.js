@@ -306,7 +306,7 @@ export default class Battle {
                 TacticalAbility.coverFire(parameters);
                 break;
             case "14":
-                TacticalAbility.airDrop(parameters);
+                TacticalAbility.escalation(parameters);
                 break;
         }
     }
