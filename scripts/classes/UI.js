@@ -5,10 +5,10 @@ export default class UI {
     static scoreEl = document.querySelector("#score");
     static battleNumberEl = document.querySelector("#battle-number");
     static mainAreaEl = document.querySelector("#main-area");
+    static actionBarEl = document.querySelector("#action-bar");
     static actionButtonEls = document.querySelectorAll("#action-bar button");
     static deployButtonEl = document.querySelector("#deploy");
     static improviseButtonEl = document.querySelector("#improvise");
-    static withdrawButtonEl = document.querySelector("#withdraw");
     static descriptionEl = document.querySelector("#description");
     static playerOneHandEl = document.querySelector("#player-one .hand");
     static playerOneNameEl = document.querySelector("#player-one .name");
@@ -252,6 +252,16 @@ export default class UI {
             UI.playerOneNameEl.classList.remove("active");
             UI.playerTwoNameEl.classList.add("active");
         }
+    }
+
+    static displayWithdrawButton() {
+        const withdrawButtonEl = document.createElement("button");
+
+        withdrawButtonEl.setAttribute("id", "withdraw");
+        withdrawButtonEl.classList.add("button");
+        withdrawButtonEl.textContent = "Withdraw";
+
+        UI.actionBarEl.append(withdrawButtonEl);
     }
 
     static enableActions() {

@@ -78,10 +78,10 @@ export default class Game {
         switch (gameMode) {
             case "Beginner":
                 this.winningScore = 3;
-                UI.withdrawButtonEl.remove();
                 break;
             case "Normal":
                 this.winningScore = 12;
+                UI.displayWithdrawButton();
                 break;
         }
     }
