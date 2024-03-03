@@ -144,16 +144,6 @@ export default class UI {
             cardContainerEl.setAttribute("id", card.id);
             cardContainerEl.classList.add("card");
 
-            switch (card.id) {
-                case "1":
-                case "10":
-                case "14":
-                    cardContainerEl.classList.add("testing");
-                    break;
-                default:
-                    break;
-            }
-
             switch (card.theater) {
                 case "Air":
                     cardContainerEl.classList.add("air");
@@ -185,6 +175,16 @@ export default class UI {
                 discardPileEl.append(cardContainerEl);
                 cardContainerEl.classList.add("facedown", "discarded");
                 cardContainerEl.firstChild.style.display = "none";
+            }
+
+            switch (card.id) {
+                case "1":
+                case "10":
+                case "14":
+                    cardContainerEl.classList.add("testing");
+                    break;
+                default:
+                    break;
             }
         });
     }
