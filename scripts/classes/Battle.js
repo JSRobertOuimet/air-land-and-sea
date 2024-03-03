@@ -319,9 +319,10 @@ export default class Battle {
                 ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-one-column`)
                 : document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-two-column`);
 
+        this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
+        this.selectedCard.flipCard();
+
         if (this.activePlayer instanceof Player) {
-            this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
-            this.selectedCard.flipCard();
             this.selectedTheater.playerOneCards.push(this.selectedCard);
 
             if (this.selectedTheater.playerOneCards.length > 1) {
@@ -335,8 +336,6 @@ export default class Battle {
             UI.disableActions();
             UI.clearDescription();
         } else {
-            this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
-            this.selectedCard.flipCard();
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
 
             if (this.selectedTheater.playerTwoCards.length > 1) {
