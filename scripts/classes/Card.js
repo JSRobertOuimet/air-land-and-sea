@@ -5,8 +5,9 @@ export default class Card {
         this.id = (Card.id++).toString();
         this._theater = card.theater;
         this._deployStrength = card.deployStrength;
+        this._overwrittenDeployStrength = false;
         this._improviseStrength = card.improviseStrength;
-        this._overwrittenStrength = false;
+        this._overwrittenImproviseStrength = false;
         this._tacticalAbility = card.tacticalAbility;
         this._type = card.type;
         this._typeSymbol = card.typeSymbol;
@@ -24,7 +25,7 @@ export default class Card {
     }
 
     get deployStrength() {
-        return this.overwrittenStrength ? 4 : this._deployStrength;
+        return this._overwrittenDeployStrength ? 4 : this._deployStrength;
     }
 
     set deployStrength(value) {
@@ -32,19 +33,27 @@ export default class Card {
     }
 
     get improviseStrength() {
-        return this.overwrittenStrength ? 4 : this._improviseStrength;
+        return this._overwrittenImproviseStrength ? 4 : this._improviseStrength;
     }
 
     set improviseStrength(value) {
         this._improviseStrength = value;
     }
 
-    get overwrittenStrength() {
-        return this._overwrittenStrength;
+    get overwrittenDeployStrength() {
+        return this._overwrittenDeployStrength;
     }
 
-    set overwrittenStrength(value) {
-        this._overwrittenStrength = value;
+    set overwrittenDeployStrength(value) {
+        this._overwrittenDeployStrength = value;
+    }
+
+    get overwrittenImproviseStrength() {
+        return this._overwrittenImproviseStrength;
+    }
+
+    set overwrittenImproviseStrength(value) {
+        this._overwrittenImproviseStrength = value;
     }
 
     get tacticalAbility() {

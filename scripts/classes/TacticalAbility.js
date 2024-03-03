@@ -24,7 +24,8 @@ export default class TacticalAbility {
         const coveredCards = this.getCoveredCards(activePlayer, selectedTheater);
 
         coveredCards.forEach(coveredCard => {
-            coveredCard.overwrittenStrength = true;
+            coveredCard.overwrittenDeployStrength = true;
+            coveredCard.overwrittenImproviseStrength = true;
             UI.displayCardOverwrittenStrength(coveredCard);
         });
 
@@ -33,10 +34,10 @@ export default class TacticalAbility {
 
     static escalation(parameters) {
         const { activePlayer, theaters } = parameters;
-        const facedownCards = this.getFacedownCards(activePlayer, theaters);
+        const playerCards = this.getAllCards(activePlayer, theaters);
 
-        facedownCards.forEach(facedownCard => {
-            facedownCard.overwrittenStrength = true;
+        playerCards.forEach(facedownCard => {
+            facedownCard.overwrittenImproviseStrength = true;
             UI.displayCardOverwrittenStrength(facedownCard);
         });
 
@@ -63,8 +64,9 @@ export default class TacticalAbility {
 
     static getCoveredCards(activePlayer, selectedTheater) {
         const playerCards = activePlayer instanceof Player ? selectedTheater.playerOneCards : selectedTheater.playerTwoCards;
+        const coveredCards = playerCards.filter(card => card.covered);
 
-        return playerCards.filter(card => card.covered);
+        return coveredCards;
     }
 
     static getFacedownCards(activePlayer, theaters) {
@@ -76,5 +78,25 @@ export default class TacticalAbility {
         });
 
         return facedownCards;
+    }
+
+    static getAllCardsInTheater(activePlayer, theaters) {
+        const playerCards = activePlayer instanceof Player ? "playerOneCards" : "playerTwoCards";
+        let cardsInAllTheaters = [];
+
+        theaters.forEach(theater => {
+            cardsInAllTheaters.push(...theater[playerCards]);
+        });
+
+        return cardsInAllTheaters;
+    }
+
+    static getAllCards(activePlayer, theaters) {
+        debugger;
+
+        const playerCardsInHand = activePlayer.hand;
+        const playerCardsInTheater = this.getAllCardsInTheater(activePlayer, theaters);
+
+        return [...playerCardsInHand, ...playerCardsInTheater];
     }
 }

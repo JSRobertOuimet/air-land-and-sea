@@ -68,7 +68,7 @@ export default class Theater {
 
     calculatePlayerSubtotal(playerID) {
         const cardStrength = card => (card.facedown ? card.improviseStrength : card.deployStrength);
-        const cardPoints = this.getCardsForPlayer(playerID).map(cardStrength);
+        const cardPoints = this.getCardsInTheater(playerID).map(cardStrength);
 
         return cardPoints.reduce((sum, point) => sum + point, 0);
     }
@@ -79,7 +79,7 @@ export default class Theater {
             : this.playerTwoBonus.reduce((sum, point) => sum + point, 0);
     }
 
-    getCardsForPlayer(playerID) {
+    getCardsInTheater(playerID) {
         return playerID === "1" ? this.playerOneCards : this.playerTwoCards;
     }
 }
