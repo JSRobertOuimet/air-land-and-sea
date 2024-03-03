@@ -92,8 +92,6 @@ export default class TacticalAbility {
     }
 
     static getAllCards(activePlayer, theaters) {
-        debugger;
-
         const playerCardsInHand = activePlayer.hand;
         const playerCardsInTheater = this.getAllCardsInTheater(activePlayer, theaters);
 
