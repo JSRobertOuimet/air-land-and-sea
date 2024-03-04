@@ -1,12 +1,13 @@
 import Player from "./Player.js";
 import UI from "./UI.js";
+import { getAdjacentTheaters, getCoveredCards, getAllCards } from "../utils.js";
 
 export default class TacticalAbility {
     constructor() {}
 
     static support(parameters) {
         const { activePlayer, theaters, selectedTheater } = parameters;
-        const adjacentTheaters = this.getAdjacentTheaters(theaters, selectedTheater);
+        const adjacentTheaters = getAdjacentTheaters(theaters, selectedTheater);
 
         adjacentTheaters.forEach(adjacentTheater => {
             if (activePlayer instanceof Player) {
@@ -21,7 +22,7 @@ export default class TacticalAbility {
 
     static coverFire(parameters) {
         const { activePlayer, theaters, selectedTheater } = parameters;
-        const coveredCards = this.getCoveredCards(activePlayer, selectedTheater);
+        const coveredCards = getCoveredCards(activePlayer, selectedTheater);
 
         coveredCards.forEach(coveredCard => {
             coveredCard.overwrittenDeployStrength = true;
@@ -34,7 +35,7 @@ export default class TacticalAbility {
 
     static escalation(parameters) {
         const { activePlayer, theaters } = parameters;
-        const playerCards = this.getAllCards(activePlayer, theaters);
+        const playerCards = getAllCards(activePlayer, theaters);
 
         playerCards.forEach(facedownCard => {
             facedownCard.overwrittenImproviseStrength = true;
@@ -42,59 +43,5 @@ export default class TacticalAbility {
         });
 
         UI.displayPlayerTotal(theaters);
-    }
-
-    static getAdjacentTheaters(theaters, selectedTheater) {
-        const adjacentTheaters = [];
-        const theaterIndex = theaters.findIndex(theater => theater.name === selectedTheater.name);
-
-        switch (theaterIndex) {
-            case 0:
-            case 2:
-                adjacentTheaters.push(theaters[1]);
-                break;
-            case 1:
-                adjacentTheaters.push(theaters[0]);
-                adjacentTheaters.push(theaters[2]);
-                break;
-        }
-
-        return adjacentTheaters;
-    }
-
-    static getCoveredCards(activePlayer, selectedTheater) {
-        const playerCards = activePlayer instanceof Player ? selectedTheater.playerOneCards : selectedTheater.playerTwoCards;
-        const coveredCards = playerCards.filter(card => card.covered);
-
-        return coveredCards;
-    }
-
-    static getFacedownCards(activePlayer, theaters) {
-        const playerCards = activePlayer instanceof Player ? "playerOneCards" : "playerTwoCards";
-        let facedownCards = [];
-
-        theaters.forEach(theater => {
-            facedownCards.push(...theater[playerCards].filter(playerCard => playerCard.facedown));
-        });
-
-        return facedownCards;
-    }
-
-    static getAllCardsInTheater(activePlayer, theaters) {
-        const playerCards = activePlayer instanceof Player ? "playerOneCards" : "playerTwoCards";
-        let cardsInAllTheaters = [];
-
-        theaters.forEach(theater => {
-            cardsInAllTheaters.push(...theater[playerCards]);
-        });
-
-        return cardsInAllTheaters;
-    }
-
-    static getAllCards(activePlayer, theaters) {
-        const playerCardsInHand = activePlayer.hand;
-        const playerCardsInTheater = this.getAllCardsInTheater(activePlayer, theaters);
-
-        return [...playerCardsInHand, ...playerCardsInTheater];
     }
 }
