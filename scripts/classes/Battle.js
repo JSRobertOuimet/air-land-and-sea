@@ -131,7 +131,8 @@ export default class Battle {
 
     #resetStateForCards(cards) {
         cards.forEach(card => {
-            card.overwrittenStrength = false;
+            card.overwrittenDeployStrength = false;
+            card.overwrittenImproviseStrength = false;
             card.facedown = false;
             card.covered = false;
         });
