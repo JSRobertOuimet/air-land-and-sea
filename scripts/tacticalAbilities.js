@@ -2,21 +2,6 @@ import Player from "./classes/Player.js";
 import UI from "./classes/UI.js";
 import { getAdjacentTheaters, getCoveredCards, getAllCards } from "./utils.js";
 
-export function support(parameters) {
-    const { activePlayer, theaters, selectedTheater } = parameters;
-    const adjacentTheaters = getAdjacentTheaters(theaters, selectedTheater);
-
-    adjacentTheaters.forEach(adjacentTheater => {
-        if (activePlayer instanceof Player) {
-            adjacentTheater.playerOneBonus.push(3);
-        } else {
-            adjacentTheater.playerTwoBonus.push(3);
-        }
-    });
-
-    UI.displayPlayerTotal(theaters);
-}
-
 export function coverFire(parameters) {
     const { activePlayer, theaters, selectedTheater } = parameters;
     const coveredCards = getCoveredCards(activePlayer, selectedTheater);
@@ -37,6 +22,21 @@ export function escalation(parameters) {
     playerCards.forEach(facedownCard => {
         facedownCard.overwrittenImproviseStrength = true;
         UI.displayCardOverwrittenStrength(facedownCard);
+    });
+
+    UI.displayPlayerTotal(theaters);
+}
+
+export function support(parameters) {
+    const { activePlayer, theaters, selectedTheater } = parameters;
+    const adjacentTheaters = getAdjacentTheaters(theaters, selectedTheater);
+
+    adjacentTheaters.forEach(adjacentTheater => {
+        if (activePlayer instanceof Player) {
+            adjacentTheater.playerOneBonus.push(3);
+        } else {
+            adjacentTheater.playerTwoBonus.push(3);
+        }
     });
 
     UI.displayPlayerTotal(theaters);

@@ -37,14 +37,21 @@ export function getFacedownCards(activePlayer, theaters) {
 }
 
 export function getAllCardsInTheater(activePlayer, theaters) {
-    const playerCards = activePlayer instanceof Player ? "playerOneCards" : "playerTwoCards";
-    let cardsInAllTheaters = [];
+    let allcardsInTheater = [];
 
-    theaters.forEach(theater => {
-        cardsInAllTheaters.push(...theater[playerCards]);
-    });
+    if (activePlayer === null) {
+        theaters.forEach(theater => {
+            allcardsInTheater.push(...theater.playerOneCards, ...theater.playerTwoCards);
+        });
+    } else {
+        const playerCards = activePlayer instanceof Player ? "playerOneCards" : "playerTwoCards";
 
-    return cardsInAllTheaters;
+        theaters.forEach(theater => {
+            allcardsInTheater.push(...theater[playerCards]);
+        });
+    }
+
+    return allcardsInTheater;
 }
 
 export function getAllCards(activePlayer, theaters) {

@@ -3,6 +3,7 @@ import { support, coverFire, escalation } from "../tacticalAbilities.js";
 import Player from "./Player.js";
 import Log from "./Log.js";
 import UI from "./UI.js";
+import { getAllCardsInTheater } from "../utils.js";
 
 export default class Battle {
     static id = 1;
@@ -318,11 +319,26 @@ export default class Battle {
             this.activePlayer instanceof Player
                 ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-one-column`)
                 : document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-two-column`);
+        const isContainmentInTheater = getAllCardsInTheater(null, this.theaters).find(card => card.id === "5");
 
         this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
         this.selectedCard.flipCard();
 
         if (this.activePlayer instanceof Player) {
+            if (isContainmentInTheater) {
+                const discardPileEl = document.querySelector("#discard-pile");
+
+                this.#discardedCards.push(this.selectedCard);
+
+                UI.removeHighlights(highlightedTheaterEls);
+                UI.flipCard(selectedCardEl);
+                UI.disableActions();
+                UI.clearDescription();
+                UI.discard(selectedCardEl, discardPileEl);
+
+                return;
+            }
+
             this.selectedTheater.playerOneCards.push(this.selectedCard);
 
             if (this.selectedTheater.playerOneCards.length > 1) {
@@ -335,7 +351,18 @@ export default class Battle {
             UI.flipCard(selectedCardEl);
             UI.disableActions();
             UI.clearDescription();
+            UI.discard(selectedCardEl, playerColumnEl);
         } else {
+            if (isContainmentInTheater) {
+                const discardPileEl = document.querySelector("#discard-pile");
+
+                this.#discardedCards.push(this.selectedCard);
+
+                UI.discard(selectedCardEl, discardPileEl);
+
+                return;
+            }
+
             this.selectedTheater.playerTwoCards.push(this.selectedCard);
 
             if (this.selectedTheater.playerTwoCards.length > 1) {
@@ -343,9 +370,10 @@ export default class Battle {
             }
 
             this.selectedTheater.calculatePlayerTotal("2");
+
+            UI.discard(selectedCardEl, playerColumnEl);
         }
 
-        UI.discard(selectedCardEl, playerColumnEl);
         UI.displayPlayerTotal(this.theaters);
     }
 

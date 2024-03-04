@@ -179,6 +179,7 @@ export default class UI {
 
             switch (card.id) {
                 case "1":
+                case "5":
                 case "10":
                 case "14":
                     cardContainerEl.classList.add("testing");
@@ -234,9 +235,14 @@ export default class UI {
         }
     }
 
-    static discard(selectedCardEl, playerColumnEl) {
+    static discard(selectedCardEl, targetEl) {
         selectedCardEl.classList.remove("selected");
-        playerColumnEl.append(selectedCardEl);
+
+        if (targetEl.id === "discard-pile") {
+            selectedCardEl.classList.add("discarded");
+        }
+
+        targetEl.append(selectedCardEl);
     }
 
     static displayPlayersName(players) {
