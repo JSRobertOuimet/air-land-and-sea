@@ -320,7 +320,7 @@ export default class Battle {
             this.activePlayer instanceof Player
                 ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-one-column`)
                 : document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-two-column`);
-        const isContainmentInTheater = getAllCardsInTheater(null, this.theaters).find(card => card.id === "5");
+        const isContainmentInTheater = getAllCardsInTheater(null, this.theaters).find(card => card.id === "5" && card.facedown === false);
 
         this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
         this.selectedCard.flipCard();
