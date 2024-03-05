@@ -1,5 +1,6 @@
 export const CARDS = [
     {
+        id: "1",
         theater: "Air",
         deployStrength: 1,
         improviseStrength: 2,
@@ -9,6 +10,7 @@ export const CARDS = [
         description: "You gain +3 strength in each adjacent theater.",
     },
     {
+        id: "2",
         theater: "Air",
         deployStrength: 2,
         improviseStrength: 2,
@@ -18,6 +20,7 @@ export const CARDS = [
         description: "The next time you play a card, you may play it to a non-matching theater.",
     },
     {
+        id: "3",
         theater: "Air",
         deployStrength: 3,
         improviseStrength: 2,
@@ -27,6 +30,7 @@ export const CARDS = [
         description: "Flip an uncovered card in an adjacent theater.",
     },
     {
+        id: "4",
         theater: "Air",
         deployStrength: 4,
         improviseStrength: 2,
@@ -36,6 +40,7 @@ export const CARDS = [
         description: "You may play cards of strength 3 or less to non-matching theaters.",
     },
     {
+        id: "5",
         theater: "Air",
         deployStrength: 5,
         improviseStrength: 2,
@@ -45,6 +50,7 @@ export const CARDS = [
         description: "If any player plays a facedown card, destroy that card.",
     },
     {
+        id: "6",
         theater: "Air",
         deployStrength: 6,
         improviseStrength: 2,
@@ -54,6 +60,7 @@ export const CARDS = [
         description: "N/A",
     },
     {
+        id: "7",
         theater: "Land",
         deployStrength: 1,
         improviseStrength: 2,
@@ -63,6 +70,7 @@ export const CARDS = [
         description: "Draw 1 card and play it facedown to an adjacent theater.",
     },
     {
+        id: "8",
         theater: "Land",
         deployStrength: 2,
         improviseStrength: 2,
@@ -72,6 +80,7 @@ export const CARDS = [
         description: "Flip any uncovered card.",
     },
     {
+        id: "9",
         theater: "Land",
         deployStrength: 3,
         improviseStrength: 2,
@@ -81,6 +90,7 @@ export const CARDS = [
         description: "Flip an uncovered card in an adjacent theater.",
     },
     {
+        id: "10",
         theater: "Land",
         deployStrength: 4,
         improviseStrength: 2,
@@ -90,6 +100,7 @@ export const CARDS = [
         description: "All cards covered by this card are now strength 4.",
     },
     {
+        id: "11",
         theater: "Land",
         deployStrength: 5,
         improviseStrength: 2,
@@ -99,6 +110,7 @@ export const CARDS = [
         description: "Starting with you, both players choose and flip 1 of their uncovered cards.",
     },
     {
+        id: "12",
         theater: "Land",
         deployStrength: 6,
         improviseStrength: 2,
@@ -108,6 +120,7 @@ export const CARDS = [
         description: "N/A",
     },
     {
+        id: "13",
         theater: "Sea",
         deployStrength: 1,
         improviseStrength: 2,
@@ -117,6 +130,7 @@ export const CARDS = [
         description: "You may move 1 of your cards to a different theater.",
     },
     {
+        id: "14",
         theater: "Sea",
         deployStrength: 2,
         improviseStrength: 2,
@@ -126,6 +140,7 @@ export const CARDS = [
         description: "All of your facedown cards are now strength 4.",
     },
     {
+        id: "15",
         theater: "Sea",
         deployStrength: 3,
         improviseStrength: 2,
@@ -135,6 +150,7 @@ export const CARDS = [
         description: "Flip an uncovered card in an adjacent theater.",
     },
     {
+        id: "16",
         theater: "Sea",
         deployStrength: 4,
         improviseStrength: 2,
@@ -144,6 +160,7 @@ export const CARDS = [
         description: "You may return 1 of your facedown cards to your hand. If you do, play a card.",
     },
     {
+        id: "17",
         theater: "Sea",
         deployStrength: 5,
         improviseStrength: 2,
@@ -153,6 +170,7 @@ export const CARDS = [
         description: "If any player plays a card to an adjacent theater occupied by at least 3 other cards, destroy that card.",
     },
     {
+        id: "18",
         theater: "Sea",
         deployStrength: 6,
         improviseStrength: 2,

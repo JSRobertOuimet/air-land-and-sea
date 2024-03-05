@@ -1,8 +1,6 @@
 export default class Card {
-    static id = 1;
-
     constructor(card) {
-        this.id = (Card.id++).toString();
+        this.id = card.id;
         this._theater = card.theater;
         this._deployStrength = card.deployStrength;
         this._overwrittenDeployStrength = false;

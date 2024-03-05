@@ -1,9 +1,7 @@
 export default class Theater {
-    static id = 1;
-
-    constructor(name) {
-        this.id = (Theater.id++).toString();
-        this.name = name;
+    constructor(theater) {
+        this.id = theater.id;
+        this.name = theater.name;
         this._playerOneCards = [];
         this._playerOneBonus = [];
         this._playerOneTotal = 0;
