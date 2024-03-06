@@ -19,18 +19,18 @@ export function getAdjacentTheaters(theaters, selectedTheater) {
 }
 
 export function getCoveredCards(activePlayer, selectedTheater) {
-    const playerCards = activePlayer instanceof Player ? selectedTheater.playerCards : selectedTheater.botCards;
-    const coveredCards = playerCards.filter(card => card.covered);
+    const cardsInTheater = activePlayer instanceof Player ? selectedTheater.playerCards : selectedTheater.botCards;
+    const coveredCards = cardsInTheater.filter(card => card.covered);
 
     return coveredCards;
 }
 
 export function getFacedownCards(activePlayer, theaters) {
-    const playerCards = activePlayer instanceof Player ? "playerCards" : "botCards";
+    const cardsInTheater = activePlayer instanceof Player ? "playerCards" : "botCards";
     let facedownCards = [];
 
     theaters.forEach(theater => {
-        facedownCards.push(...theater[playerCards].filter(playerCard => playerCard.facedown));
+        facedownCards.push(...theater[cardsInTheater].filter(playerCard => playerCard.facedown));
     });
 
     return facedownCards;
@@ -44,10 +44,10 @@ export function getAllCardsInTheater(activePlayer, theaters) {
             allcardsInTheater.push(...theater.playerCards, ...theater.botCards);
         });
     } else {
-        const playerCards = activePlayer instanceof Player ? "playerCards" : "botCards";
+        const cardsInTheater = activePlayer instanceof Player ? "playerCards" : "botCards";
 
         theaters.forEach(theater => {
-            allcardsInTheater.push(...theater[playerCards]);
+            allcardsInTheater.push(...theater[cardsInTheater]);
         });
     }
 
