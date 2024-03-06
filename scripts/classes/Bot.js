@@ -1,3 +1,5 @@
+import Debugger from "./Debugger.js";
+
 export default class Bot {
     constructor(name) {
         this.id = "2";
@@ -20,17 +22,7 @@ export default class Bot {
     }
 
     selectAction(selectedCard) {
-        let randomNumber;
-
-        switch (selectedCard.id) {
-            case "1":
-            case "10":
-            case "14":
-                randomNumber = 0;
-                break;
-            default:
-                randomNumber = Math.floor(Math.random() * 2);
-        }
+        let randomNumber = Debugger.forceDeploy(selectedCard);
 
         switch (randomNumber) {
             case 0:

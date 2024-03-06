@@ -1,5 +1,6 @@
 import { CONFIG } from "../data/CONFIG.js";
 import Player from "./Player.js";
+import Debugger from "./Debugger.js";
 
 export default class UI {
     static scoreEl = document.querySelector("#score");
@@ -177,16 +178,7 @@ export default class UI {
                 cardContainerEl.firstChild.style.display = "none";
             }
 
-            switch (card.id) {
-                case "1":
-                case "5":
-                case "10":
-                case "14":
-                    cardContainerEl.classList.add("testing");
-                    break;
-                default:
-                    break;
-            }
+            Debugger.outlineCard(card.id, cardContainerEl);
         });
     }
 

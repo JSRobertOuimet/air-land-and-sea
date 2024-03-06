@@ -1,6 +1,6 @@
 import Log from "./Log.js";
 
-export class Debugger {
+export default class Debugger {
     static playerStyles = "padding: 2px; color: white; background-color: red;";
     static botStyles = "padding: 2px; color: white; background-color: blue;";
     static gameStyles = "padding: 2px; color: white; background-color: green;";
@@ -52,5 +52,33 @@ export class Debugger {
 
     static selectedTheater(selectedTheater) {
         console.log(`Selected theater: %c🎲 ${selectedTheater.name}`, this.gameStyles);
+    }
+
+    static outlineCard(cardID, cardContainerEl) {
+        switch (cardID) {
+            case "1":
+            case "5":
+            case "10":
+            case "14":
+                cardContainerEl.classList.add("testing");
+                break;
+        }
+    }
+
+    static forceDeploy(selectedCard) {
+        let randomNumber;
+
+        switch (selectedCard.id) {
+            case "1":
+            case "5":
+            case "10":
+            case "14":
+                randomNumber = 0;
+                break;
+            default:
+                randomNumber = Math.floor(Math.random() * 2);
+        }
+
+        return randomNumber;
     }
 }
