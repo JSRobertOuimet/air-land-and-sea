@@ -158,12 +158,10 @@ export default class Battle {
             this.#endBattle();
         } else {
             if (this.activePlayer instanceof Player) {
-                UI.markActivePlayer(this.activePlayer);
                 this.selectedCard = await this.activePlayer.makingCardSelection();
                 this.selectedAction = await this.activePlayer.makingActionSelection();
                 this.selectedTheater = await this.activePlayer.makingTheaterSelection(this.selectedCard, this.selectedAction, this.theaters);
             } else {
-                UI.markActivePlayer(this.activePlayer);
                 this.selectedCard = this.activePlayer.selectCard();
                 this.selectedAction = this.activePlayer.selectAction(this.selectedCard);
                 this.selectedTheater = this.activePlayer.selectTheater(this.selectedCard, this.selectedAction, this.theaters);

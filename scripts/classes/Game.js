@@ -114,7 +114,11 @@ export default class Game {
     }
 
     getActivePlayer() {
-        return this.players.find(player => player.active);
+        const activePlayer = this.players.find(player => player.active);
+        
+        UI.markActivePlayer(activePlayer);
+
+        return activePlayer;
     }
 
     isGameWon() {
