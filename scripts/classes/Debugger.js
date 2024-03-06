@@ -1,60 +1,32 @@
-import Log from "./Log.js";
+const Debugger = {
+    playerStyles: "padding: 2px; color: white; background-color: red;",
+    botStyles: "padding: 2px; color: white; background-color: blue;",
+    gameStyles: "padding: 2px; color: white; background-color: green;",
 
-export default class Debugger {
-    static playerStyles = "padding: 2px; color: white; background-color: red;";
-    static botStyles = "padding: 2px; color: white; background-color: blue;";
-    static gameStyles = "padding: 2px; color: white; background-color: green;";
-
-    constructor() {}
-
-    get playerStyles() {
-        return this.playerStyles;
-    }
-
-    set playerStyles(value) {
-        return this.playerStyles;
-    }
-
-    get botStyles() {
-        return this.botStyles;
-    }
-
-    set botStyles(value) {
-        return this.botStyles;
-    }
-
-    get gameStyles() {
-        return this.gameStyles;
-    }
-
-    set gameStyles(value) {
-        return this.gameStyles;
-    }
-
-    static startingBattle(id) {
+    startingBattle: function (id) {
         console.log(`Battle: %c🎲 #${id}`, this.gameStyles);
-    }
+    },
 
-    static activePlayer(activePlayer) {
+    activePlayer: function (activePlayer) {
         const symbol = activePlayer instanceof Player ? "🧑🏻" : "🤖";
-        const styles = activePlayer instanceof Player ? Log.playerStyles : Log.botStyles;
+        const styles = activePlayer instanceof Player ? this.playerStyles : this.botStyles;
 
         console.log(`Active player: %c${symbol} ${activePlayer.name}`, styles);
-    }
+    },
 
-    static selectedCard(selectedCard) {
+    selectedCard: function (selectedCard) {
         console.log(`Selected card: %c🎲 ${selectedCard.deployStrength} ${selectedCard.tacticalAbility}`, this.gameStyles);
-    }
+    },
 
-    static selectedAction(selectedAction) {
+    selectedAction: function (selectedAction) {
         console.log(`Selected action: %c🎲 ${selectedAction.charAt(0).toUpperCase()}${selectedAction.slice(1)}`, this.gameStyles);
-    }
+    },
 
-    static selectedTheater(selectedTheater) {
+    selectedTheater: function (selectedTheater) {
         console.log(`Selected theater: %c🎲 ${selectedTheater.name}`, this.gameStyles);
-    }
+    },
 
-    static outlineCard(cardID, cardContainerEl) {
+    outlineCard: function (cardID, cardContainerEl) {
         switch (cardID) {
             case "1":
             case "5":
@@ -63,9 +35,9 @@ export default class Debugger {
                 cardContainerEl.classList.add("testing");
                 break;
         }
-    }
+    },
 
-    static forceDeploy(selectedCard) {
+    forceDeploy: function (selectedCard) {
         let randomNumber;
 
         switch (selectedCard.id) {
@@ -80,5 +52,7 @@ export default class Debugger {
         }
 
         return randomNumber;
-    }
-}
+    },
+};
+
+export default Debugger;
