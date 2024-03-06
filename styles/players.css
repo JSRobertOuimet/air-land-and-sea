@@ -1,5 +1,5 @@
-#player-one,
-#player-two {
+#player,
+#bot {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,12 +21,12 @@
     height: calc(var(--card-width) * var(--card-factor));
 }
 
-#player-one .hand {
+#player .hand {
     margin-top: 2rem;
     margin-left: var(--card-offset);
 }
 
-#player-two .hand {
+#bot .hand {
     margin-left: 3rem;
 }
 
@@ -34,11 +34,11 @@
     margin-left: calc(var(--card-offset) * -1);
 }
 
-#player-one .name {
+#player .name {
     margin-top: 1rem;
 }
 
-#player-two .name {
+#bot .name {
     margin-bottom: 1rem;
 }
 

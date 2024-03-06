@@ -33,9 +33,9 @@ export function support(parameters) {
 
     adjacentTheaters.forEach(adjacentTheater => {
         if (activePlayer instanceof Player) {
-            adjacentTheater.playerOneBonus.push(3);
+            adjacentTheater.playerBonus.push(3);
         } else {
-            adjacentTheater.playerTwoBonus.push(3);
+            adjacentTheater.botBonus.push(3);
         }
     });
 

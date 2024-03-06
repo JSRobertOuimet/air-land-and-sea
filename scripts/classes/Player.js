@@ -11,8 +11,8 @@ export default class Player {
 
     makingCardSelection() {
         return new Promise(resolve => {
-            document.querySelectorAll("#player-one .card").forEach(playerOneCardEl => {
-                playerOneCardEl.addEventListener("click", e => resolve(this.handleCardSelection(e)));
+            document.querySelectorAll("#player .card").forEach(playerCardEl => {
+                playerCardEl.addEventListener("click", e => resolve(this.handleCardSelection(e)));
             });
         });
     }
@@ -21,8 +21,8 @@ export default class Player {
         if (e.currentTarget.classList.contains("card")) {
             const selectedCard = this.hand.find(card => card.id === e.currentTarget.id);
 
-            document.querySelectorAll("#player-one .card").forEach(playerOneCardEl => {
-                if (playerOneCardEl.classList.contains("selected")) playerOneCardEl.classList.remove("selected");
+            document.querySelectorAll("#player .card").forEach(playerCardEl => {
+                if (playerCardEl.classList.contains("selected")) playerCardEl.classList.remove("selected");
             });
 
             e.currentTarget.classList.add("selected");

@@ -2,66 +2,66 @@ export default class Theater {
     constructor(theater) {
         this.id = theater.id;
         this.name = theater.name;
-        this._playerOneCards = [];
-        this._playerOneBonus = [];
-        this._playerOneTotal = 0;
-        this._playerTwoCards = [];
-        this._playerTwoBonus = [];
-        this._playerTwoTotal = 0;
+        this._playerCards = [];
+        this._playerBonus = [];
+        this._playerTotal = 0;
+        this._botCards = [];
+        this._botBonus = [];
+        this._botTotal = 0;
     }
 
-    get playerOneCards() {
-        return this._playerOneCards;
+    get playerCards() {
+        return this._playerCards;
     }
 
-    set playerOneCards(value) {
-        this._playerOneCards = value;
+    set playerCards(value) {
+        this._playerCards = value;
     }
 
-    get playerOneTotal() {
-        return this._playerOneTotal;
+    get playerTotal() {
+        return this._playerTotal;
     }
 
-    set playerOneTotal(value) {
-        this._playerOneTotal = value;
+    set playerTotal(value) {
+        this._playerTotal = value;
     }
 
-    get playerOneBonus() {
-        return this._playerOneBonus;
+    get playerBonus() {
+        return this._playerBonus;
     }
 
-    set playerOneBonus(value) {
-        this._playerOneBonus = value;
+    set playerBonus(value) {
+        this._playerBonus = value;
     }
 
-    get playerTwoCards() {
-        return this._playerTwoCards;
+    get botCards() {
+        return this._botCards;
     }
 
-    set playerTwoCards(value) {
-        this._playerTwoCards = value;
+    set botCards(value) {
+        this._botCards = value;
     }
 
-    get playerTwoTotal() {
-        return this._playerTwoTotal;
+    get botTotal() {
+        return this._botTotal;
     }
 
-    set playerTwoTotal(value) {
-        this._playerTwoTotal = value;
+    set botTotal(value) {
+        this._botTotal = value;
     }
 
-    get playerTwoBonus() {
-        return this._playerTwoBonus;
+    get botBonus() {
+        return this._botBonus;
     }
 
-    set playerTwoBonus(value) {
-        this._playerTwoBonus = value;
+    set botBonus(value) {
+        this._botBonus = value;
     }
 
     calculatePlayerTotal(playerID) {
         playerID === "1"
-            ? (this.playerOneTotal = this.calculatePlayerSubtotal("1") + this.calculatePlayerBonus("1"))
-            : (this.playerTwoTotal = this.calculatePlayerSubtotal("2") + this.calculatePlayerBonus("2"));
+            ? (this.playerTotal = this.calculatePlayerSubtotal("1") + this.calculatePlayerBonus("1"))
+            : (this.botTotal = this.calculatePlayerSubtotal("2") + this.calculatePlayerBonus("2"));
     }
 
     calculatePlayerSubtotal(playerID) {
@@ -72,12 +72,10 @@ export default class Theater {
     }
 
     calculatePlayerBonus(playerID) {
-        return playerID === "1"
-            ? this.playerOneBonus.reduce((sum, point) => sum + point, 0)
-            : this.playerTwoBonus.reduce((sum, point) => sum + point, 0);
+        return playerID === "1" ? this.playerBonus.reduce((sum, point) => sum + point, 0) : this.botBonus.reduce((sum, point) => sum + point, 0);
     }
 
     getCardsInTheater(playerID) {
-        return playerID === "1" ? this.playerOneCards : this.playerTwoCards;
+        return playerID === "1" ? this.playerCards : this.botCards;
     }
 }

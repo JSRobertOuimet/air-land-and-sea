@@ -11,10 +11,10 @@ export default class UI {
     static deployButtonEl = document.querySelector("#deploy");
     static improviseButtonEl = document.querySelector("#improvise");
     static descriptionEl = document.querySelector("#description");
-    static playerOneHandEl = document.querySelector("#player-one .hand");
-    static playerOneNameEl = document.querySelector("#player-one .name");
-    static playerTwoHandEl = document.querySelector("#player-two .hand");
-    static playerTwoNameEl = document.querySelector("#player-two .name");
+    static playerHandEl = document.querySelector("#player .hand");
+    static playerNameEl = document.querySelector("#player .name");
+    static botHandEl = document.querySelector("#bot .hand");
+    static botNameEl = document.querySelector("#bot .name");
     static overlayEl = document.querySelector("#overlay");
     static battleWinnerEl = document.querySelector("#battle-winner");
     static gameWinnerEl = document.querySelector("#game-winner");
@@ -54,14 +54,14 @@ export default class UI {
             const theaterContainerEl = document.createElement("div");
             const theaterEl = document.createElement("div");
             const nameEl = document.createElement("div");
-            const playerOneColumnEl = document.createElement("div");
-            const playerTwoColumnEl = document.createElement("div");
-            const playerOneSubtotalEl = document.createElement("div");
-            const playerOneBonusEl = document.createElement("div");
-            const playerOneTotalEl = document.createElement("div");
-            const playerTwoSubtotalEl = document.createElement("div");
-            const playerTwoBonusEl = document.createElement("div");
-            const playerTwoTotalEl = document.createElement("div");
+            const playerColumnEl = document.createElement("div");
+            const botColumnEl = document.createElement("div");
+            const playerSubtotalEl = document.createElement("div");
+            const playerBonusEl = document.createElement("div");
+            const playerTotalEl = document.createElement("div");
+            const botSubtotalEl = document.createElement("div");
+            const botBonusEl = document.createElement("div");
+            const botTotalEl = document.createElement("div");
 
             depotEl.setAttribute("id", `${theater.name.toLowerCase()}-depot`);
             depotEl.classList.add("depot");
@@ -85,26 +85,26 @@ export default class UI {
                     break;
             }
 
-            playerOneColumnEl.classList.add("column", "player-one-column");
-            playerOneSubtotalEl.classList.add("subtotal");
-            playerOneBonusEl.classList.add("bonus");
-            playerOneTotalEl.classList.add("player-one-total");
-            playerTwoColumnEl.classList.add("column", "player-two-column");
-            playerTwoSubtotalEl.classList.add("subtotal");
-            playerTwoBonusEl.classList.add("bonus");
-            playerTwoTotalEl.classList.add("player-two-total");
+            playerColumnEl.classList.add("column", "player-column");
+            playerSubtotalEl.classList.add("subtotal");
+            playerBonusEl.classList.add("bonus");
+            playerTotalEl.classList.add("player-total");
+            botColumnEl.classList.add("column", "bot-column");
+            botSubtotalEl.classList.add("subtotal");
+            botBonusEl.classList.add("bonus");
+            botTotalEl.classList.add("bot-total");
 
             theaterEl.append(nameEl);
             theaterContainerEl.append(theaterEl);
 
-            playerOneTotalEl.append(playerOneSubtotalEl, playerOneBonusEl);
-            playerTwoTotalEl.append(playerTwoSubtotalEl, playerTwoBonusEl);
+            playerTotalEl.append(playerSubtotalEl, playerBonusEl);
+            botTotalEl.append(botSubtotalEl, botBonusEl);
 
-            depotEl.append(playerTwoColumnEl);
-            depotEl.append(playerTwoTotalEl);
+            depotEl.append(botColumnEl);
+            depotEl.append(botTotalEl);
             depotEl.append(theaterContainerEl);
-            depotEl.append(playerOneTotalEl);
-            depotEl.append(playerOneColumnEl);
+            depotEl.append(playerTotalEl);
+            depotEl.append(playerColumnEl);
 
             UI.mainAreaEl.append(depotEl);
         });
@@ -112,15 +112,15 @@ export default class UI {
 
     static displayPlayerTotal(theaters) {
         theaters.forEach(theater => {
-            const playerOneSubtotalEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-one-total .subtotal`);
-            const playerOneBonusEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-one-total .bonus`);
-            const playerTwoSubtotalEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-two-total .subtotal`);
-            const playerTwoBonusEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-two-total .bonus`);
+            const playerSubtotalEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-total .subtotal`);
+            const playerBonusEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-total .bonus`);
+            const botSubtotalEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .bot-total .subtotal`);
+            const botBonusEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .bot-total .bonus`);
 
-            playerOneSubtotalEl.textContent = theater.calculatePlayerSubtotal("1");
-            playerOneBonusEl.textContent = theater.playerOneBonus.length > 0 ? `(+${theater.calculatePlayerBonus("1")})` : "";
-            playerTwoSubtotalEl.textContent = theater.calculatePlayerSubtotal("2");
-            playerTwoBonusEl.textContent = theater.playerTwoBonus.length > 0 ? `(+${theater.calculatePlayerBonus("2")})` : "";
+            playerSubtotalEl.textContent = theater.calculatePlayerSubtotal("1");
+            playerBonusEl.textContent = theater.playerBonus.length > 0 ? `(+${theater.calculatePlayerBonus("1")})` : "";
+            botSubtotalEl.textContent = theater.calculatePlayerSubtotal("2");
+            botBonusEl.textContent = theater.botBonus.length > 0 ? `(+${theater.calculatePlayerBonus("2")})` : "";
         });
     }
 
@@ -165,10 +165,10 @@ export default class UI {
 
             if (index < CONFIG.cardsDealt) {
                 if (index % 2 !== 0) {
-                    UI.playerOneHandEl.append(cardContainerEl);
+                    UI.playerHandEl.append(cardContainerEl);
                     cardContainerEl.lastChild.style.display = "none";
                 } else {
-                    UI.playerTwoHandEl.append(cardContainerEl);
+                    UI.botHandEl.append(cardContainerEl);
                     cardContainerEl.classList.add("facedown");
                     cardContainerEl.firstChild.style.display = "none";
                 }
@@ -238,17 +238,17 @@ export default class UI {
     }
 
     static displayPlayersName(players) {
-        UI.playerOneNameEl.textContent = `${players[0].name} (You)`;
-        UI.playerTwoNameEl.textContent = players[1].name;
+        UI.playerNameEl.textContent = `${players[0].name} (You)`;
+        UI.botNameEl.textContent = players[1].name;
     }
 
     static markActivePlayer(activePlayer) {
         if (activePlayer instanceof Player) {
-            UI.playerOneNameEl.classList.add("active");
-            UI.playerTwoNameEl.classList.remove("active");
+            UI.playerNameEl.classList.add("active");
+            UI.botNameEl.classList.remove("active");
         } else {
-            UI.playerOneNameEl.classList.remove("active");
-            UI.playerTwoNameEl.classList.add("active");
+            UI.playerNameEl.classList.remove("active");
+            UI.botNameEl.classList.add("active");
         }
     }
 
@@ -296,7 +296,7 @@ export default class UI {
         UI.overlayEl.style.display = "none";
         UI.scoreEl.textContent = "";
         UI.mainAreaEl.textContent = "";
-        UI.playerOneHandEl.textContent = "";
-        UI.playerTwoHandEl.textContent = "";
+        UI.playerHandEl.textContent = "";
+        UI.botHandEl.textContent = "";
     }
 }

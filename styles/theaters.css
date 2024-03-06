@@ -19,24 +19,24 @@
     height: 100%;
 }
 
-.player-one-column,
-.player-two-column {
+.player-column,
+.bot-column {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.player-one-column {
+.player-column {
     min-height: calc(var(--card-width) * var(--card-factor));
 }
 
-.player-two-column {
+.bot-column {
     min-height: calc(var(--card-width) * var(--card-factor));
     transform: rotate(180deg);
 }
 
-.player-one-column .card:not(:first-of-type),
-.player-two-column .card:not(:first-of-type) {
+.player-column .card:not(:first-of-type),
+.bot-column .card:not(:first-of-type) {
     margin-top: -5rem;
 }
 
@@ -50,8 +50,8 @@
     margin-top: calc(var(--card-width) * var(--card-factor) * -1);
 }
 
-.player-one-total,
-.player-two-total {
+.player-total,
+.bot-total {
     display: flex;
     justify-content: center;
     margin-block: 1rem;

@@ -120,12 +120,12 @@ export default class Battle {
 
     #resetStateForTheaters(theaters) {
         theaters.forEach(theater => {
-            theater.playerOneCards = [];
-            theater.playerOneBonus = [];
-            theater.playerOneTotal = 0;
-            theater.playerTwoCards = [];
-            theater.playerTwoBonus = [];
-            theater.playerTwoTotal = 0;
+            theater.playerCards = [];
+            theater.playerBonus = [];
+            theater.playerTotal = 0;
+            theater.botCards = [];
+            theater.botBonus = [];
+            theater.botTotal = 0;
         });
     }
 
@@ -222,25 +222,25 @@ export default class Battle {
     }
 
     #determineBattleWinner(theaters) {
-        let theatersControlledByPlayerOne = 0;
-        let theatersControlledByPlayerTwo = 0;
+        let theatersControlledByPlayer = 0;
+        let theatersControlledByBot = 0;
         let battleWinner;
 
         theaters.forEach(theater => {
-            if (theater.playerOneTotal === theater.playerTwoTotal) {
+            if (theater.playerTotal === theater.botTotal) {
                 if (this.startingPlayer === this.players[0]) {
-                    theatersControlledByPlayerOne++;
+                    theatersControlledByPlayer++;
                 } else {
-                    theatersControlledByPlayerTwo++;
+                    theatersControlledByBot++;
                 }
-            } else if (theater.playerOneTotal > theater.playerTwoTotal) {
-                theatersControlledByPlayerOne++;
+            } else if (theater.playerTotal > theater.botTotal) {
+                theatersControlledByPlayer++;
             } else {
-                theatersControlledByPlayerTwo++;
+                theatersControlledByBot++;
             }
         });
 
-        if (theatersControlledByPlayerOne > theatersControlledByPlayerTwo) {
+        if (theatersControlledByPlayer > theatersControlledByBot) {
             battleWinner = this.players[0];
             this.players[0].victoryPoints++;
         } else {
@@ -256,16 +256,16 @@ export default class Battle {
         const highlightedTheaterEls = document.querySelectorAll(".highlighted");
         const playerColumnEl =
             this.activePlayer instanceof Player
-                ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-one-column`)
-                : document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-two-column`);
+                ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-column`)
+                : document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .bot-column`);
 
         this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
 
         if (this.activePlayer instanceof Player) {
-            this.selectedTheater.playerOneCards.push(this.selectedCard);
+            this.selectedTheater.playerCards.push(this.selectedCard);
 
-            if (this.selectedTheater.playerOneCards.length > 1) {
-                this.selectedTheater.playerOneCards.at(-2).covered = true;
+            if (this.selectedTheater.playerCards.length > 1) {
+                this.selectedTheater.playerCards.at(-2).covered = true;
             }
 
             this.selectedTheater.calculatePlayerTotal("1");
@@ -274,10 +274,10 @@ export default class Battle {
             UI.disableActions();
             UI.clearDescription();
         } else {
-            this.selectedTheater.playerTwoCards.push(this.selectedCard);
+            this.selectedTheater.botCards.push(this.selectedCard);
 
-            if (this.selectedTheater.playerTwoCards.length > 1) {
-                this.selectedTheater.playerTwoCards.at(-2).covered = true;
+            if (this.selectedTheater.botCards.length > 1) {
+                this.selectedTheater.botCards.at(-2).covered = true;
             }
 
             this.selectedTheater.calculatePlayerTotal("2");
@@ -316,8 +316,8 @@ export default class Battle {
         const highlightedTheaterEls = document.querySelectorAll(".highlighted");
         const playerColumnEl =
             this.activePlayer instanceof Player
-                ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-one-column`)
-                : document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-two-column`);
+                ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-column`)
+                : document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .bot-column`);
         const isContainmentInTheater = getAllCardsInTheater(null, this.theaters).find(card => card.id === "5" && card.facedown === false);
 
         this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
@@ -338,10 +338,10 @@ export default class Battle {
                 return;
             }
 
-            this.selectedTheater.playerOneCards.push(this.selectedCard);
+            this.selectedTheater.playerCards.push(this.selectedCard);
 
-            if (this.selectedTheater.playerOneCards.length > 1) {
-                this.selectedTheater.playerOneCards.at(-2).covered = true;
+            if (this.selectedTheater.playerCards.length > 1) {
+                this.selectedTheater.playerCards.at(-2).covered = true;
             }
 
             this.selectedTheater.calculatePlayerTotal("1");
@@ -362,10 +362,10 @@ export default class Battle {
                 return;
             }
 
-            this.selectedTheater.playerTwoCards.push(this.selectedCard);
+            this.selectedTheater.botCards.push(this.selectedCard);
 
-            if (this.selectedTheater.playerTwoCards.length > 1) {
-                this.selectedTheater.playerTwoCards.at(-2).covered = true;
+            if (this.selectedTheater.botCards.length > 1) {
+                this.selectedTheater.botCards.at(-2).covered = true;
             }
 
             this.selectedTheater.calculatePlayerTotal("2");
