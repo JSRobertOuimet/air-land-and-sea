@@ -1,8 +1,8 @@
 import { CONFIG } from "../data/CONFIG.js";
-import { support, coverFire, escalation } from "../tacticalAbilities.js";
 import Player from "./Player.js";
-import Log from "./Log.js";
 import UI from "./UI.js";
+import Log from "./Log.js";
+import tacticalAbilities from "../tacticalAbilities.js";
 import { getAllCardsInTheater } from "../utils.js";
 
 export default class Battle {
@@ -300,13 +300,13 @@ export default class Battle {
 
         switch (this.selectedCard.id) {
             case "1":
-                support(parameters);
+                tacticalAbilities.support(parameters);
                 break;
             case "10":
-                coverFire(parameters);
+                tacticalAbilities.coverFire(parameters);
                 break;
             case "14":
-                escalation(parameters);
+                tacticalAbilities.escalation(parameters);
                 break;
         }
     }
