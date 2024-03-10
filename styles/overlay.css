@@ -1,5 +1,5 @@
 #overlay {
-    display: none;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -9,19 +9,9 @@
     z-index: 900;
 }
 
-#battle-winner {
-    margin-bottom: 4rem;
-    font-size: 2rem;
-    color: var(--color-white);
-}
-
+#battle-winner,
 #game-winner {
-    display: none;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
     font-size: 2rem;
     color: var(--color-white);
-}
-
-#next-game {
-    display: none;
 }

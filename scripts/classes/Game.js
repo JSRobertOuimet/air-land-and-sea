@@ -24,6 +24,7 @@ export default class Game {
 
     constructor(app) {
         this.id = (Game.id++).toString();
+        this.app = app;
         this.players = [];
         this.theaters = [];
         this.cards = [];
@@ -48,8 +49,7 @@ export default class Game {
         this.#createCards(CARDS);
         this.#setGameMode(app.gameMode);
         this.#determineStartingPlayer(this.players);
-        this.#addEventListeners();
-        this.#createBattle();
+        this.createBattle();
     }
 
     #createPlayer(playerName) {
@@ -101,21 +101,13 @@ export default class Game {
         }
     }
 
-    #addEventListeners() {
-        UI.nextBattleButtonEl.addEventListener("click", () => {
-            UI.clearForNextBattle();
-            this.#createBattle();
-        });
-    }
-
-    #createBattle() {
+    createBattle() {
         this.battles.push(new Battle(this));
-        UI.nextBattleButtonEl.disabled = true;
     }
 
     getActivePlayer() {
         const activePlayer = this.players.find(player => player.active);
-        
+
         UI.markActivePlayer(activePlayer);
 
         return activePlayer;

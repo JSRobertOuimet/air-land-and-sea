@@ -14,9 +14,10 @@ export default class Battle {
     #log = [];
 
     constructor(game) {
-        const { id, players, theaters, cards } = game;
+        const { id, app, players, theaters, cards } = game;
 
         this.id = id === "1" ? (Battle.id++).toString() : "1";
+        this.app = app;
         this.game = game;
         this.players = players;
         this.theaters = theaters;
@@ -178,9 +179,9 @@ export default class Battle {
         this.battleWinner = this.#determineBattleWinner(this.theaters);
 
         if (this.game.isGameWon()) {
-            UI.displayGameEndOverlay(this.battleWinner);
+            UI.displayGameEndOverlay(this.app, this.battleWinner);
         } else {
-            UI.displayBattleEndOverlay(this.battleWinner);
+            UI.displayBattleEndOverlay(this.game, this.battleWinner);
         }
     }
 

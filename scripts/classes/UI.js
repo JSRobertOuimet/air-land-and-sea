@@ -15,11 +15,6 @@ export default class UI {
     static playerNameEl = document.querySelector("#player .name");
     static botHandEl = document.querySelector("#bot .hand");
     static botNameEl = document.querySelector("#bot .name");
-    static overlayEl = document.querySelector("#overlay");
-    static battleWinnerEl = document.querySelector("#battle-winner");
-    static gameWinnerEl = document.querySelector("#game-winner");
-    static nextBattleButtonEl = document.querySelector("#next-battle");
-    static nextGameButtonEl = document.querySelector("#next-game");
 
     constructor() {}
 
@@ -276,24 +271,51 @@ export default class UI {
         UI.descriptionEl.textContent = "";
     }
 
-    static displayBattleEndOverlay(battleWinner) {
-        UI.overlayEl.style.display = "flex";
-        UI.battleWinnerEl.textContent = `${battleWinner.name} won the battle!`;
-        UI.nextBattleButtonEl.disabled = false;
+    static displayBattleEndOverlay(game, battleWinner) {
+        const overlayEl = document.createElement("div");
+        const battleWinnerEl = document.createElement("div");
+        const nextBattleButtonEl = document.createElement("button");
+
+        overlayEl.setAttribute("id", "overlay");
+        battleWinnerEl.setAttribute("id", "battle-winner");
+        battleWinnerEl.textContent = `${battleWinner.name} won the battle!`;
+        nextBattleButtonEl.setAttribute("id", "next-battle");
+        nextBattleButtonEl.classList.add("button");
+        nextBattleButtonEl.textContent = "Next Battle";
+
+        nextBattleButtonEl.addEventListener("click", () => {
+            UI.clearForNextBattle();
+            game.createBattle();
+        });
+
+        overlayEl.append(battleWinnerEl, nextBattleButtonEl);
+        document.body.append(overlayEl);
     }
 
-    static displayGameEndOverlay(gameWinner) {
-        UI.overlayEl.style.display = "flex";
-        UI.battleWinnerEl.style.display = "none";
-        UI.gameWinnerEl.style.display = "flex";
-        UI.gameWinnerEl.textContent = `${gameWinner.name} won the game!`;
-        UI.nextGameButtonEl.style.display = "block";
-        UI.nextGameButtonEl.disabled = false;
-        UI.nextBattleButtonEl.remove();
+    static displayGameEndOverlay(app, gameWinner) {
+        const overlayEl = document.createElement("div");
+        const gameWinnerEl = document.createElement("div");
+        const nextGameButtonEl = document.createElement("button");
+
+        overlayEl.setAttribute("id", "overlay");
+        gameWinnerEl.setAttribute("id", "game-winner");
+        gameWinnerEl.textContent = `${gameWinner.name} won the game!`;
+        nextGameButtonEl.setAttribute("id", "next-game");
+        nextGameButtonEl.classList.add("button");
+        nextGameButtonEl.textContent = "Next Game";
+
+        nextGameButtonEl.addEventListener("click", () => {
+            UI.clearForNextBattle();
+            app.createGame();
+        });
+
+        overlayEl.append(gameWinnerEl, nextGameButtonEl);
+        document.body.append(overlayEl);
     }
 
     static clearForNextBattle() {
-        UI.overlayEl.style.display = "none";
+        document.querySelector("#overlay").remove();
+
         UI.scoreEl.textContent = "";
         UI.mainAreaEl.textContent = "";
         UI.playerHandEl.textContent = "";

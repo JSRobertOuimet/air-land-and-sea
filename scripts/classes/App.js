@@ -1,5 +1,4 @@
 import Game from "./Game.js";
-import UI from "./UI.js";
 
 export default class App {
     constructor(options) {
@@ -9,7 +8,7 @@ export default class App {
         this._gameMode = gameMode;
         this._games = [];
 
-        this.#initializeApp();
+        this.createGame();
     }
 
     get playerName() {
@@ -36,19 +35,7 @@ export default class App {
         this._games = value;
     }
 
-    #initializeApp() {
-        this.#addEventListners();
-        this.#createGame();
-    }
-
-    #addEventListners() {
-        UI.nextGameButtonEl.addEventListener("click", () => {
-            UI.clearForNextBattle();
-            this.#createGame();
-        });
-    }
-
-    #createGame() {
+    createGame() {
         this.games.push(new Game(this));
     }
 }
