@@ -1,4 +1,4 @@
-import Player from "./classes/Player.js";
+import Player from "../classes/Player.js";
 import UI from "./UI.js";
 import { getAdjacentTheaters, getCoveredCards, getAllCards } from "./utils.js";
 

@@ -1,4 +1,4 @@
-import Player from "./classes/Player.js";
+import Player from "../classes/Player.js";
 
 export function getAdjacentTheaters(theaters, selectedTheater) {
     const adjacentTheaters = [];

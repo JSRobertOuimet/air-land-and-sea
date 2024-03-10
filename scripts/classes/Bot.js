@@ -1,4 +1,4 @@
-import Debugger from "../Debugger.js";
+import Debugger from "../modules/Debugger.js";
 
 export default class Bot {
     constructor(name) {

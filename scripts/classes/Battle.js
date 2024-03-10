@@ -1,9 +1,9 @@
 import { CONFIG } from "../data/CONFIG.js";
 import Player from "./Player.js";
-import UI from "../UI.js";
+import UI from "../modules/UI.js";
 import Log from "./Log.js";
-import TacticalAbilities from "../TacticalAbilities.js";
-import { getAllCardsInTheater } from "../utils.js";
+import TacticalAbilities from "../modules/TacticalAbilities.js";
+import { getAllCardsInTheater } from "../modules/utils.js";
 
 export default class Battle {
     static id = 1;
