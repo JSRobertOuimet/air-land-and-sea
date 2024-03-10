@@ -27,8 +27,8 @@ export default class Player {
 
             e.currentTarget.classList.add("selected");
             selectedCard.deployStrength === 6
-                ? (UI.descriptionEl.textContent = `${selectedCard.tacticalAbility}`)
-                : (UI.descriptionEl.textContent = `${selectedCard.tacticalAbility} ${selectedCard.typeSymbol} – ${selectedCard.description}`);
+                ? (UI.getElements().descriptionEl.textContent = `${selectedCard.tacticalAbility}`)
+                : (UI.getElements().descriptionEl.textContent = `${selectedCard.tacticalAbility} ${selectedCard.typeSymbol} – ${selectedCard.description}`);
 
             UI.enableActions();
 
@@ -38,7 +38,7 @@ export default class Player {
 
     makingActionSelection() {
         return new Promise(resolve => {
-            UI.actionButtonEls.forEach(actionButtonEl => {
+            UI.getElements().actionButtonEls.forEach(actionButtonEl => {
                 actionButtonEl.addEventListener("click", e => resolve(this.handleActionSelection(e)));
             });
         });

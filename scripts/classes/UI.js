@@ -2,22 +2,28 @@ import { CONFIG } from "../data/CONFIG.js";
 import Player from "./Player.js";
 import Debugger from "./Debugger.js";
 
-export default class UI {
-    static scoreEl = document.querySelector("#score");
-    static mainAreaEl = document.querySelector("#main-area");
-    static actionBarEl = document.querySelector("#action-bar");
-    static actionButtonEls = document.querySelectorAll("#action-bar button");
-    static deployButtonEl = document.querySelector("#deploy");
-    static improviseButtonEl = document.querySelector("#improvise");
-    static descriptionEl = document.querySelector("#description");
-    static playerHandEl = document.querySelector("#player .hand");
-    static playerNameEl = document.querySelector("#player .name");
-    static botHandEl = document.querySelector("#bot .hand");
-    static botNameEl = document.querySelector("#bot .name");
+const elements = {};
 
-    constructor() {}
+const UI = {
+    getElements: function () {
+        if (!elements.element) {
+            elements.scoreEl = document.querySelector("#score");
+            elements.mainAreaEl = document.querySelector("#main-area");
+            elements.actionBarEl = document.querySelector("#action-bar");
+            elements.actionButtonEls = document.querySelectorAll("#action-bar button");
+            elements.deployButtonEl = document.querySelector("#deploy");
+            elements.improviseButtonEl = document.querySelector("#improvise");
+            elements.descriptionEl = document.querySelector("#description");
+            elements.playerHandEl = document.querySelector("#player .hand");
+            elements.playerNameEl = document.querySelector("#player .name");
+            elements.botHandEl = document.querySelector("#bot .hand");
+            elements.botNameEl = document.querySelector("#bot .name");
+        }
 
-    static displayScore(battleID, players) {
+        return elements;
+    },
+
+    displayScore: function (battleID, players) {
         const battleNumberEl = document.createElement("div");
         const playerScoreContainerEl = document.createElement("div");
         const playerNameEl = document.createElement("div");
@@ -39,10 +45,10 @@ export default class UI {
         botScoreEl.textContent = `${players[1].victoryPoints}`;
         botScoreContainerEl.append(botNameEl, botScoreEl);
 
-        UI.scoreEl.append(battleNumberEl, playerScoreContainerEl, botScoreContainerEl);
-    }
+        UI.getElements().scoreEl.append(battleNumberEl, playerScoreContainerEl, botScoreContainerEl);
+    },
 
-    static displayTheaters(shuffledTheaters) {
+    displayTheaters: function (shuffledTheaters) {
         shuffledTheaters.forEach(theater => {
             const depotEl = document.createElement("div");
             const theaterContainerEl = document.createElement("div");
@@ -100,11 +106,11 @@ export default class UI {
             depotEl.append(playerTotalEl);
             depotEl.append(playerColumnEl);
 
-            UI.mainAreaEl.append(depotEl);
+            UI.getElements().mainAreaEl.append(depotEl);
         });
-    }
+    },
 
-    static displayPlayerTotal(theaters) {
+    displayPlayerTotal: function (theaters) {
         theaters.forEach(theater => {
             const playerSubtotalEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-total .subtotal`);
             const playerBonusEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-total .bonus`);
@@ -116,20 +122,20 @@ export default class UI {
             botSubtotalEl.textContent = theater.calculatePlayerSubtotal("2");
             botBonusEl.textContent = theater.botBonus.length > 0 ? `(+${theater.calculatePlayerBonus("2")})` : "";
         });
-    }
+    },
 
-    static removeHighlights(highlightedTheaterEls) {
+    removeHighlights: function (highlightedTheaterEls) {
         highlightedTheaterEls.forEach(highlightedTheaterEl => {
             highlightedTheaterEl.classList.remove("highlighted");
         });
-    }
+    },
 
-    static displayCards(cards) {
+    displayCards: function (cards) {
         const discardPileEl = document.createElement("div");
 
         discardPileEl.setAttribute("id", "discard-pile");
         discardPileEl.classList.add("depot");
-        UI.mainAreaEl.append(discardPileEl);
+        UI.getElements().mainAreaEl.append(discardPileEl);
 
         cards.forEach((card, index) => {
             const cardContainerEl = document.createElement("div");
@@ -159,10 +165,10 @@ export default class UI {
 
             if (index < CONFIG.cardsDealt) {
                 if (index % 2 !== 0) {
-                    UI.playerHandEl.append(cardContainerEl);
+                    UI.getElements().playerHandEl.append(cardContainerEl);
                     cardContainerEl.lastChild.style.display = "none";
                 } else {
-                    UI.botHandEl.append(cardContainerEl);
+                    UI.getElements().botHandEl.append(cardContainerEl);
                     cardContainerEl.classList.add("facedown");
                     cardContainerEl.firstChild.style.display = "none";
                 }
@@ -174,23 +180,23 @@ export default class UI {
 
             Debugger.outlineCard(card.id, cardContainerEl);
         });
-    }
+    },
 
-    static displayCardOverwrittenStrength(card) {
+    displayCardOverwrittenStrength: function (card) {
         document.querySelectorAll(".card").forEach(cardEl => {
             if (cardEl.id === card.id) {
                 cardEl.children[0].textContent = card.deployStrength;
                 cardEl.children[1].textContent = card.improviseStrength;
             }
         });
-    }
+    },
 
-    static enableTooltip(selectedCardEl, card) {
+    enableTooltip: function (selectedCardEl, card) {
         selectedCardEl.addEventListener("mouseenter", this.showTooltip.bind(null, selectedCardEl, card));
         selectedCardEl.addEventListener("mouseleave", this.hideTooltip);
-    }
+    },
 
-    static showTooltip(selectedCardEl, card) {
+    showTooltip: function (selectedCardEl, card) {
         const tooltipEl = document.createElement("div");
 
         tooltipEl.style.top = `${selectedCardEl.getBoundingClientRect().bottom}px`;
@@ -201,15 +207,15 @@ export default class UI {
             : (tooltipEl.textContent = `${card.tacticalAbility} ${card.typeSymbol} – ${card.description}`);
 
         document.body.append(tooltipEl);
-    }
+    },
 
-    static hideTooltip() {
+    hideTooltip: function () {
         const tooltipEl = document.querySelector(".tooltip");
 
         tooltipEl.remove();
-    }
+    },
 
-    static flipCard(selectedCardEl) {
+    flipCard: function (selectedCardEl) {
         if (selectedCardEl.classList.contains("facedown")) {
             selectedCardEl.classList.remove("facedown");
             selectedCardEl.firstChild.style.display = "block";
@@ -219,9 +225,9 @@ export default class UI {
             selectedCardEl.firstChild.style.display = "none";
             selectedCardEl.lastChild.style.display = "block";
         }
-    }
+    },
 
-    static discard(selectedCardEl, targetEl) {
+    discard: function (selectedCardEl, targetEl) {
         selectedCardEl.classList.remove("selected");
 
         if (targetEl.id === "discard-pile") {
@@ -229,48 +235,48 @@ export default class UI {
         }
 
         targetEl.append(selectedCardEl);
-    }
+    },
 
-    static displayPlayersName(players) {
-        UI.playerNameEl.textContent = `${players[0].name} (You)`;
-        UI.botNameEl.textContent = players[1].name;
-    }
+    displayPlayersName: function (players) {
+        UI.getElements().playerNameEl.textContent = `${players[0].name} (You)`;
+        UI.getElements().botNameEl.textContent = players[1].name;
+    },
 
-    static markActivePlayer(activePlayer) {
+    markActivePlayer: function (activePlayer) {
         if (activePlayer instanceof Player) {
-            UI.playerNameEl.classList.add("active");
-            UI.botNameEl.classList.remove("active");
+            UI.getElements().playerNameEl.classList.add("active");
+            UI.getElements().botNameEl.classList.remove("active");
         } else {
-            UI.playerNameEl.classList.remove("active");
-            UI.botNameEl.classList.add("active");
+            UI.getElements().playerNameEl.classList.remove("active");
+            UI.getElements().botNameEl.classList.add("active");
         }
-    }
+    },
 
-    static displayWithdrawButton() {
+    displayWithdrawButton: function () {
         const withdrawButtonEl = document.createElement("button");
 
         withdrawButtonEl.setAttribute("id", "withdraw");
         withdrawButtonEl.classList.add("button");
         withdrawButtonEl.textContent = "Withdraw";
 
-        UI.actionBarEl.append(withdrawButtonEl);
-    }
+        UI.getElements().actionBarEl.append(withdrawButtonEl);
+    },
 
-    static enableActions() {
-        UI.deployButtonEl.disabled = false;
-        UI.improviseButtonEl.disabled = false;
-    }
+    enableActions: function () {
+        UI.getElements().deployButtonEl.disabled = false;
+        UI.getElements().improviseButtonEl.disabled = false;
+    },
 
-    static disableActions() {
-        UI.deployButtonEl.disabled = true;
-        UI.improviseButtonEl.disabled = true;
-    }
+    disableActions: function () {
+        UI.getElements().deployButtonEl.disabled = true;
+        UI.getElements().improviseButtonEl.disabled = true;
+    },
 
-    static clearDescription() {
-        UI.descriptionEl.textContent = "";
-    }
+    clearDescription: function () {
+        UI.getElements().descriptionEl.textContent = "";
+    },
 
-    static displayBattleEndOverlay(game, battleWinner) {
+    displayBattleEndOverlay: function (game, battleWinner) {
         const overlayEl = document.createElement("div");
         const battleWinnerEl = document.createElement("div");
         const nextBattleButtonEl = document.createElement("button");
@@ -289,9 +295,9 @@ export default class UI {
 
         overlayEl.append(battleWinnerEl, nextBattleButtonEl);
         document.body.append(overlayEl);
-    }
+    },
 
-    static displayGameEndOverlay(app, gameWinner) {
+    displayGameEndOverlay: function (app, gameWinner) {
         const overlayEl = document.createElement("div");
         const gameWinnerEl = document.createElement("div");
         const nextGameButtonEl = document.createElement("button");
@@ -310,14 +316,16 @@ export default class UI {
 
         overlayEl.append(gameWinnerEl, nextGameButtonEl);
         document.body.append(overlayEl);
-    }
+    },
 
-    static clearForNextBattle() {
+    clearForNextBattle: function () {
         document.querySelector("#overlay").remove();
 
-        UI.scoreEl.textContent = "";
-        UI.mainAreaEl.textContent = "";
-        UI.playerHandEl.textContent = "";
-        UI.botHandEl.textContent = "";
-    }
-}
+        UI.getElements().scoreEl.textContent = "";
+        UI.getElements().mainAreaEl.textContent = "";
+        UI.getElements().playerHandEl.textContent = "";
+        UI.getElements().botHandEl.textContent = "";
+    },
+};
+
+export default UI;
