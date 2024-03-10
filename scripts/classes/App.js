@@ -3,8 +3,10 @@ import UI from "./UI.js";
 
 export default class App {
     constructor(options) {
-        this._playerName = options.playerName;
-        this._gameMode = options.gameMode;
+        const { playerName, gameMode } = options;
+
+        this._playerName = playerName;
+        this._gameMode = gameMode;
         this._games = [];
 
         this.#initializeApp();

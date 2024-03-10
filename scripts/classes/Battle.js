@@ -14,11 +14,13 @@ export default class Battle {
     #log = [];
 
     constructor(game) {
-        this.id = game.id === "1" ? (Battle.id++).toString() : "1";
+        const { id, players, theaters, cards } = game;
+
+        this.id = id === "1" ? (Battle.id++).toString() : "1";
         this.game = game;
-        this.players = game.players;
-        this.theaters = game.theaters;
-        this.cards = game.cards;
+        this.players = players;
+        this.theaters = theaters;
+        this.cards = cards;
         this._selectedCard = null;
         this._selectedAction = "";
         this._selectedTheater = null;
@@ -191,6 +193,15 @@ export default class Battle {
     }
 
     #performAction(selectedAction) {
+        const parameters = {
+            activePlayerName: this.activePlayer.name,
+            selectedAction: this.selectedCard,
+            selectedAction: this.selectedAction,
+            selectTheater: this.selectedTheater,
+            players: this.players,
+            theaters: this.theaters,
+        };
+
         switch (selectedAction) {
             case "deploy":
                 this.#deploy();
@@ -204,7 +215,7 @@ export default class Battle {
                 break;
         }
 
-        this.log.push(new Log(this.activePlayer.name, this.selectedCard, this.selectedAction, this.selectedTheater, this.players, this.theaters));
+        this.log.push(new Log(parameters));
     }
 
     #endTurn() {
