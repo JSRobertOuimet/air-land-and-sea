@@ -1,5 +1,5 @@
-import { CONFIG } from "../data/CONFIG.js";
-import Player from "./Player.js";
+import { CONFIG } from "./data/CONFIG.js";
+import Player from "./classes/Player.js";
 import Debugger from "./Debugger.js";
 
 const elements = {};

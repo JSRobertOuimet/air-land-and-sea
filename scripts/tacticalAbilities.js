@@ -1,8 +1,8 @@
 import Player from "./classes/Player.js";
-import UI from "./classes/UI.js";
+import UI from "./UI.js";
 import { getAdjacentTheaters, getCoveredCards, getAllCards } from "./utils.js";
 
-const tacticalAbilities = {
+const TacticalAbilities = {
     coverFire: function (parameters) {
         const { activePlayer, theaters, selectedTheater } = parameters;
         const coveredCards = getCoveredCards(activePlayer, selectedTheater);
@@ -44,4 +44,4 @@ const tacticalAbilities = {
     },
 };
 
-export default tacticalAbilities;
+export default TacticalAbilities;

@@ -1,4 +1,4 @@
-import UI from "./UI.js";
+import UI from "../UI.js";
 
 export default class Player {
     constructor(name) {
