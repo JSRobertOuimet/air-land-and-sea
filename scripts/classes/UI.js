@@ -4,7 +4,6 @@ import Debugger from "./Debugger.js";
 
 export default class UI {
     static scoreEl = document.querySelector("#score");
-    static battleNumberEl = document.querySelector("#battle-number");
     static mainAreaEl = document.querySelector("#main-area");
     static actionBarEl = document.querySelector("#action-bar");
     static actionButtonEls = document.querySelectorAll("#action-bar button");
