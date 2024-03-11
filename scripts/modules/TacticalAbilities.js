@@ -1,6 +1,6 @@
 import Player from "../classes/Player.js";
 import UI from "./UI.js";
-import { getAdjacentTheaters, getCoveredCards, getAllCards } from "./utils.js";
+import { getAdjacentTheaters, getCoveredCards, getAllCards } from "./Utilities.js";
 
 const TacticalAbilities = {
     coverFire: function (parameters) {
