@@ -1,4 +1,5 @@
 import UI from "../modules/UI.js";
+import { getAllCardsInTheater } from "../modules/Utilities.js";
 
 export default class Player {
     constructor(name) {
@@ -50,24 +51,35 @@ export default class Player {
 
     makingTheaterSelection(selectedCard, selectedAction, theaters) {
         return new Promise(resolve => {
+            const isAerodromeInTheater = getAllCardsInTheater(null, theaters).find(card => card.id === "4" && card.facedown === false);
+
             switch (selectedAction) {
                 case "deploy":
-                    let matchingTheaterEl;
+                    if (isAerodromeInTheater && selectedCard.deployStrength <= 3) {
+                        document.querySelectorAll(".theater").forEach(theaterEl => {
+                            theaterEl.classList.add("highlighted");
+                            theaterEl.addEventListener("click", e => resolve(this.handleTheaterSelection(e, theaters)));
+                        });
+                    } else {
+                        let matchingTheaterEl;
 
-                    document.querySelectorAll(".theater").forEach(theaterEl => {
-                        if (theaterEl.classList[1] === selectedCard.theater.toLowerCase()) {
-                            matchingTheaterEl = theaterEl;
-                            matchingTheaterEl.classList.add("highlighted");
-                        }
-                    });
+                        document.querySelectorAll(".theater").forEach(theaterEl => {
+                            if (theaterEl.classList[1] === selectedCard.theater.toLowerCase()) {
+                                matchingTheaterEl = theaterEl;
+                                matchingTheaterEl.classList.add("highlighted");
+                            }
+                        });
 
-                    matchingTheaterEl.addEventListener("click", e => resolve(this.handleTheaterSelection(e, theaters)));
+                        matchingTheaterEl.addEventListener("click", e => resolve(this.handleTheaterSelection(e, theaters)));
+                    }
+
                     break;
                 case "improvise":
                     document.querySelectorAll(".theater").forEach(theaterEl => {
                         theaterEl.classList.add("highlighted");
                         theaterEl.addEventListener("click", e => resolve(this.handleTheaterSelection(e, theaters)));
                     });
+                    
                     break;
             }
         });

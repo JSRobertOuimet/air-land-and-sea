@@ -29,6 +29,7 @@ const Debugger = {
     outlineCard: function (cardID, cardContainerEl) {
         switch (cardID) {
             case "1":
+            case "4":
             case "5":
             case "10":
             case "14":
@@ -42,6 +43,7 @@ const Debugger = {
 
         switch (selectedCard.id) {
             case "1":
+            case "4":
             case "5":
             case "10":
             case "14":
