@@ -3,7 +3,7 @@ import Player from "./Player.js";
 import UI from "../modules/UI.js";
 import Log from "./Log.js";
 import TacticalAbilities from "../modules/TacticalAbilities.js";
-import { getAllCardsInTheater } from "../modules/utils.js";
+import { getAllCardsInTheater } from "../modules/Utilities.js";
 
 export default class Battle {
     static id = 1;
