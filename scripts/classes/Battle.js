@@ -196,9 +196,9 @@ export default class Battle {
     #performAction(selectedAction) {
         const parameters = {
             activePlayerName: this.activePlayer.name,
-            selectedAction: this.selectedCard,
+            selectedCard: this.selectedCard,
             selectedAction: this.selectedAction,
-            selectTheater: this.selectedTheater,
+            selectedTheater: this.selectedTheater,
             players: this.players,
             theaters: this.theaters,
         };
