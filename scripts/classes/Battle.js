@@ -167,7 +167,7 @@ export default class Battle {
             } else {
                 this.selectedCard = this.activePlayer.selectCard();
                 this.selectedAction = this.activePlayer.selectAction(this.selectedCard);
-                this.selectedTheater = this.activePlayer.selectTheater(this.selectedCard, this.selectedAction, this.theaters);
+                this.selectedTheater = this.activePlayer.selectTheater(this.activePlayer, this.selectedCard, this.selectedAction, this.theaters);
             }
             this.#performAction(this.selectedAction);
             this.#endTurn();

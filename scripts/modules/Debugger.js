@@ -37,24 +37,6 @@ const Debugger = {
                 break;
         }
     },
-
-    forceDeploy: function (selectedCard) {
-        let randomNumber;
-
-        switch (selectedCard.id) {
-            case "1":
-            case "4":
-            case "5":
-            case "10":
-            case "14":
-                randomNumber = 0;
-                break;
-            default:
-                randomNumber = Math.floor(Math.random() * 2);
-        }
-
-        return randomNumber;
-    },
 };
 
 export default Debugger;

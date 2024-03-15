@@ -1,4 +1,5 @@
 import Debugger from "../modules/Debugger.js";
+import { getRandomTheater, getAllCardsInTheater, getRandomAction, getRandomCard } from "../modules/Utilities.js";
 
 export default class Bot {
     constructor(name) {
@@ -10,7 +11,7 @@ export default class Bot {
     }
 
     selectCard() {
-        const selectedCard = this.hand[Math.floor(Math.random() * this.hand.length)];
+        const selectedCard = getRandomCard(this.hand);
 
         document.querySelectorAll("#bot .card").forEach(cardEl => {
             if (cardEl.id === selectedCard.id) {
@@ -22,29 +23,28 @@ export default class Bot {
     }
 
     selectAction(selectedCard) {
-        let randomNumber = Debugger.forceDeploy(selectedCard);
-
-        switch (randomNumber) {
-            case 0:
-                return "deploy";
-            case 1:
-                return "improvise";
-        }
+        return getRandomAction(selectedCard);
     }
 
-    selectTheater(selectedCard, selectedAction, theaters) {
+    selectTheater(activePlayer, selectedCard, selectedAction, theaters) {
         let selectedTheater;
 
         switch (selectedAction) {
             case "deploy":
-                theaters.forEach(theater => {
-                    if (theater.name === selectedCard.theater) {
-                        selectedTheater = theater;
-                    }
-                });
+                const isAerodromeInTheater = getAllCardsInTheater(activePlayer, theaters).find(card => card.id === "4" && card.facedown === false);
+
+                if (isAerodromeInTheater && selectedCard.deployStrength <= 3) {
+                    selectedTheater = getRandomTheater(theaters);
+                } else {
+                    theaters.forEach(theater => {
+                        if (theater.name === selectedCard.theater) {
+                            selectedTheater = theater;
+                        }
+                    });
+                }
                 break;
             case "improvise":
-                selectedTheater = theaters[Math.floor(Math.random() * theaters.length)];
+                selectedTheater = getRandomTheater(theaters);
                 break;
         }
 
