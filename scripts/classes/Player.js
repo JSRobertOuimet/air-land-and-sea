@@ -49,9 +49,9 @@ export default class Player {
         return e.target.id;
     }
 
-    makingTheaterSelection(selectedCard, selectedAction, theaters) {
+    makingTheaterSelection(activePlayer, selectedCard, selectedAction, theaters) {
         return new Promise(resolve => {
-            const isAerodromeInTheater = getAllCardsInTheater(null, theaters).find(card => card.id === "4" && card.facedown === false);
+            const isAerodromeInTheater = getAllCardsInTheater(activePlayer, theaters).find(card => card.id === "4" && card.facedown === false);
 
             switch (selectedAction) {
                 case "deploy":

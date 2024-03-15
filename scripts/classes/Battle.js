@@ -163,7 +163,7 @@ export default class Battle {
             if (this.activePlayer instanceof Player) {
                 this.selectedCard = await this.activePlayer.makingCardSelection();
                 this.selectedAction = await this.activePlayer.makingActionSelection();
-                this.selectedTheater = await this.activePlayer.makingTheaterSelection(this.selectedCard, this.selectedAction, this.theaters);
+                this.selectedTheater = await this.activePlayer.makingTheaterSelection(this.activePlayer, this.selectedCard, this.selectedAction, this.theaters);
             } else {
                 this.selectedCard = this.activePlayer.selectCard();
                 this.selectedAction = this.activePlayer.selectAction(this.selectedCard);
