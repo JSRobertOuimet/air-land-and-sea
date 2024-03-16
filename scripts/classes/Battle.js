@@ -289,7 +289,7 @@ export default class Battle {
 
             UI.removeHighlights(highlightedTheaterEls);
             UI.disableActions();
-            UI.clearDescription();
+            UI.clearCardDescription();
         } else {
             this.selectedTheater.botCards.push(this.selectedCard);
 
@@ -349,7 +349,7 @@ export default class Battle {
                 UI.removeHighlights(highlightedTheaterEls);
                 UI.flipCard(selectedCardEl);
                 UI.disableActions();
-                UI.clearDescription();
+                UI.clearCardDescription();
                 UI.discard(selectedCardEl, discardPileEl);
 
                 return;
@@ -366,7 +366,7 @@ export default class Battle {
             UI.removeHighlights(highlightedTheaterEls);
             UI.flipCard(selectedCardEl);
             UI.disableActions();
-            UI.clearDescription();
+            UI.clearCardDescription();
             UI.discard(selectedCardEl, playerColumnEl);
         } else {
             if (isContainmentInTheater) {

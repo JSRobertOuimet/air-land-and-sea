@@ -272,7 +272,13 @@ const UI = {
         UI.getElements().improviseButtonEl.disabled = true;
     },
 
-    clearDescription: function () {
+    displayCardDescription(selectedCard) {
+        selectedCard.deployStrength === 6
+            ? (UI.getElements().descriptionEl.textContent = `${selectedCard.tacticalAbility}`)
+            : (UI.getElements().descriptionEl.textContent = `${selectedCard.tacticalAbility} ${selectedCard.typeSymbol} – ${selectedCard.description}`);
+    },
+
+    clearCardDescription: function () {
         UI.getElements().descriptionEl.textContent = "";
     },
 

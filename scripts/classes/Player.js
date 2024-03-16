@@ -27,10 +27,8 @@ export default class Player {
             });
 
             e.currentTarget.classList.add("selected");
-            selectedCard.deployStrength === 6
-                ? (UI.getElements().descriptionEl.textContent = `${selectedCard.tacticalAbility}`)
-                : (UI.getElements().descriptionEl.textContent = `${selectedCard.tacticalAbility} ${selectedCard.typeSymbol} – ${selectedCard.description}`);
 
+            UI.displayCardDescription(selectedCard);
             UI.enableActions();
 
             return selectedCard;
