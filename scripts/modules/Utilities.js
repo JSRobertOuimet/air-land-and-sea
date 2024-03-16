@@ -26,22 +26,22 @@ export function getRandomCard(hand) {
     return hand[Math.floor(Math.random() * hand.length)];
 }
 
-export function getAllCards(activePlayer, theaters) {
+export function getAllCards(theaters, activePlayer) {
     const cardsInHand = activePlayer.hand;
-    const cardsInTheater = getAllCardsInTheater(activePlayer, theaters);
+    const cardsInTheater = getAllCardsInTheater(theaters, activePlayer);
 
     return [...cardsInHand, ...cardsInTheater];
 }
 
-export function getAllCardsInTheater(activePlayer, theaters) {
+export function getAllCardsInTheater(theaters, player) {
     let allcardsInTheater = [];
 
-    if (activePlayer === null) {
+    if (player === undefined) {
         theaters.forEach(theater => {
             allcardsInTheater.push(...theater.playerCards, ...theater.botCards);
         });
     } else {
-        const cardsInTheater = activePlayer instanceof Player ? "playerCards" : "botCards";
+        const cardsInTheater = player instanceof Player ? "playerCards" : "botCards";
 
         theaters.forEach(theater => {
             allcardsInTheater.push(...theater[cardsInTheater]);
@@ -51,26 +51,15 @@ export function getAllCardsInTheater(activePlayer, theaters) {
     return allcardsInTheater;
 }
 
-export function isCardInTheater(cardID, activePlayer, theaters) {
-    return getAllCardsInTheater(activePlayer, theaters).find(card => card.id === cardID && card.facedown === false);
+export function isCardInTheater(cardID, theaters, player) {
+    return getAllCardsInTheater(theaters, player).find(card => card.id === cardID && card.facedown === false);
 }
 
-export function getCoveredCards(activePlayer, selectedTheater) {
+export function getCoveredCards(selectedTheater, activePlayer) {
     const cardsInTheater = activePlayer instanceof Player ? selectedTheater.playerCards : selectedTheater.botCards;
     const coveredCards = cardsInTheater.filter(card => card.covered);
 
     return coveredCards;
-}
-
-export function getFacedownCards(activePlayer, theaters) {
-    const cardsInTheater = activePlayer instanceof Player ? "playerCards" : "botCards";
-    let facedownCards = [];
-
-    theaters.forEach(theater => {
-        facedownCards.push(...theater[cardsInTheater].filter(playerCard => playerCard.facedown));
-    });
-
-    return facedownCards;
 }
 
 export function getRandomAction(selectedCard) {

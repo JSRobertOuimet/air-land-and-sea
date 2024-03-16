@@ -1,5 +1,5 @@
 import UI from "../modules/UI.js";
-import { getAllCardsInTheater } from "../modules/Utilities.js";
+import { isCardInTheater } from "../modules/Utilities.js";
 
 export default class Player {
     constructor(name) {
@@ -51,7 +51,7 @@ export default class Player {
 
     makingTheaterSelection(activePlayer, selectedCard, selectedAction, theaters) {
         return new Promise(resolve => {
-            const isAerodromeInTheater = getAllCardsInTheater(activePlayer, theaters).find(card => card.id === "4" && card.facedown === false);
+            const isAerodromeInTheater = isCardInTheater("4", theaters, activePlayer);
 
             switch (selectedAction) {
                 case "deploy":
@@ -79,7 +79,7 @@ export default class Player {
                         theaterEl.classList.add("highlighted");
                         theaterEl.addEventListener("click", e => resolve(this.handleTheaterSelection(e, theaters)));
                     });
-                    
+
                     break;
             }
         });

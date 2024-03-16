@@ -1,4 +1,4 @@
-import { getRandomTheater, getAllCardsInTheater, getRandomAction, getRandomCard, isCardInTheater } from "../modules/Utilities.js";
+import { getRandomTheater, getRandomAction, getRandomCard, isCardInTheater } from "../modules/Utilities.js";
 
 export default class Bot {
     constructor(name) {
@@ -30,7 +30,7 @@ export default class Bot {
 
         switch (selectedAction) {
             case "deploy":
-                const isAerodromeInTheater = isCardInTheater("4", activePlayer, theaters);
+                const isAerodromeInTheater = isCardInTheater("4", theaters, activePlayer);
 
                 if (isAerodromeInTheater && selectedCard.deployStrength <= 3) {
                     selectedTheater = getRandomTheater(theaters);
