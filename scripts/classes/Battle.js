@@ -3,7 +3,7 @@ import Player from "./Player.js";
 import UI from "../modules/UI.js";
 import Log from "./Log.js";
 import TacticalAbilities from "../modules/TacticalAbilities.js";
-import { getAllCardsInTheater } from "../modules/Utilities.js";
+import { isCardInTheater } from "../modules/Utilities.js";
 
 export default class Battle {
     static id = 1;
@@ -335,7 +335,7 @@ export default class Battle {
             this.activePlayer instanceof Player
                 ? document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .player-column`)
                 : document.querySelector(`#${this.selectedTheater.name.toLowerCase()}-depot .bot-column`);
-        const isContainmentInTheater = getAllCardsInTheater(null, this.theaters).find(card => card.id === "5" && card.facedown === false);
+        const isContainmentInTheater = isCardInTheater("5", null, this.theaters);
 
         this.activePlayer.hand = this.activePlayer.hand.filter(card => card !== this.selectedCard);
         this.selectedCard.flipCard();

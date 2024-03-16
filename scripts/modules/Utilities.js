@@ -51,6 +51,10 @@ export function getAllCardsInTheater(activePlayer, theaters) {
     return allcardsInTheater;
 }
 
+export function isCardInTheater(cardID, activePlayer, theaters) {
+    return getAllCardsInTheater(activePlayer, theaters).find(card => card.id === cardID && card.facedown === false);
+}
+
 export function getCoveredCards(activePlayer, selectedTheater) {
     const cardsInTheater = activePlayer instanceof Player ? selectedTheater.playerCards : selectedTheater.botCards;
     const coveredCards = cardsInTheater.filter(card => card.covered);
