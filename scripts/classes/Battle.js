@@ -97,7 +97,7 @@ export default class Battle {
 
         UI.displayScore(this.id, this.players);
         UI.displayTheaters(this.theaters);
-        UI.displayPlayerTotal(this.theaters);
+        UI.displayPlayerTotal(this.players, this.theaters);
         UI.displayCards(this.cards);
         UI.displayPlayersName(this.players);
 
@@ -285,7 +285,7 @@ export default class Battle {
                 this.selectedTheater.playerCards.at(-2).covered = true;
             }
 
-            this.selectedTheater.calculatePlayerTotal("1");
+            this.selectedTheater.calculatePlayerTotal(this.activePlayer.id);
 
             UI.removeHighlights(highlightedTheaterEls);
             UI.disableActions();
@@ -297,19 +297,19 @@ export default class Battle {
                 this.selectedTheater.botCards.at(-2).covered = true;
             }
 
-            this.selectedTheater.calculatePlayerTotal("2");
+            this.selectedTheater.calculatePlayerTotal(this.activePlayer.id);
 
             UI.flipCard(selectedCardEl);
-            UI.displayPlayerTotal(this.theaters);
         }
 
         UI.discard(selectedCardEl, playerColumnEl);
         UI.enableTooltip(selectedCardEl, this.selectedCard);
-        UI.displayPlayerTotal(this.theaters);
+        UI.displayPlayerTotal(this.players, this.theaters);
     }
 
     #resolveTacticalAbility() {
         const parameters = {
+            players: this.players,
             activePlayer: this.activePlayer,
             theaters: this.theaters,
             selectedTheater: this.selectedTheater,
@@ -361,7 +361,7 @@ export default class Battle {
                 this.selectedTheater.playerCards.at(-2).covered = true;
             }
 
-            this.selectedTheater.calculatePlayerTotal("1");
+            this.selectedTheater.calculatePlayerTotal(this.activePlayer.id);
 
             UI.removeHighlights(highlightedTheaterEls);
             UI.flipCard(selectedCardEl);
@@ -385,12 +385,12 @@ export default class Battle {
                 this.selectedTheater.botCards.at(-2).covered = true;
             }
 
-            this.selectedTheater.calculatePlayerTotal("2");
+            this.selectedTheater.calculatePlayerTotal(this.activePlayer.id);
 
             UI.discard(selectedCardEl, playerColumnEl);
         }
 
-        UI.displayPlayerTotal(this.theaters);
+        UI.displayPlayerTotal(this.players, this.theaters);
     }
 
     #withdraw() {}

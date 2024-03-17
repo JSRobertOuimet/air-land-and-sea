@@ -110,17 +110,17 @@ const UI = {
         });
     },
 
-    displayPlayerTotal: function (theaters) {
+    displayPlayerTotal: function (players, theaters) {
         theaters.forEach(theater => {
-            const playerSubtotalEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-total .subtotal`);
-            const playerBonusEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .player-total .bonus`);
-            const botSubtotalEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .bot-total .subtotal`);
-            const botBonusEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .bot-total .bonus`);
+            players.forEach(player => {
+                const bonusProperty = player.id === "1" ? "playerBonus" : "botBonus";
+                const classNamePrefix = player.id === "1" ? "player" : "bot";
+                const subtotalEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .${classNamePrefix}-total .subtotal`);
+                const bonusEl = document.querySelector(`#${theater.name.toLowerCase()}-depot .${classNamePrefix}-total .bonus`);
 
-            playerSubtotalEl.textContent = theater.calculatePlayerSubtotal("1");
-            playerBonusEl.textContent = theater.playerBonus.length > 0 ? `(+${theater.calculatePlayerBonus("1")})` : "";
-            botSubtotalEl.textContent = theater.calculatePlayerSubtotal("2");
-            botBonusEl.textContent = theater.botBonus.length > 0 ? `(+${theater.calculatePlayerBonus("2")})` : "";
+                subtotalEl.textContent = theater.calculatePlayerSubtotal(player.id);
+                bonusEl.textContent = theater[bonusProperty].length > 0 ? `(+${theater.calculatePlayerBonus(player.id)})` : "";
+            });
         });
     },
 

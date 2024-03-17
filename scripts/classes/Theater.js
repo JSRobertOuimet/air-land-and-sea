@@ -59,9 +59,9 @@ export default class Theater {
     }
 
     calculatePlayerTotal(playerId) {
-        playerId === "1"
-            ? (this.playerTotal = this.calculatePlayerSubtotal("1") + this.calculatePlayerBonus("1"))
-            : (this.botTotal = this.calculatePlayerSubtotal("2") + this.calculatePlayerBonus("2"));
+        const totalProperty = playerId === "1" ? "playerTotal" : "botTotal";
+
+        this[totalProperty] = this.calculatePlayerSubtotal(playerId) + this.calculatePlayerBonus(playerId);
     }
 
     calculatePlayerSubtotal(playerId) {

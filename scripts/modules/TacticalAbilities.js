@@ -4,7 +4,7 @@ import { getAdjacentTheaters, getCoveredCards, getAllCards } from "./Utilities.j
 
 const TacticalAbilities = {
     coverFire: function (parameters) {
-        const { activePlayer, theaters, selectedTheater } = parameters;
+        const { players, activePlayer, theaters, selectedTheater } = parameters;
         const coveredCards = getCoveredCards(selectedTheater, activePlayer);
 
         coveredCards.forEach(coveredCard => {
@@ -13,11 +13,11 @@ const TacticalAbilities = {
             UI.displayCardOverwrittenStrength(coveredCard);
         });
 
-        UI.displayPlayerTotal(theaters);
+        UI.displayPlayerTotal(players, theaters);
     },
 
     escalation: function (parameters) {
-        const { activePlayer, theaters } = parameters;
+        const { players, activePlayer, theaters } = parameters;
         const playerCards = getAllCards(theaters, activePlayer);
 
         playerCards.forEach(playerCard => {
@@ -25,11 +25,11 @@ const TacticalAbilities = {
             UI.displayCardOverwrittenStrength(playerCard);
         });
 
-        UI.displayPlayerTotal(theaters);
+        UI.displayPlayerTotal(players, theaters);
     },
 
     support: function (parameters) {
-        const { activePlayer, theaters, selectedTheater } = parameters;
+        const { players, activePlayer, theaters, selectedTheater } = parameters;
         const adjacentTheaters = getAdjacentTheaters(theaters, selectedTheater);
 
         adjacentTheaters.forEach(adjacentTheater => {
@@ -40,7 +40,7 @@ const TacticalAbilities = {
             }
         });
 
-        UI.displayPlayerTotal(theaters);
+        UI.displayPlayerTotal(players, theaters);
     },
 };
 
