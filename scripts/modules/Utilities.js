@@ -51,8 +51,8 @@ export function getAllCardsInTheater(theaters, player) {
     return allcardsInTheater;
 }
 
-export function isCardInTheater(cardID, theaters, player) {
-    return getAllCardsInTheater(theaters, player).find(card => card.id === cardID && card.facedown === false);
+export function isCardInTheater(cardId, theaters, player) {
+    return getAllCardsInTheater(theaters, player).find(card => card.id === cardId && card.facedown === false);
 }
 
 export function getCoveredCards(selectedTheater, activePlayer) {

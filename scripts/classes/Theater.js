@@ -58,24 +58,24 @@ export default class Theater {
         this._botBonus = value;
     }
 
-    calculatePlayerTotal(playerID) {
-        playerID === "1"
+    calculatePlayerTotal(playerId) {
+        playerId === "1"
             ? (this.playerTotal = this.calculatePlayerSubtotal("1") + this.calculatePlayerBonus("1"))
             : (this.botTotal = this.calculatePlayerSubtotal("2") + this.calculatePlayerBonus("2"));
     }
 
-    calculatePlayerSubtotal(playerID) {
+    calculatePlayerSubtotal(playerId) {
         const cardStrength = card => (card.facedown ? card.improviseStrength : card.deployStrength);
-        const cardPoints = this.getCardsInTheater(playerID).map(cardStrength);
+        const cardPoints = this.getCardsInTheater(playerId).map(cardStrength);
 
         return cardPoints.reduce((sum, point) => sum + point, 0);
     }
 
-    calculatePlayerBonus(playerID) {
-        return playerID === "1" ? this.playerBonus.reduce((sum, point) => sum + point, 0) : this.botBonus.reduce((sum, point) => sum + point, 0);
+    calculatePlayerBonus(playerId) {
+        return playerId === "1" ? this.playerBonus.reduce((sum, point) => sum + point, 0) : this.botBonus.reduce((sum, point) => sum + point, 0);
     }
 
-    getCardsInTheater(playerID) {
-        return playerID === "1" ? this.playerCards : this.botCards;
+    getCardsInTheater(playerId) {
+        return playerId === "1" ? this.playerCards : this.botCards;
     }
 }

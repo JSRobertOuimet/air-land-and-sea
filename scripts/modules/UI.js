@@ -23,7 +23,7 @@ const UI = {
         return elements;
     },
 
-    displayScore: function (battleID, players) {
+    displayScore: function (battleId, players) {
         const battleNumberEl = document.createElement("div");
         const playerScoreContainerEl = document.createElement("div");
         const playerNameEl = document.createElement("div");
@@ -33,7 +33,7 @@ const UI = {
         const botScoreEl = document.createElement("div");
 
         battleNumberEl.setAttribute("id", "battle-number");
-        battleNumberEl.textContent = `Battle #${battleID}`;
+        battleNumberEl.textContent = `Battle #${battleId}`;
 
         playerScoreContainerEl.setAttribute("id", "player-score");
         playerNameEl.textContent = `${players[0].name} (You)`;

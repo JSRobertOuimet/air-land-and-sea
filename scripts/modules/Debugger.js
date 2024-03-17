@@ -28,8 +28,8 @@ const Debugger = {
         console.log(`Selected theater: %c🎲 ${selectedTheater.name}`, this.gameStyles);
     },
 
-    outlineCard: function (cardID, cardContainerEl) {
-        switch (cardID) {
+    outlineCard: function (cardId, cardContainerEl) {
+        switch (cardId) {
             case "1":
             case "4":
             case "5":
