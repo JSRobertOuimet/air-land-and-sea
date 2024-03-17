@@ -1,3 +1,5 @@
+import Player from "../classes/Player.js";
+
 const Debugger = {
     playerStyles: "padding: 2px; color: white; background-color: red;",
     botStyles: "padding: 2px; color: white; background-color: blue;",
